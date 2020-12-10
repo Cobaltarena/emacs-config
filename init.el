@@ -93,9 +93,9 @@
   (setq company-selection-wrap-around +1
         company-tooltip-minimum-width 60
         company-tooltip-maximum-width 60)
-  ;; complete selection using tab instead of enter (still bind tho)
+  (define-key company-active-map (kbd "RET") nil)
+  (define-key company-active-map (kbd "<return>") nil)
   (define-key company-active-map (kbd "<tab>") #'company-complete-selection)
-
   :custom-face
   (company-tooltip (
                     (t (:background "#332211")))
