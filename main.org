@@ -1,0 +1,318 @@
+#+TITLE: Emacs config using org-mode
+
+# TODO docu highlight
+# TODO Counsel config
+# TODO company-init
+# TODO ivy-init.org
+** Init
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+#+END_SRC
+*** Melpa
+#+BEGIN_SRC emacs-lisp
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (proto (if no-ssl "http" "https")))
+  (when no-ssl (warn "No ssl found"))
+  (add-to-list 'package-archives (cons "melpa"
+  (concat proto "://melpa.org/packages/")) t)
+  )
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+(package-initialize)
+#+END_SRC
+
+** Startup screen
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-screen t)
+(tool-bar-mode -1) ; hide tool bar (GUI only)
+(scroll-bar-mode -1) ; hide scroll bar (GUI only)
+(menu-bar-mode -1) ; hide menu bar
+#+END_SRC
+
+** Hooks
+
+These are the hooks i need before loading all the packages
+
+*** Line-number
+
+Customize them a bit more to make them easier to read
+#+BEGIN_SRC emacs-lisp
+(add-hook 'display-line-numbers-mode-hook
+	  (lambda ()
+	    (set-face-attribute 'line-number nil
+				:weight 'normal)
+	    (set-face-attribute 'line-number-current-line nil
+				:foreground (face-attribute 'cursor :background)
+				:weight 'bold
+				:slant 'normal)
+            )
+          )
+#+END_SRC
+
+** Eval after load
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'company
+  '(add-to-list 'company-backend 'company-irony))
+#+END_SRC
+** Use-package
+All the packages I'm using in my config
+*** Aggressive-indent
+Make aggresive indent enabled on every mode except for html
+(might configure it later) and bind C-x a to toggle it or not
+#+BEGIN_SRC emacs-lisp
+(use-package aggressive-indent
+  :config
+  (global-aggressive-indent-mode 1)
+  (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+  (global-set-key (kbd "C-x a") 'aggressive-indent-mode)
+  )
+#+END_SRC
+
+*** Clang-format
+Clang-format binding on C-C C-f
+#+BEGIN_SRC emacs-lisp
+(use-package clang-format
+  :config
+  (global-set-key (kbd "C-c C-f") 'clang-format-buffer)
+  )
+#+END_SRC
+
+*** Company-mode
+# TODO create company-init.org
+Expand the dedicated org-file for company-mode and its dependencies
+#+BEGIN_SRC emacs-lisp
+(setq company-config
+      (expand-file-name "org-config/company-init.org" user-emacs-directory))
+(org-babel-load-file company-config)
+#+END_SRC
+*** Counsel
+#+BEGIN_SRC emacs-lisp
+(use-package counsel
+  :config
+  (counsel-mode 1)
+  )
+
+(use-package counsel-projectile
+  :config
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (counsel-projectile-mode +1)
+  )
+#+END_SRC
+*** Cmake-mode
+#+BEGIN_SRC emacs-lisp
+(use-package cmake-mode
+  :config
+  (setq cmake-mode +1)
+  )
+#+END_SRC
+
+*** Dracula-theme
+This is the theme i like to use
+#+BEGIN_SRC emacs-lisp
+(use-package dracula-theme
+  :init
+  (setq dracula-enlarge-headings nil
+        dracula-alternate-mode-line-and-minibuffer t)
+  :config
+  (load-theme 'dracula t)
+  )
+#+END_SRC
+*** Gnus
+A package to be able to read newsgroup using NNTP protocol
+#+BEGIN_SRC emacs-lisp
+(use-package gnus
+  :config
+  (setq gnus-select-method '(nntp "news.epita.fr"))
+  )
+#+END_SRC
+
+*** Highlight-defined
+Package to make matching pattern with swiper highlighted
+#+BEGIN_SRC emacs-lisp
+(use-package highlight-defined
+  :config
+  (add-hook 'emacs-lisp-mode-hook 'highlight-defined-mode)
+  )
+#+END_SRC
+# TODO create ivy-init.org
+*** Ivy
+#+BEGIN_SRC emacs-lisp
+(setq ivy-config
+      (expand-file-name "org-config/ivy-init.org" user-emacs-directory))
+(org-babel-load-file ivy-config)
+#+END_SRC
+*** Magit
+Magit binding on C-c C-g
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :config
+  (global-set-key (kbd "C-c C-g") 'magit)
+  )
+#+END_SRC
+*** Minimap
+Minimap minor-mode to display the location of the buffer in the file.
+Displayed on the right and refresh without any delay.
+#+BEGIN_SRC emacs-lisp
+(use-package minimap
+  :init
+  (setq minimap-update-delay 0
+        minimap-window-location 'right)
+  :config
+  (minimap-mode)
+  (global-set-key (kbd "C-c m") 'minimap-mode)
+  )
+#+END_SRC
+*** Modern-sh
+Minor mode for shell programming. Better highlight, auto indentation when saving
+and smarter indent.
+#+BEGIN_SRC emacs-lisp
+(use-package modern-sh
+  :config
+  (add-hook 'sh-mode-hook 'modern-sh-mode)
+  )
+#+END_SRC
+*** Smooth-scrolling
+Make the scrolling smoother
+#+BEGIN_SRC emacs-lisp
+(use-package smooth-scrolling
+  :config
+  (smooth-scrolling-mode 1)
+  )
+#+END_SRC
+
+** Bindings
+
+*** Compilation using counsel
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x C-p") 'counsel-compile)
+#+END_SRC
+
+*** Error navigation
+#+BEGIN_SRC emacs-lisp
+(global-unset-key [f3])
+(global-set-key [f3] 'next-error)
+
+(global-unset-key [f2])
+(global-set-key [f2] 'previous-error)
+#+END_SRC
+
+*** Layout keyboard rebind
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-q") 'move-beginning-of-line)
+(global-set-key (kbd "M-z") 'kill-ring-save)
+(global-set-key (kbd "C-z") 'kill-region)
+#+END_SRC
+** Faces
+*** Background
+#+BEGIN_SRC emacs-lisp
+(setq bg "#222222")
+(set-background-color bg)
+(set-face-attribute 'cursor nil :background "#DD7538")
+#+END_SRC
+*** Comments
+#+BEGIN_SRC emacs-lisp
+(set-face-foreground 'font-lock-string-face "light green")
+(set-face-foreground 'font-lock-comment-face "green")
+(set-face-foreground 'font-lock-comment-delimiter-face "green")
+#+END_SRC
+*** Font
+#+BEGIN_SRC emacs-lisp
+(set-face-attribute 'default nil
+		    :family "JetBrains Mono"
+		    :foundry "outline"
+		    :slant 'normal
+		    :weight 'normal
+		    :height 130
+		    :width 'semi-condensed
+                    )
+#+END_SRC
+*** Fringe
+#+BEGIN_SRC emacs-lisp
+(set-face-attribute 'fringe nil :background bg)
+(setq-default left-fringe-width 5)
+#+END_SRC
+*** Highlight mode
+#+BEGIN_SRC emacs-lisp
+(global-hl-line-mode t)
+(set-face-attribute 'hl-line nil
+                    :background "#580818")
+#+END_SRC
+*** Line number
+    
+Enable linum-mode and customize is a bit according to the theme
+#+BEGIN_SRC emacs-lisp
+(global-linum-mode) ; show line numbers
+(set-face-attribute 'line-number nil :background bg)
+(set-face-attribute 'line-number-current-line nil :background bg)
+(set-face-attribute 'linum nil :background bg)
+#+END_SRC
+*** Line indicator (80 characters)
+#+BEGIN_SRC emacs-lisp
+(global-display-fill-column-indicator-mode 1)
+(setq-default fill-column 80)
+(set-face-attribute 'fill-column-indicator nil :foreground "#55342b")
+(set-face-attribute 'fill-column-indicator nil :background "#55342b")
+#+END_SRC
+*** Whitespace and newline
+Custom whitespace newline to make is easier to see.
+Trailing whitespaces are also enabled
+#+BEGIN_SRC emacs-lisp
+(global-whitespace-mode t)
+(setq whitespace-display-mappings
+      '(
+        (spaces 32 [183] [46])
+        (space-mark 32 [183] [46])
+        (newline-mark 10
+                      [5321 10])
+        (tab-mark 9
+                  [9655 9]
+                  [92 9])
+        )
+      )
+(setq whitespace-style
+      '(
+        face ; show ...
+        tabs tab-mark ; the tabulations,
+        newline-mark
+        newline
+        trailing
+        )
+      )
+(set-face-attribute 'whitespace-newline nil :foreground "#A68064")
+(set-face-attribute 'whitespace-space nil :foreground "#A68064")
+(set-face-attribute 'whitespace-space nil :background bg)
+#+END_SRC
+** Utilities
+*** Backup files
+#+BEGIN_SRC emacs-lisp
+(setq backup-directory-alist '(("." . "~/local/emacs_tf"))
+      backup-by-copying t)
+#+END_SRC
+*** EPITA C basic config
+#+BEGIN_SRC emacs-lisp
+(setq c-basic-offset 4 ; spaces of indentation
+      c-default-style "bsd" ; sort of fits the coding style
+      fill-column 80) ; 80 columns rule
+#+END_SRC
+*** Debug stacke trace on config error
+#+BEGIN_SRC emacs-lisp
+(setq debug-on-error t ; show stack trace on config error
+      vc-follow-symlinks t) ; always follow symlink
+#+END_SRC
+*** Disable shift selection with the arrow keys
+#+BEGIN_SRC emacs-lisp
+(setq shift-select-mode nil)
+#+END_SRC
+
+*** Opam generated config
+#+BEGIN_SRC
+(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
+#+END_SRC
+*** Tabulations
+#+BEGIN_SRC emacs-lisp
+(setq-default indent-tabs-mode nil)
+(setq indent-tabs-mode nil)
+#+END_S
