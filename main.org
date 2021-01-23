@@ -2,8 +2,6 @@
 
 # TODO docu highlight
 # TODO Counsel config
-# TODO company-init
-# TODO ivy-init.org
 ** Init
 #+BEGIN_SRC emacs-lisp
 (require 'package)
