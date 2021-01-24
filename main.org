@@ -1,10 +1,11 @@
 #+TITLE: Emacs config using org-mode
 
-# TODO docu highlight
 # TODO Counsel config
 ** Init
 #+BEGIN_SRC emacs-lisp
 (require 'package)
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
 #+END_SRC
 *** Melpa
 #+BEGIN_SRC emacs-lisp
@@ -25,9 +26,9 @@
 ** Startup screen
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-screen t)
-(tool-bar-mode -1) ; hide tool bar (GUI only)
-(scroll-bar-mode -1) ; hide scroll bar (GUI only)
-(menu-bar-mode -1) ; hide menu bar
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ; hide tool bar (GUI only)
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1)) ; hide scroll bar (GUI only)
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ; hide menu bar
 #+END_SRC
 
 ** Hooks
@@ -79,7 +80,6 @@ Clang-format binding on C-C C-f
 #+END_SRC
 
 *** Company-mode
-# TODO create company-init.org
 Expand the dedicated org-file for company-mode and its dependencies
 #+BEGIN_SRC emacs-lisp
 (setq company-config
@@ -118,6 +118,21 @@ This is the theme i like to use
   (load-theme 'dracula t)
   )
 #+END_SRC
+*** Fixmee
+A very handy TODO package
+#+BEGIN_SRC emacs-lisp
+(use-package fixmee
+  :init
+  (require 'button-lock)
+  :config
+  (global-fixmee-mode 1)
+  )
+;; fixmee-mode next/prev rebind and view list
+(global-set-key [f6] 'fixmee-goto-next-by-position)
+(global-set-key [f5] 'fixmee-goto-previous-by-position)
+(global-set-key [f4] 'fixmee-view-listing)
+
+#+END_SRC
 *** Gnus
 A package to be able to read newsgroup using NNTP protocol
 #+BEGIN_SRC emacs-lisp
@@ -150,6 +165,19 @@ Magit binding on C-c C-g
   (global-set-key (kbd "C-c C-g") 'magit)
   )
 #+END_SRC
+*** Markdown-mode
+Major package to edit .md files
+#+BEGIN_SRC emacs-lisp
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init
+  (setq markdown-command "multimarkdown")
+  )
+#+END_SRC
 *** Minimap
 Minimap minor-mode to display the location of the buffer in the file.
 Displayed on the right and refresh without any delay.
@@ -159,7 +187,6 @@ Displayed on the right and refresh without any delay.
   (setq minimap-update-delay 0
         minimap-window-location 'right)
   :config
-  (minimap-mode)
   (global-set-key (kbd "C-c m") 'minimap-mode)
   )
 #+END_SRC
@@ -172,6 +199,14 @@ and smarter indent.
   (add-hook 'sh-mode-hook 'modern-sh-mode)
   )
 #+END_SRC
+*** Org-mode
+Will probably get its own config file in the future
+#+BEGIN_SRC emacs-lisp
+(use-package org
+  :config
+  (setq org-src-tab-acts-natively t)
+  )
+#+END_SRC
 *** Smooth-scrolling
 Make the scrolling smoother
 #+BEGIN_SRC emacs-lisp
@@ -182,7 +217,6 @@ Make the scrolling smoother
 #+END_SRC
 
 ** Bindings
-
 *** Compilation using counsel
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x C-p") 'counsel-compile)
@@ -203,6 +237,11 @@ Make the scrolling smoother
 (global-set-key (kbd "M-z") 'kill-ring-save)
 (global-set-key (kbd "C-z") 'kill-region)
 #+END_SRC
+*** Comment Region
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c d") 'comment-or-uncomment-region)
+#+END_SRC
+
 ** Faces
 *** Background
 #+BEGIN_SRC emacs-lisp
