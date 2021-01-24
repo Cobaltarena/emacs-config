@@ -1,5 +1,5 @@
 #+BEGIN_SRC emacs-lisp
- (use-package company
+(use-package company
   :config
   (company-mode +1)
   (global-company-mode +1)
@@ -18,11 +18,13 @@
   :ensure t
   :config
   (add-to-list 'company-backends 'company-irony)
+  (add-to-list 'company-backends 'company-irony-c-headers)
   )
 
 (use-package irony
   :ensure t
   :config
+  (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   )
@@ -33,4 +35,10 @@
   :config
   (add-hook 'irony-mode-hook #'irony-eldoc)
   )
+
+
+(with-eval-after-load 'company
+   (add-hook 'c++-mode-hook 'company-mode)
+   (add-hook 'c-mode-hook 'company-mode)
+)
 #+END_SRC

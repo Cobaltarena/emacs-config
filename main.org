@@ -1,6 +1,5 @@
 #+TITLE: Emacs config using org-mode
 
-# TODO Counsel config
 ** Init
 #+BEGIN_SRC emacs-lisp
 (require 'package)
@@ -47,8 +46,7 @@ Customize them a bit more to make them easier to read
 				:foreground (face-attribute 'cursor :background)
 				:weight 'bold
 				:slant 'normal)
-            )
-          )
+            )          )
 #+END_SRC
 
 ** Eval after load
@@ -107,6 +105,26 @@ Expand the dedicated org-file for company-mode and its dependencies
   )
 #+END_SRC
 
+*** Dap-mode
+Super Handy debugging tool for many langages, uses lsp server. 
+#+BEGIN_SRC emacs-lisp
+  (global-unset-key (kbd "C-d"))
+  (use-package dap-mode)
+  (let ((bindings '(
+               ("C-a" . dap-ui-show-many-windows)
+               ("C-e" . dap-ui-hide-many-windows)
+               ("a" . dap-breakpoint-add)
+               ("d" . dap-breakpoint-delete)
+               ("c" . dap-breakpoint-delete-all)
+               ("n" . dap-next)
+               ("C-c" . dap-continue)
+               ("s" . dap-step-in)
+               ("r" . dap-step-out)
+               ("e" . dap-eval)
+               )))
+    (dolist (binding bindings)
+      (global-set-key (kbd (concat "C-d " (car binding))) (cdr binding))))
+#+END_SRC
 *** Dracula-theme
 This is the theme i like to use
 #+BEGIN_SRC emacs-lisp
@@ -352,4 +370,23 @@ Trailing whitespaces are also enabled
 #+BEGIN_SRC emacs-lisp
 (setq-default indent-tabs-mode nil)
 (setq indent-tabs-mode nil)
-#+END_S
+#+END_SRC
+*** Mode-line
+Simple mode-line config
+#+BEGIN_SRC emacs-lisp
+  (setq mode-line-format
+	  (list
+	   ;; value of `mode-name'
+	   "%m: "
+	   ;; value of current buffer name
+	   "buffer %b, "
+	   ;; value of current line number
+	   "line %l, "
+	   ;; value of current colum number
+	   "col %c"))
+#+END_SRC
+*** Cursor-type
+#+BEGIN_SRC emacs-lisp
+(setq-default cursor-type 'hollow)
+(setq-default cursor-type 'box)
+#+END_SRC
