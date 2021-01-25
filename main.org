@@ -106,9 +106,12 @@ Expand the dedicated org-file for company-mode and its dependencies
 #+END_SRC
 
 *** Dap-mode
-Super Handy debugging tool for many langages, uses lsp server. 
+Super Handy debugging tool for many langages, uses lsp server,
 #+BEGIN_SRC emacs-lisp
   (global-unset-key (kbd "C-d"))
+  (add-hook 'c++-mode-hook
+          (lambda()
+            (local-unset-key (kbd "C-d"))))
   (use-package dap-mode)
   (let ((bindings '(
                ("C-a" . dap-ui-show-many-windows)
@@ -161,7 +164,8 @@ A package to be able to read newsgroup using NNTP protocol
 #+END_SRC
 
 *** Helm
-I'm using helm-ctags to jump to the definition of function
+I'm using helm-ctags to jump to the definition of function and helm-man to 
+get a quick access to man pages
 #+BEGIN_SRC emacs-lisp
   (use-package helm-gtags
           :ensure t
@@ -179,7 +183,6 @@ Package to make matching pattern with swiper highlighted
   (add-hook 'emacs-lisp-mode-hook 'highlight-defined-mode)
   )
 #+END_SRC
-# TODO create ivy-init.org
 *** Ivy
 #+BEGIN_SRC emacs-lisp
 (setq ivy-config
@@ -269,6 +272,11 @@ Make the scrolling smoother
 *** Comment Region
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-c d") 'comment-or-uncomment-region)
+#+END_SRC
+
+*** Man page quick access
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x C-m") 'helm-man-woman)
 #+END_SRC
 
 ** Faces
