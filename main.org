@@ -160,6 +160,17 @@ A package to be able to read newsgroup using NNTP protocol
   )
 #+END_SRC
 
+*** Helm
+I'm using helm-ctags to jump to the definition of function
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-gtags
+          :ensure t
+          :config
+          (helm-gtags-mode +1)
+          (global-set-key (kbd "C-c r") 'helm-gtags-find-rtag)
+          (global-set-key (kbd "C-c C-r") 'helm-gtags-find-tag-other-window)
+  )
+#+END_SRC
 *** Highlight-defined
 Package to make matching pattern with swiper highlighted
 #+BEGIN_SRC emacs-lisp
