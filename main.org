@@ -118,23 +118,31 @@ Expand the dedicated org-file for company-mode and its dependencies
 *** Dap-mode
 Super Handy debugging tool for many langages, uses lsp server,
 #+BEGIN_SRC emacs-lisp
+  (use-package dap-mode
+  :custom
+  (lsp-enable-dap-auto-configure nil)
+  :config
+  (dap-ui-mode 1)
+  )
   (global-unset-key (kbd "C-d"))
   (add-hook 'c++-mode-hook
-          (lambda()
-            (local-unset-key (kbd "C-d"))))
-  (use-package dap-mode)
+            (lambda()
+              (local-unset-key (kbd "C-d"))))
   (let ((bindings '(
-               ("C-a" . dap-ui-show-many-windows)
-               ("C-e" . dap-ui-hide-many-windows)
-               ("a" . dap-breakpoint-add)
-               ("d" . dap-breakpoint-delete)
-               ("c" . dap-breakpoint-delete-all)
-               ("n" . dap-next)
-               ("C-c" . dap-continue)
-               ("s" . dap-step-in)
-               ("r" . dap-step-out)
-               ("e" . dap-eval)
-               )))
+                    ("C-a" . dap-ui-show-many-windows)
+                    ("C-e" . dap-ui-hide-many-windows)
+                    ("a" . dap-breakpoint-add)
+                    ("d" . dap-breakpoint-delete)
+                    ("c" . dap-breakpoint-delete-all)
+                    ("n" . dap-next)
+                    ("C-c" . dap-continue)
+                    ("s" . dap-step-in)
+                    ("r" . dap-step-out)
+                    ("e" . dap-eval)
+                    ("C-g" . dap-debug)
+                    ("C-r" . dap-debug-restart)
+                    ("g" . dap-debug-edit-template)
+                    )))
     (dolist (binding bindings)
       (global-set-key (kbd (concat "C-d " (car binding))) (cdr binding))))
 #+END_SRC
