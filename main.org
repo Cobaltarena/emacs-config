@@ -297,6 +297,14 @@ Make the scrolling smoother
 (global-set-key (kbd "C-x C-m") 'helm-man-woman)
 #+END_SRC
 
+*** WindMove
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c <C-left>") 'windmove-left)
+(global-set-key (kbd "C-c <C-right>") 'windmove-right)
+(global-set-key (kbd "C-c <C-up>") 'windmove-up)
+(global-set-key (kbd "C-c <C-down>") 'windmove-down)
+#+END_SRC
+
 ** Faces
 *** Background
 #+BEGIN_SRC emacs-lisp
