@@ -63,7 +63,6 @@ Customize them a bit more to make them easier to read
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'company
     '(add-to-list 'company-backend 'company-irony)
-    '(add-to-list 'company-backend 'company-irony)
 )
 #+END_SRC
 ** Use-package
@@ -158,17 +157,6 @@ This is the theme i like to use
   :config
   (load-theme 'dracula t)
   )
-#+END_SRC
-*** Elpy
-#+BEGIN_SRC emacs-lisp
-(use-package elpy
-  :init
-  (add-hook 'python-mode-hook #'elpy-enable)
-  :config
-  (setq python-shell-interpreter "python3"
-        python-shell-interpreter-args "-i"
-        elpy-rpc-python-command "python3")
-)
 #+END_SRC
 *** Fixmee
 A very handy TODO package
