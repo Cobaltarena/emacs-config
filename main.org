@@ -147,15 +147,15 @@ Super Handy debugging tool for many langages, uses lsp server,
     (dolist (binding bindings)
       (global-set-key (kbd (concat "C-d " (car binding))) (cdr binding))))
 #+END_SRC
-*** Dracula-theme
-This is the theme i like to use
+*** Theme
+This is the theme i like to use at the moment
 #+BEGIN_SRC emacs-lisp
-(use-package dracula-theme
+(use-package zerodark-theme
   :init
-  (setq dracula-enlarge-headings nil
-        dracula-alternate-mode-line-and-minibuffer t)
+  (setq zerodark-enlarge-headings nil
+        zerodark-alternate-mode-line-and-minibuffer t)
   :config
-  (load-theme 'dracula t)
+  (load-theme 'zerodark t)
   )
 #+END_SRC
 *** Fixmee
@@ -322,14 +322,14 @@ Make the scrolling smoother
 #+END_SRC
 *** Font
 #+BEGIN_SRC emacs-lisp
-(set-face-attribute 'default nil
-		    :family "JetBrains Mono"
-		    :foundry "outline"
-		    :slant 'normal
-		    :weight 'normal
-		    :height 130
-		    :width 'semi-condensed
-                    )
+  (set-face-attribute 'default nil
+                      :family "JetBrains Mono"
+                       :foundry "outline"
+                      :slant 'normal
+                      :weight 'normal
+                      :height 130
+                      :width 'semi-condensed
+                      )
 #+END_SRC
 *** Fringe
 #+BEGIN_SRC emacs-lisp
