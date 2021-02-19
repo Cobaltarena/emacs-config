@@ -250,6 +250,18 @@ and smarter indent.
   (add-hook 'sh-mode-hook 'modern-sh-mode)
   )
 #+END_SRC
+*** MultiTerm
+#+BEGIN_SRC emacs-lisp
+  (use-package multi-term
+    :config
+    (setq multi-term-program "/bin/zsh")
+    (global-set-key (kbd "C-x C-<up>") 'multi-term-prev)
+    (global-set-key (kbd "C-x C-<down>") 'multi-term-next)
+    (global-set-key (kbd "C-x n") 'multi-term)
+    (global-set-key (kbd "C-c C-j") 'term-line-mode)
+    )
+#+END_SRC
+
 *** Org-mode
 Will probably get its own config file in the future
 #+BEGIN_SRC emacs-lisp
