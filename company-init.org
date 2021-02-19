@@ -8,7 +8,7 @@
         company-tooltip-maximum-width 60)
   (define-key company-active-map (kbd "RET") nil)
   (define-key company-active-map (kbd "<return>") nil)
-  (define-key company-active-map (kbd "TAB") #'company-complete-selection)
+  (define-key company-active-map (kbd "<right>") #'company-complete-selection)
   :custom-face
   (company-tooltip (
                     (t (:background "#332211")))
