@@ -67,6 +67,13 @@ Customize them a bit more to make them easier to read
 #+END_SRC
 ** Use-package
 All the packages I'm using in my config
+*** Autopairing
+#+BEGIN_SRC emacs-lisp
+  (use-package autopair
+    :config
+    (autopair-global-mode)
+    )
+#+END_SRC
 *** Aggressive-indent
 Make aggresive indent enabled on every mode except for html
 (might configure it later) and bind C-x a to toggle it or not
@@ -78,6 +85,9 @@ Make aggresive indent enabled on every mode except for html
   (global-set-key (kbd "C-x a") 'aggressive-indent-mode)
   )
 #+END_SRC
+
+#+RESULTS:
+: t
 
 *** Clang-format
 Clang-format binding on C-C C-f
@@ -147,6 +157,18 @@ Super Handy debugging tool for many langages, uses lsp server,
     (dolist (binding bindings)
       (global-set-key (kbd (concat "C-d " (car binding))) (cdr binding))))
 #+END_SRC
+*** Eterm-256color
+Package to enhance the output of terminal emulators. 
+Requires =ncurses= to be installed
+#+BEGIN_SRC emacs-lisp
+(use-package eterm-256color
+:hook 
+(term-mode . eterm-256color-mode)
+(term-mode . eterm-256color-mode)
+(vterm-mode . eterm-256color-mode)
+(eshell-mode . eterm-256color-mode)
+)
+#+END_SRC emacs-lisp
 *** Theme
 This is the theme i like to use at the moment
 #+BEGIN_SRC emacs-lisp
@@ -265,10 +287,11 @@ and smarter indent.
 *** Org-mode
 Will probably get its own config file in the future
 #+BEGIN_SRC emacs-lisp
-(use-package org
-  :config
-  (setq org-src-tab-acts-natively t)
-  )
+  (use-package org
+    :config
+    (setq org-src-tab-acts-natively t)
+    (global-set-key (kbd "C-c C-c") 'org-edit-special)
+    )
 #+END_SRC
 
 *** Smooth-scrolling
@@ -335,11 +358,10 @@ Make the scrolling smoother
 *** Font
 #+BEGIN_SRC emacs-lisp
   (set-face-attribute 'default nil
-                      :family "JetBrains Mono"
-                       :foundry "outline"
+                      :family "Meslo LG S DZ for Powerline"
                       :slant 'normal
                       :weight 'normal
-                      :height 130
+                      :height 140
                       :width 'semi-condensed
                       )
 #+END_SRC
