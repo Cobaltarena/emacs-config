@@ -39,9 +39,17 @@
     :after company
     :config
     (setq company-prescient-mode 1)
+    )
+
+  (use-package company-jedi
+    :config
+    (eval-after-load 'company
+      '(add-to-list 'company-backends 'company-jedi))
+    )
 
   (with-eval-after-load 'company
-     (add-hook 'c++-mode-hook 'company-mode)
-     (add-hook 'c-mode-hook 'company-mode)
-  )
+    (add-hook 'c++-mode-hook 'company-mode)
+    (add-hook 'c-mode-hook 'company-mode)
+    (add-hook 'python-mode-hook 'company-mode)
+    )
 #+END_SRC
