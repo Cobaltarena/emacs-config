@@ -27,8 +27,9 @@
       (add-hook 'c++-mode-hook 'irony-mode)
       (add-hook 'c-mode-hook 'irony-mode)
       (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-      (setq irony-libclang-additional-flags
-        (append '("-I" "inc") irony-libclang-additional-flags))
+      ;; used to fix some problems but is no longer relevant apparently
+      ;; (setq irony-libclang-additional-flags
+      ;;  (append '("-I" "inc") irony-libclang-additional-flags))
       )
 
 
