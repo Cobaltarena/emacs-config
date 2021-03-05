@@ -67,13 +67,6 @@ Customize them a bit more to make them easier to read
 #+END_SRC
 ** Use-package
 All the packages I'm using in my config
-*** Autopairing
-#+BEGIN_SRC emacs-lisp
-  (use-package autopair
-    :config
-    (autopair-global-mode)
-    )
-#+END_SRC
 *** Aggressive-indent
 Make aggresive indent enabled on every mode except for html
 (might configure it later) and bind C-x a to toggle it or not
