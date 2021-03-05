@@ -1,3 +1,7 @@
+#+TITLE: Company-mode and its dependencies
+
+** Company
+Major mode for completion when programming.
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :config
@@ -14,6 +18,10 @@
                       (t (:background "#332211")))
                      )
     )
+#+END_SRC emacs-lisp
+** Company-irony
+Irony backend for C and C++ completion
+#+BEGIN_SRC emacs-lisp
   (use-package company-irony
     :config
     (eval-after-load 'company
@@ -21,33 +29,45 @@
     (eval-after-load 'company
       '(add-to-list 'company-backends 'company-irony-c-headers))
     )
-
+#+END_SRC
+** TODO Irony (move this elsewhere)
+#+BEGIN_SRC emacs-lisp
   (use-package irony
     :config
     (add-hook 'c++-mode-hook 'irony-mode)
     (add-hook 'c-mode-hook 'irony-mode)
     (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
     )
-
+#+END_SRC
+** TODO Irony-eldoc (move this elsewhere)
+#+BEGIN_SRC emacs-lisp
 
   (use-package irony-eldoc
     :config
     (add-hook 'irony-mode-hook #'irony-eldoc)
     )
-
+#+END_SRC
+** Prescient
+Cool minor-mode to order the completion propositions by frequency of use. 
+#+BEGIN_SRC emacs-lisp
   (use-package company-prescient
     :after company
     :config
     (setq company-prescient-mode 1)
     )
-
+#+END_SRC
+** Company-jedi
+Python backend for some completion when python-mode is enabled.
+#+BEGIN_SRC emacs-lisp
   (use-package company-jedi
     :config
     (eval-after-load 'company
       '(add-to-list 'company-backends 'company-jedi))
     (add-hook 'python-mode-hook 'jedi-mode)
     )
-
+#+END_SRC
+** Eval after load
+#+BEGIN_SRC emacs-lisp
 
   (with-eval-after-load 'company
     (add-hook 'c++-mode-hook 'company-mode)

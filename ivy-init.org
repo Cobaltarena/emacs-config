@@ -1,8 +1,7 @@
+#+TITLE: Ivy and its dependencies
+
+** Ivy
 #+BEGIN_SRC emacs-lisp
-  (use-package all-the-icons-ivy
-    :init
-    (add-hook 'after-init-hook 'all-the-icons-ivy-setup)
-    )
   (use-package ivy
     :config
     (ivy-mode 1)
@@ -17,24 +16,27 @@
     (global-unset-key (kbd "C-f"))
     (global-set-key (kbd "C-f") 'ivy-switch-buffer)
     )
+#+END_SRC
 
+** All the icons
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons-ivy
+    :init
+    (add-hook 'after-init-hook 'all-the-icons-ivy-setup)
+    )
+#+END_SRC
+
+** Ivy-rich
+#+BEGIN_SRC emacs-lisp
   (use-package ivy-rich
     :config
     ;; fancier ivy
     (ivy-rich-mode 1)
     )
+#+END_SRC
 
-  (use-package ivy-prescient
-    :config
-    (ivy-prescient-mode 1)
-    )
-
-  (use-package swiper
-    :config
-    (global-unset-key (kbd "C-s"))
-    (global-set-key (kbd "C-s") 'swiper)
-    )
-
+** Ivy-prescient
+#+BEGIN_SRC emacs-lisp
   (use-package ivy-prescient
     :after counsel
     :custom
@@ -44,3 +46,13 @@
     (ivy-prescient-mode 1)
     )
 #+END_SRC
+
+** Swiper
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper
+    :config
+    (global-unset-key (kbd "C-s"))
+    (global-set-key (kbd "C-s") 'swiper)
+    )
+#+END_SRC
+
