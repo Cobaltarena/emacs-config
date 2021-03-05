@@ -310,6 +310,11 @@ Make the scrolling smoother
 #+END_SRC
 
 ** Bindings
+*** Comment Region
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c d") 'comment-or-uncomment-region)
+#+END_SRC
+
 *** Compilation using counsel
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x C-p") 'counsel-compile)
@@ -330,14 +335,14 @@ Make the scrolling smoother
 (global-set-key (kbd "M-z") 'kill-ring-save)
 (global-set-key (kbd "C-z") 'kill-region)
 #+END_SRC
-*** Comment Region
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-c d") 'comment-or-uncomment-region)
-#+END_SRC
-
 *** Man page quick access
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x C-m") 'helm-man-woman)
+#+END_SRC
+
+*** Melpa
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x p") 'package-install)
 #+END_SRC
 
 *** WindMove
