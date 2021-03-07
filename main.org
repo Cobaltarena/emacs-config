@@ -353,6 +353,8 @@ Github repository: https://github.com/Alexander-Miller/treemacs
   :config
   (global-set-key [f12] 'treemacs)
   (global-set-key (kbd "C-c i") 'treemacs-add-project-to-workspace)
+  (unbind-key "s" treemacs-mode-map)
+  (bind-key "s" #'treemacs-find-file treemacs-mode-map)
   )
 #+END_SRC
 ** Bindings
