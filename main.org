@@ -17,8 +17,6 @@
   )
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-#+END_SRC
-#+BEGIN_SRC emacs-lisp
 (package-initialize)
 #+END_SRC
 
@@ -31,7 +29,6 @@
 #+END_SRC
 
 ** Hooks
-
 These are the hooks i need before loading all the packages
 
 *** Line-number
@@ -69,7 +66,9 @@ Customize them a bit more to make them easier to read
 All the packages I'm using in my config
 *** Aggressive-indent
 Make aggresive indent enabled on every mode except for html
-(might configure it later) and bind C-x a to toggle it or not
+(might configure it later) and bind 'C-x a' to toggle it or not
+
+Github repository: [[https://github.com/Malabarba/aggressive-indent-mode]]
 #+BEGIN_SRC emacs-lisp
 (use-package aggressive-indent
   :config
@@ -78,19 +77,16 @@ Make aggresive indent enabled on every mode except for html
   (global-set-key (kbd "C-x a") 'aggressive-indent-mode)
   )
 #+END_SRC
-
-#+RESULTS:
-: t
-
 *** Clang-format
 Clang-format binding on C-C C-f
+
+Github repository: [[https://github.com/sonatard/clang-format]]
 #+BEGIN_SRC emacs-lisp
 (use-package clang-format
   :config
   (global-set-key (kbd "C-c C-f") 'clang-format-buffer)
   )
 #+END_SRC
-
 *** Company-mode
 Expand the dedicated org-file for company-mode and its dependencies
 #+BEGIN_SRC emacs-lisp
@@ -99,12 +95,17 @@ Expand the dedicated org-file for company-mode and its dependencies
 (org-babel-load-file company-config)
 #+END_SRC
 *** Counsel
+
+Github repository: [[https://github.com/abo-abo/swiper]] (part of ivy)
 #+BEGIN_SRC emacs-lisp
 (use-package counsel
   :config
   (counsel-mode 1)
   )
+#+END_SRC
 
+Github repository: https://github.com/ericdanan/counsel-projectile
+#+BEGIN_SRC emacs-lisp
 (use-package counsel-projectile
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
@@ -112,6 +113,9 @@ Expand the dedicated org-file for company-mode and its dependencies
   )
 #+END_SRC
 *** Cmake-mode
+Minor mode for CMake file editing
+
+Github repository: [[https://github.com/Kitware/CMake]] (in the /Auxiliary/ folder)
 #+BEGIN_SRC emacs-lisp
 (use-package cmake-mode
   :config
@@ -120,7 +124,9 @@ Expand the dedicated org-file for company-mode and its dependencies
 #+END_SRC
 
 *** Dap-mode
-Super Handy debugging tool for many langages, uses lsp server,
+Super Handy debugging tool for many langages, uses lsp.
+
+Github repository: https://github.com/emacs-lsp/dap-mode
 #+BEGIN_SRC emacs-lisp
   (use-package dap-mode
   :custom
@@ -150,9 +156,18 @@ Super Handy debugging tool for many langages, uses lsp server,
     (dolist (binding bindings)
       (global-set-key (kbd (concat "C-d " (car binding))) (cdr binding))))
 #+END_SRC
+*** Dired
+Expand the dedicated org-file for dired-mode and its dependencies
+#+BEGIN_SRC emacs-lisp
+(setq dired-config
+      (expand-file-name "org-config/dired-init.org" user-emacs-directory))
+(org-babel-load-file dired-config)
+#+END_SRC
 *** Eterm-256color
 Package to enhance the output of terminal emulators. 
 Requires =ncurses= to be installed
+
+Github repository: [[https://github.com/dieggsy/eterm-256color]]
 #+BEGIN_SRC emacs-lisp
 (use-package eterm-256color
 :hook 
@@ -162,19 +177,10 @@ Requires =ncurses= to be installed
 (eshell-mode . eterm-256color-mode)
 )
 #+END_SRC emacs-lisp
-*** Theme
-This is the theme i like to use at the moment
-#+BEGIN_SRC emacs-lisp
-(use-package zerodark-theme
-  :init
-  (setq zerodark-enlarge-headings nil
-        zerodark-alternate-mode-line-and-minibuffer t)
-  :config
-  (load-theme 'zerodark t)
-  )
-#+END_SRC
 *** Fixmee
 A very handy TODO package
+
+Github repository: [[https://github.com/rolandwalker/fixmee]]
 #+BEGIN_SRC emacs-lisp
 (use-package fixmee
   :init
@@ -190,6 +196,8 @@ A very handy TODO package
 #+END_SRC
 *** Gnus
 A package to be able to read newsgroup using NNTP protocol
+
+Github repository: [[https://github.com/espenhw/gnus]]
 #+BEGIN_SRC emacs-lisp
 (use-package gnus
   :config
@@ -198,8 +206,12 @@ A package to be able to read newsgroup using NNTP protocol
 #+END_SRC
 
 *** Helm
-I'm using helm-ctags to jump to the definition of function and helm-man to 
-get a quick access to man pages
+I'm using helm-ctags to jump to the definition of function and helm-man to
+get a quick access to man pages.
+When I'll get more time, I'll try to customize my config a bit more with the
+helm environment which look super handy to use.
+
+Github repository: https://github.com/emacsorphanage/helm-gtags
 #+BEGIN_SRC emacs-lisp
   (use-package helm-gtags
           :ensure t
@@ -211,6 +223,8 @@ get a quick access to man pages
 #+END_SRC
 *** Highlight-defined
 Package to make matching pattern with swiper highlighted
+
+Github repository: https://github.com/Fanael/highlight-defined
 #+BEGIN_SRC emacs-lisp
 (use-package highlight-defined
   :config
@@ -218,13 +232,19 @@ Package to make matching pattern with swiper highlighted
   )
 #+END_SRC
 *** Ivy
+Super cool and easy to use major mode for completion when searching commands or
+file.
+
+Github repository: https://github.com/abo-abo/swiper
 #+BEGIN_SRC emacs-lisp
 (setq ivy-config
       (expand-file-name "org-config/ivy-init.org" user-emacs-directory))
 (org-babel-load-file ivy-config)
 #+END_SRC
 *** Magit
-Magit binding on C-c C-g
+Magit is love, very handy and easy to learn and use when working with git.
+
+Github repository: https://github.com/magit/magit
 #+BEGIN_SRC emacs-lisp
 (use-package magit
   :config
@@ -233,6 +253,8 @@ Magit binding on C-c C-g
 #+END_SRC
 *** Markdown-mode
 Major package to edit .md files
+
+Github repository: https://github.com/jrblevin/markdown-mode
 #+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
   :ensure t
@@ -244,28 +266,20 @@ Major package to edit .md files
   (setq markdown-command "multimarkdown")
   )
 #+END_SRC
-*** Minimap
-Minimap minor-mode to display the location of the buffer in the file.
-Displayed on the right and refresh without any delay.
-#+BEGIN_SRC emacs-lisp
-(use-package minimap
-  :init
-  (setq minimap-update-delay 0
-        minimap-window-location 'right)
-  :config
-  (global-set-key (kbd "C-c m") 'minimap-mode)
-  )
-#+END_SRC
 *** Modern-sh
 Minor mode for shell programming. Better highlight, auto indentation when saving
 and smarter indent.
+
+Github repository: https://github.com/damon-kwok/modern-sh
 #+BEGIN_SRC emacs-lisp
 (use-package modern-sh
   :config
   (add-hook 'sh-mode-hook 'modern-sh-mode)
   )
 #+END_SRC
-*** MultiTerm
+*** TODO MultiTerm
+Probably to change.
+
 #+BEGIN_SRC emacs-lisp
   (use-package multi-term
     :config
@@ -277,7 +291,21 @@ and smarter indent.
     )
 #+END_SRC
 
+*** TODO Org-mode
+Will probably get its own config file in the future
+
+Github repository: https://github.com/bzg/org-mode (mirror only)
+#+BEGIN_SRC emacs-lisp
+  (use-package org
+    :config
+    (setq org-src-tab-acts-natively t)
+    (global-set-key (kbd "C-c C-c") 'org-edit-special)
+    )
+#+END_SRC
 *** Python
+Simple python configuration
+
+Github repository: https://github.com/russell/python-mode
 #+BEGIN_SRC emacs-lisp
   (use-package python-mode
     :ensure t
@@ -290,18 +318,10 @@ and smarter indent.
     :config
     (require 'dap-python))
 #+END_SRC
-*** Org-mode
-Will probably get its own config file in the future
-#+BEGIN_SRC emacs-lisp
-  (use-package org
-    :config
-    (setq org-src-tab-acts-natively t)
-    (global-set-key (kbd "C-c C-c") 'org-edit-special)
-    )
-#+END_SRC
-
 *** Smooth-scrolling
 Make the scrolling smoother
+
+Github repository: https://github.com/aspiers/smooth-scrolling
 #+BEGIN_SRC emacs-lisp
 (use-package smooth-scrolling
   :config
@@ -309,6 +329,32 @@ Make the scrolling smoother
   )
 #+END_SRC
 
+*** Theme
+This is the theme i like to use at the moment
+Provide support to many packages including some like ivy, magit and company.
+
+Github repository: [[https://github.com/NicolasPetton/zerodark-theme]]
+#+BEGIN_SRC emacs-lisp
+(use-package zerodark-theme
+  :init
+  (setq zerodark-enlarge-headings nil
+        zerodark-alternate-mode-line-and-minibuffer t)
+  :config
+  (load-theme 'zerodark t)
+  )
+#+END_SRC
+*** Treemacs
+Simple treemacs config because it is already marvelous 
+out of the box
+
+Github repository: https://github.com/Alexander-Miller/treemacs
+#+BEGIN_SRC emacs-lisp
+  (use-package treemacs
+  :config
+  (global-set-key [f12] 'treemacs)
+  (global-set-key (kbd "C-c i") 'treemacs-add-project-to-workspace)
+  )
+#+END_SRC
 ** Bindings
 *** Comment Region
 #+BEGIN_SRC emacs-lisp

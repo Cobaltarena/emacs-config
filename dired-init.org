@@ -1,0 +1,51 @@
+#+TITLE: Dired config
+
+** All-the-icons-dired
+Prettier dired with marvelous icons
+
+Github repository: [[https://github.com/jtbm37/all-the-icons-dired]]
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons-dired
+    :config
+    (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+    )
+#+END_SRC
+** Diredful
+Diredful is a package that helps the customization of faces for custom extensions 
+or file types
+
+Github repository: [[https://github.com/thamer/diredful]]
+#+BEGIN_SRC emacs-lisp
+  (use-package diredful
+    :config
+    (diredful-mode 1)
+    )
+#+END_SRC
+** Git integration
+dired-git is a minor mode that offers a git integration to make it more
+to work with git. It provides git information as the last commit for each file
+or if they are tracked or not.
+
+Github repository: [[https://github.com/clemera/dired-git-info]]
+#+BEGIN_SRC emacs-lisp
+  (use-package dired-git-info
+    :config
+    ;; uncomment to stop hiding details such as ownership, permissions or size
+    ;; when toggling dired-git
+    (setq dgi-auto-hide-details-p nil)
+    )
+  (with-eval-after-load 'dired
+    (define-key dired-mode-map ")" 'dired-git-info-mode)
+    )
+#+END_SRC
+** QuickSort
+Minor mode to improve searching methods when using dired-mode.
+Require Coreutils on your system to work properly
+
+Gitlab repository: [[https://gitlab.com/xuhdev/dired-quick-sort]]
+#+BEGIN_SRC emacs-lisp
+  (use-package dired-quick-sort
+    :config
+    (dired-quick-sort-setup)
+    )
+#+END_SRC
