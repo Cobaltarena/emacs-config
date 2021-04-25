@@ -163,6 +163,54 @@ Expand the dedicated org-file for dired-mode and its dependencies
       (expand-file-name "org-config/dired-init.org" user-emacs-directory))
 (org-babel-load-file dired-config)
 #+END_SRC
+*** Doom-modeline
+Better and prettier modeline. Mostly a copy paste from the README of the
+github repository: https://github.com/seagle0128/doom-modeline
+#+BEGIN_SRC emacs-lisp
+    (use-package doom-modeline
+      :init
+      (doom-modeline-mode 1)
+      :hook
+      (after-init . doom-modeline-init)
+      :config
+      (setq doom-modeline-height 25)
+      (setq doom-modeline-bar-width 3)
+      (setq doom-modeline-window-width-limit fill-column)
+      (setq doom-modeline-project-detection 'project)
+      (setq doom-modeline-buffer-file-name-style 'relative-from-project)
+      (setq doom-modeline-icon (display-graphic-p))
+      (setq doom-modeline-major-mode-icon t)
+      (setq doom-modeline-major-mode-color-icon t)
+      (setq doom-modeline-buffer-state-icon t)
+      (setq doom-modeline-buffer-modification-icon t)
+      (setq doom-modeline-minor-modes t)
+      ;; (setq doom-modeline-enable-word-count t)
+      (setq doom-modeline-buffer-encoding t)
+      (setq doom-modeline-lsp t)
+      (setq doom-modeline-before-update-env-hook nil)
+      (setq doom-modeline-after-update-env-hook nil)
+      )
+  (use-package smart-mode-line
+    :config
+    (setq sml/no-confirm-load-theme t)
+    (sml/setup)
+    (sml/apply-theme 'respectful)  ; Respect the theme colors
+    (setq sml/mode-width 'right
+        sml/name-width 60)
+      (setq-default mode-line-format
+  `("%e"
+      mode-line-frame-identification
+      mode-line-buffer-identification
+      sml/pos-id-separator
+      (vc-mode vc-mode)
+      " "
+      ;mode-line-position
+      sml/pre-modes-separator
+      mode-line-modes
+      " "
+      mode-line-misc-info)))
+#+END_SRC
+
 *** Eterm-256color
 Package to enhance the output of terminal emulators. 
 Requires =ncurses= to be installed
@@ -241,6 +289,28 @@ Github repository: https://github.com/abo-abo/swiper
       (expand-file-name "org-config/ivy-init.org" user-emacs-directory))
 (org-babel-load-file ivy-config)
 #+END_SRC
+*** Keycast
+Fancy mode that displays the last shortcut used in emacs. Very handy
+for memory mapping of the key combination
+
+Github repository: https://github.com/tarsius/keycast
+#+BEGIN_SRC emacs-lisp
+  (use-package keycast
+    :config
+    ;; found on https://github.com/tarsius/keycast/issues/7#issuecomment-627604064
+    ;; since I had the same issue with enabling keycast
+    (define-minor-mode keycast-mode
+      "Show current command and its key binding in the mode line."
+      :global t
+      (if keycast-mode
+          (add-hook 'pre-command-hook 'keycast--update t)
+        (remove-hook 'pre-command-hook 'keycast--update)))
+    (add-to-list 'global-mode-string '("" mode-line-keycast))
+    )
+
+
+#+END_SRC
+
 *** Magit
 Magit is love, very handy and easy to learn and use when working with git.
 
@@ -436,7 +506,6 @@ Github repository: https://github.com/Alexander-Miller/treemacs
                     :background "#580818")
 #+END_SRC
 *** Line number
-    
 Enable linum-mode and customize is a bit according to the theme
 #+BEGIN_SRC emacs-lisp
 (global-linum-mode) ; show line numbers
@@ -511,22 +580,12 @@ Trailing whitespaces are also enabled
 (setq-default indent-tabs-mode nil)
 (setq indent-tabs-mode nil)
 #+END_SRC
-*** Mode-line
-Simple mode-line config
-#+BEGIN_SRC emacs-lisp
-  (setq mode-line-format
-	  (list
-	   ;; value of `mode-name'
-	   "%m: "
-	   ;; value of current buffer name
-	   "buffer %b, "
-	   ;; value of current line number
-	   "line %l, "
-	   ;; value of current colum number
-	   "col %c"))
-#+END_SRC
 *** Cursor-type
 #+BEGIN_SRC emacs-lisp
 (setq-default cursor-type 'hollow)
 (setq-default cursor-type 'box)
+#+END_SRC
+*** Clipboard
+#+BEGIN_SRC emacs-lisp
+(setq x-select-enable-clipboard nil)
 #+END_SRC

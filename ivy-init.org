@@ -12,9 +12,6 @@
      ivy-initial-inputs-alist nil
      ivy-use-virtual-buffers t
      ivy-wrap t)
-    ;;rebind buffer list switch
-    (global-unset-key (kbd "C-f"))
-    (global-set-key (kbd "C-f") 'ivy-switch-buffer)
     )
 #+END_SRC
 
@@ -53,6 +50,8 @@
     :config
     (global-unset-key (kbd "C-s"))
     (global-set-key (kbd "C-s") 'swiper)
+    (global-unset-key (kbd "C-r"))
+    (global-set-key (kbd "C-r") 'swiper-backward)
     )
 #+END_SRC
 
