@@ -360,17 +360,15 @@ Probably to change.
     (global-set-key (kbd "C-c C-j") 'term-line-mode)
     )
 #+END_SRC
-
+/"appearances are a =glimpse= of the *unseen*."
 *** TODO Org-mode
 Will probably get its own config file in the future
 
 Github repository: https://github.com/bzg/org-mode (mirror only)
 #+BEGIN_SRC emacs-lisp
-  (use-package org
-    :config
-    (setq org-src-tab-acts-natively t)
-    (global-set-key (kbd "C-c C-c") 'org-edit-special)
-    )
+(setq org-config
+      (expand-file-name "org-config/org-init.org" user-emacs-directory))
+(org-babel-load-file org-config)
 #+END_SRC
 *** Python
 Simple python configuration
@@ -584,8 +582,4 @@ Trailing whitespaces are also enabled
 #+BEGIN_SRC emacs-lisp
 (setq-default cursor-type 'hollow)
 (setq-default cursor-type 'box)
-#+END_SRC
-*** Clipboard
-#+BEGIN_SRC emacs-lisp
-(setq x-select-enable-clipboard nil)
 #+END_SRC

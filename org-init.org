@@ -1,0 +1,69 @@
+#+TITLE: Org-mode config
+
+Org-mode is one of the most popular emacs package that has multiple
+unexpected integrations compared to its original use. For example,
+this whole config is written in org-mode file.
+This part of the config aims to improve everything that has a dependency with org.
+
+*** Org-mode
+
+Base package of org-mode
+
+Github repository: https://github.com/bzg/org-mode (mirror only)
+#+BEGIN_SRC emacs-lisp
+    (use-package org
+      :config
+      (setq org-src-tab-acts-natively t)
+      (global-set-key (kbd "C-c C-c") 'org-edit-special)
+      )
+#+END_SRC
+
+*** Org-bullets
+
+Nicer bullet points
+
+Github repository: https://github.com/sabof/org-bullets
+
+Snippet taken from https://github.com/daviwil/emacs-from-scratch/blob/master/Emacs.org
+#+BEGIN_SRC emacs-lisp
+(use-package org-bullets
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+#+END_SRC
+
+*** TODO Org-babel
+*** Org-tempo
+
+Really cool package that lets you create templates for code blocks
+
+#+BEGIN_SRC emacs-lisp
+    (with-eval-after-load 'org
+      ;; This is needed as of Org 9.2
+      (require 'org-tempo)
+
+      (add-to-list 'org-structure-template-alist '("c" . "src c"))
+      (add-to-list 'org-structure-template-alist '("cpp" . "src cpp"))
+      (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+      (add-to-list 'org-structure-template-alist '("java" . "src java"))
+      (add-to-list 'org-structure-template-alist '("json" . "src json"))
+      (add-to-list 'org-structure-template-alist '("latex" . "src latex"))
+      (add-to-list 'org-structure-template-alist '("py" . "src python"))
+      (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
+      (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
+  )
+#+END_SRC
+*** Org-appear
+
+Hide noisy markers for editing options such as *=*, *** or /*/.
+=org-hide-emphasis-markers= needs to be different from nil for this option to work
+#+BEGIN_SRC emacs-lisp
+    (use-package org-appear
+      :hook (org-mode . org-appear-mode)
+      :config
+      (setq org-hide-emphasis-markers t)
+    )
+#+END_SRC
+
+*** TODO Org-rifle
+    
