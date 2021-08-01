@@ -348,56 +348,58 @@ Github repository: https://github.com/damon-kwok/modern-sh
 *** Mu4e
 **Must be installed using the emacs lisp file that comes with mu**
     #+begin_src emacs-lisp
-      (use-package mu4e
-	:ensure nil
-	:load-path "/usr/share/emacs/site-lisp/mu4e/"
-	:config
-	;; from daviwil config: https://github.com/daviwil/dotfiles/blob/master/Mail.org
-	;; Display options
-	(setq mu4e-view-show-images t)
-	(setq mu4e-view-show-addresses 't)
-	;; Composing mail
-	(setq mu4e-compose-dont-reply-to-self t)
-	(setq mu4e-change-filename-when-moving t)
-	;; Use Ivy for mu4e completions (maildir folders, etc)
-	(setq mu4e-completing-read-function #'ivy-completing-read)
-	(setq mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum)
-	(setq mu4e-update-interval (* 10 60))
-	(setq mu4e-get-mail-command "mbsync -a")
-	(setq mu4e-maildir "~/Mail/epita")
+	    ;; start mu4e in background for auto-sync
+	    (use-package mu4e
+	      :ensure nil
+	      :load-path "/usr/share/emacs/site-lisp/mu4e/"
+	      :config
+	      ;; from daviwil config: https://github.com/daviwil/dotfiles/blob/master/Mail.org
+	      ;; Display options
+	      (setq mu4e-view-show-images t)
+	      (setq mu4e-view-show-addresses 't)
+	      ;; Composing mail
+	      (setq mu4e-compose-dont-reply-to-self t)
+	      (setq mu4e-change-filename-when-moving t)
+	      ;; Use Ivy for mu4e completions (maildir folders, etc)
+	      (setq mu4e-completing-read-function #'ivy-completing-read)
+	      (setq mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum)
+	      (setq mu4e-view-plain
+	      (setq mu4e-update-interval (* 10 60))
+	      (setq mu4e-get-mail-command "mbsync -a")
+	      (setq mu4e-maildir "~/Mail/epita")
 
-	(setq mu4e-maildir-shortcuts
-	      '(("/Inbox"       . ?i)
-		("/Sent"        . ?s)
-		("/Trash"       . ?t)
-		("/Drafts"      . ?d)
-		("/All"         . ?a)
-		))
-	(setq message-send-mail-function 'smtpmail-send-it)
-	(setq mu4e-contexts
-	      (list
-	       (make-mu4e-context
-		:name "Epita"
-		:match-func
-		(lambda (msg)
-		  (when msg
-		    (string-prefix-p "/Epita" (mu4e-message-field msg :maildir))))
-		:vars '((user-mail-address . "thomas.crambert@epita.fr")
-			(user-full-name    . "Thomas CRAMBERT")
-			(smtpmail-smtp-server . "smtp-mail.outlook.com.")
-			(smtpmail-smtp-service . 587)
-			(smtpmail-stream-type . ssl)
-			(mu4e-drafts-folder . "/epita/Drafts")
-			(mu4e-sent-folder . "/epita/Sent")
-			(mu4e-refile-folder . "/epita/All")
-			(mu4e-trash-folder . "/epita/Trash"))
-		))
-	))
+	      (setq mu4e-maildir-shortcuts
+		    '(("/Inbox"       . ?i)
+		      ("/Sent"        . ?s)
+		      ("/Trash"       . ?t)
+		      ("/Drafts"      . ?d)
+		      ("/All"         . ?a)
+		      ))
+	      (setq message-send-mail-function 'smtpmail-send-it)
+	      (setq mu4e-contexts
+		    (list
+		     (make-mu4e-context
+		      :name "Epita"
+		      :match-func
+		      (lambda (msg)
+			(when msg
+			  (string-prefix-p "/Epita" (mu4e-message-field msg :maildir))))
+		      :vars '((user-mail-address . "thomas.crambert@epita.fr")
+			      (user-full-name    . "Thomas CRAMBERT")
+			      (smtpmail-smtp-server . "smtp-mail.outlook.com.")
+			      (smtpmail-smtp-service . 587)
+			      (smtpmail-stream-type . ssl)
+			      (mu4e-drafts-folder . "/epita/Drafts")
+			      (mu4e-sent-folder . "/epita/Sent")
+			      (mu4e-refile-folder . "/epita/All")
+			      (mu4e-trash-folder . "/epita/Trash"))
+		      )))
+	      ))
 
-	  (use-package mu4e-marker-icons
-	    :ensure nil
-	    :config
-	    (mu4e-marker-icons-mode 1))
+		(use-package mu4e-marker-icons
+		  :ensure nil
+		  :config
+		  (mu4e-marker-icons-mode 1))
     #+end_src
 *** Org-mode
 Github repository: https://github.com/bzg/org-mode (mirror only)
