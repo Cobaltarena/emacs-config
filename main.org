@@ -32,7 +32,11 @@ Some custom functions
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1)) ; hide scroll bar (GUI only)
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ; hide menu bar
 #+END_SRC
-
+** Debug stacke trace on config error
+#+BEGIN_SRC emacs-lisp
+(setq debug-on-error t ; show stack trace on config error
+      vc-follow-symlinks t) ; always follow symlink
+#+END_SRC
 ** Hooks
 These are the hooks i need before loading all the packages
 
@@ -87,10 +91,10 @@ Clang-format binding on C-C C-f
 
 Github repository: [[https://github.com/sonatard/clang-format]]
 #+BEGIN_SRC emacs-lisp
-(use-package clang-format
-  :config
-  (global-set-key (kbd "C-c C-f") 'clang-format-buffer)
-  )
+  (use-package clang-format
+    :config
+    (global-set-key (kbd "C-c C-f") 'clang-format-buffer)
+    )
 #+END_SRC
 *** Company-mode
 Expand the dedicated org-file for company-mode and its dependencies
@@ -117,17 +121,6 @@ Github repository: https://github.com/ericdanan/counsel-projectile
   (counsel-projectile-mode +1)
   )
 #+END_SRC
-*** Cmake-mode
-Minor mode for CMake file editing
-
-Github repository: [[https://github.com/Kitware/CMake]] (in the /Auxiliary/ folder)
-#+BEGIN_SRC emacs-lisp
-(use-package cmake-mode
-  :config
-  (setq cmake-mode +1)
-  )
-#+END_SRC
-
 *** Dap-mode
 Super Handy debugging tool for many langages, uses lsp.
 
@@ -411,6 +404,7 @@ Github repository: https://github.com/damon-kwok/modern-sh
     #+end_src
 *** Org-mode
 Github repository: https://github.com/bzg/org-mode (mirror only)
+
 #+BEGIN_SRC emacs-lisp
 (setq org-config
       (expand-file-name "org-config/org-init.org" user-emacs-directory))
@@ -576,7 +570,7 @@ Github repository: https://github.com/Alexander-Miller/treemacs
 *** Font
 #+BEGIN_SRC emacs-lisp
   (set-face-attribute 'default nil
-                      :family "Meslo LG S DZ for Powerline"
+                      :family "MesloLGS NF"
                       :slant 'normal
                       :weight 'normal
                       :height 140
@@ -649,20 +643,6 @@ Trailing whitespaces are also enabled
 (setq c-basic-offset 4 ; spaces of indentation
       c-default-style "bsd" ; sort of fits the coding style
       fill-column 80) ; 80 columns rule
-#+END_SRC
-*** Debug stacke trace on config error
-#+BEGIN_SRC emacs-lisp
-(setq debug-on-error t ; show stack trace on config error
-      vc-follow-symlinks t) ; always follow symlink
-#+END_SRC
-*** Disable shift selection with the arrow keys
-#+BEGIN_SRC emacs-lisp
-(setq shift-select-mode nil)
-#+END_SRC
-
-*** Opam generated config
-#+BEGIN_SRC
-(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
 #+END_SRC
 *** Tabulations
 #+BEGIN_SRC emacs-lisp
