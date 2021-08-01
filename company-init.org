@@ -74,5 +74,6 @@ Python backend for some completion when python-mode is enabled.
     (add-hook 'c-mode-hook 'company-mode)
     (add-hook 'python-mode-hook 'company-mode)
     (add-hook 'org-edit-special 'company-mode)
+    (add-hook 'rust-mode 'company-mode)
     )
 #+END_SRC

@@ -19,6 +19,11 @@
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 #+END_SRC
+*** Custom functions
+Some custom functions
+#+begin_src emacs-lisp
+(load-file "~/.emacs.d/lisp/cb-custom.el")
+#+end_src
 
 ** Startup screen
 #+BEGIN_SRC emacs-lisp
@@ -347,23 +352,64 @@ Github repository: https://github.com/damon-kwok/modern-sh
   (add-hook 'sh-mode-hook 'modern-sh-mode)
   )
 #+END_SRC
-*** TODO MultiTerm
-Probably to change.
+*** Mu4e
+**Must be installed using the emacs lisp file that comes with mu**
+    #+begin_src emacs-lisp
+      (use-package mu4e
+        :ensure nil
+        :load-path "/usr/share/emacs/site-lisp/mu4e/"
+        :config
+        ;; from daviwil config: https://github.com/daviwil/dotfiles/blob/master/Mail.org
+        ;; Display options
+        (setq mu4e-view-show-images t)
+        (setq mu4e-view-show-addresses 't)
+        ;; Composing mail
+        (setq mu4e-compose-dont-reply-to-self t)
+        (setq mu4e-change-filename-when-moving t)
+        ;; Use Ivy for mu4e completions (maildir folders, etc)
+        (setq mu4e-completing-read-function #'ivy-completing-read)
+  
+        (setq mu4e-update-interval (* 10 60))
+        (setq mu4e-get-mail-command "mbsync -a")
+        (setq mu4e-maildir "~/Mail/epita")
 
-#+BEGIN_SRC emacs-lisp
-  (use-package multi-term
-    :config
-    (setq multi-term-program "/bin/zsh")
-    (global-set-key (kbd "C-x C-<up>") 'multi-term-prev)
-    (global-set-key (kbd "C-x C-<down>") 'multi-term-next)
-    (global-set-key (kbd "C-x n") 'multi-term)
-    (global-set-key (kbd "C-c C-j") 'term-line-mode)
-    )
-#+END_SRC
-/"appearances are a =glimpse= of the *unseen*."
-*** TODO Org-mode
-Will probably get its own config file in the future
+        (setq mu4e-maildir-shortcuts
+              '(("/Inbox"       . ?i)
+                ("/Sent"        . ?s)
+                ("/Trash"       . ?t)
+                ("/Drafts"      . ?d)
+                ("/All"         . ?a)
+                ))
+        (setq message-send-mail-function 'smtpmail-send-it)
+        (setq mu4e-contexts
+              (list
+               (make-mu4e-context
+                :name "Epita"
+                :match-func
+                (lambda (msg)
+                  (when msg
+                    (string-prefix-p "/Epita" (mu4e-message-field msg :maildir))))
+                :vars '((user-mail-address . "thomas.crambert@epita.fr")
+                        (user-full-name    . "Thomas CRAMBERT")
+                        (smtpmail-smtp-server . "smtp-mail.outlook.com.")
+                        (smtpmail-smtp-service . 587)
+                        (smtpmail-stream-type . ssl)
+                        (mu4e-drafts-folder . "/epita/Drafts")
+                        (mu4e-sent-folder . "/epita/Sent")
+                        (mu4e-refile-folder . "/epita/All")
+                        (mu4e-trash-folder . "/epita/Trash")
+                        )
+                )
+               )
+              )
+        )
 
+          (use-package mu4e-marker-icons
+            :ensure nil
+            :config
+            (mu4e-marker-icons-mode 1))
+    #+end_src
+*** Org-mode
 Github repository: https://github.com/bzg/org-mode (mirror only)
 #+BEGIN_SRC emacs-lisp
 (setq org-config
@@ -386,6 +432,35 @@ Github repository: https://github.com/russell/python-mode
     :config
     (require 'dap-python))
 #+END_SRC
+*** Rust
+Simple basic rust config
+
+#+begin_src emacs-lisp
+(use-package rustic
+  :ensure
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
+  :config
+  ;; uncomment for less flashiness
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq lsp-signature-auto-activate nil)
+
+  ;; comment to disable rustfmt on save
+  (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+
+(defun rk/rustic-mode-hook ()
+  ;; so that run C-c C-c C-r works without having to confirm
+  (setq-local buffer-save-without-query t))
+#+end_src
 *** Smooth-scrolling
 Make the scrolling smoother
 
@@ -425,6 +500,17 @@ Github repository: https://github.com/Alexander-Miller/treemacs
   (bind-key "s" #'treemacs-find-file treemacs-mode-map)
   )
 #+END_SRC
+
+*** Which-key
+    #+begin_src emacs-lisp
+      (use-package which-key
+        :config
+        (which-key-mode)
+        (setq which-key-popup-type 'minibuffer)
+        (setq which-key-show-major-mode t)
+        (global-set-key (kbd "C-x w") 'which-key-show-top-level)
+        )
+    #+end_src
 ** Bindings
 *** Comment Region
 #+BEGIN_SRC emacs-lisp
@@ -468,6 +554,11 @@ Github repository: https://github.com/Alexander-Miller/treemacs
 (global-set-key (kbd "C-c <C-up>") 'windmove-up)
 (global-set-key (kbd "C-c <C-down>") 'windmove-down)
 #+END_SRC
+
+*** Config reload
+    #+begin_src emacs-lisp
+(global-set-key (kbd "C-c m") 'cb/reload-config)
+    #+end_src
 
 ** Faces
 *** Background
