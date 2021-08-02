@@ -22,7 +22,7 @@
 *** Custom functions
 Some custom functions
 #+begin_src emacs-lisp
-(load-file "~/.emacs.d/lisp/cb-custom.el")
+(load-file "~/.emacs.d/emacs-config/lisp/cb-custom.el")
 #+end_src
 
 ** Startup screen
@@ -100,7 +100,7 @@ Github repository: [[https://github.com/sonatard/clang-format]]
 Expand the dedicated org-file for company-mode and its dependencies
 #+BEGIN_SRC emacs-lisp
 (setq company-config
-      (expand-file-name "org-config/company-init.org" user-emacs-directory))
+      (expand-file-name "emacs-config/company-init.org" user-emacs-directory))
 (org-babel-load-file company-config)
 #+END_SRC
 *** Counsel
@@ -158,7 +158,7 @@ Github repository: https://github.com/emacs-lsp/dap-mode
 Expand the dedicated org-file for dired-mode and its dependencies
 #+BEGIN_SRC emacs-lisp
 (setq dired-config
-      (expand-file-name "org-config/dired-init.org" user-emacs-directory))
+      (expand-file-name "emacs-config/dired-init.org" user-emacs-directory))
 (org-babel-load-file dired-config)
 #+END_SRC
 *** Doom-modeline
@@ -284,7 +284,7 @@ file.
 Github repository: https://github.com/abo-abo/swiper
 #+BEGIN_SRC emacs-lisp
 (setq ivy-config
-      (expand-file-name "org-config/ivy-init.org" user-emacs-directory))
+      (expand-file-name "emacs-config/ivy-init.org" user-emacs-directory))
 (org-babel-load-file ivy-config)
 #+END_SRC
 *** Keycast
@@ -404,7 +404,7 @@ Github repository: https://github.com/bzg/org-mode (mirror only)
 
 #+BEGIN_SRC emacs-lisp
 (setq org-config
-      (expand-file-name "org-config/org-init.org" user-emacs-directory))
+      (expand-file-name "emacs-config/org-init.org" user-emacs-directory))
 (org-babel-load-file org-config)
 #+END_SRC
 *** Python
