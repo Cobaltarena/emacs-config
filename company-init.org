@@ -5,8 +5,6 @@ Major mode for completion when programming.
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :config
-    (company-mode +1)
-    (global-company-mode +1)
     (setq company-selection-wrap-around +1
           company-tooltip-minimum-width 60
           company-tooltip-maximum-width 60)
@@ -68,12 +66,17 @@ Python backend for some completion when python-mode is enabled.
 #+END_SRC
 ** Eval after load
 #+BEGIN_SRC emacs-lisp
+  (defun add-hooks (hook-list)
+    "perform add-hook on every elements of the list"
+    (mapcar (lambda (hook-list)
+              (funcall 'add-hook hook-list 'company-mode) hook-list)
+            hook-list))
 
-  (with-eval-after-load 'company
-    (add-hook 'c++-mode-hook 'company-mode)
-    (add-hook 'c-mode-hook 'company-mode)
-    (add-hook 'python-mode-hook 'company-mode)
-    (add-hook 'org-edit-special 'company-mode)
-    (add-hook 'rust-mode 'company-mode)
-    )
+
+  (add-hooks (list #'c++-mode-hook
+                       #'c-mode-hook
+                       #'lisp-mode-hook
+                       #'org-mode-hook
+                       #'python-mode-hook
+                       #'rust-mode-hook))
 #+END_SRC

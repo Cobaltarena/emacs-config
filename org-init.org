@@ -69,5 +69,10 @@ Hide noisy markers for editing options such as *=*, *** or /*/.
     )
 #+END_SRC
 
-*** TODO Org-rifle
+*** TODO Org-Roam
+    #+begin_src emacs-lisp
+      (use-package org-roam
+        :ensure t
+        )
+    #+end_src
     
