@@ -8,6 +8,7 @@
     ;; ??? TODO
     (setq
      enable-recursive-minibuffers t
+     ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-create
      ivy-display-style 'fancy
      ivy-initial-inputs-alist nil
      ivy-use-virtual-buffers t

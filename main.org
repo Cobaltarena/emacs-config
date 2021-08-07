@@ -2,9 +2,9 @@
 
 ** Init
 #+BEGIN_SRC emacs-lisp
-(require 'package)
-(require 'use-package-ensure)
-(setq use-package-always-ensure t)
+;; (require 'package)
+;; (require 'use-package-ensure)
+;; (setq use-package-always-ensure t)
 #+END_SRC
 *** Melpa
 #+BEGIN_SRC emacs-lisp
@@ -607,8 +607,6 @@ Trailing whitespaces are also enabled
 (global-whitespace-mode t)
 (setq whitespace-display-mappings
       '(
-        (spaces 32 [183] [46])
-        (space-mark 32 [183] [46])
         (newline-mark 10
                       [5321 10])
         (tab-mark 9
