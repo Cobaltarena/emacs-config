@@ -11,6 +11,7 @@ Major mode for completion when programming.
     (define-key company-active-map (kbd "RET") nil)
     (define-key company-active-map (kbd "<return>") nil)
     (define-key company-active-map (kbd "<right>") #'company-complete-selection)
+    (global-set-key  (kbd "C-c M-c") 'company-complete)
     :custom-face
     (company-tooltip (
                       (t (:background "#332211")))
