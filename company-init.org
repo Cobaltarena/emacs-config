@@ -3,45 +3,48 @@
 ** Company
 Major mode for completion when programming.
 #+BEGIN_SRC emacs-lisp
-  (use-package company
-    :ensure t
-    :config
-    (setq company-selection-wrap-around +1
-          company-tooltip-minimum-width 60
-          company-tooltip-maximum-width 60)
-    (define-key company-active-map (kbd "RET") nil)
-    (define-key company-active-map (kbd "<return>") nil)
-    (define-key company-active-map (kbd "<right>") #'company-complete-selection)
-    (global-set-key (kbd "C-c c") 'company-complete)
-    :custom-face
-    (company-tooltip (
-                       (t (:background "#332211")))
-                     )
-    )
+    (use-package company
+      :ensure t
+      :config
+      (progn
+      (setq company-selection-wrap-around +1
+	    company-tooltip-minimum-width 60
+	    company-tooltip-maximum-width 60)
+      (define-key company-active-map (kbd "RET") nil)
+      (define-key company-active-map (kbd "<return>") nil)
+      (define-key company-active-map (kbd "<right>") #'company-complete-selection)
+      (global-set-key (kbd "C-c c") 'company-complete)
+      )
+      :custom-face
+      (company-tooltip (
+			 (t (:background "#332211")))
+		       )
+      )
 #+END_SRC
 ** Company-irony
 Irony backend for C and C++ completion
 #+BEGIN_SRC emacs-lisp
   (use-package company-irony
     :config
+    (progn
     (eval-after-load 'company
       '(add-to-list 'company-backends 'company-irony))
     (eval-after-load 'company
       '(add-to-list 'company-backends 'company-irony-c-headers))
-    )
+    ))
 #+END_SRC
 ** TODO Irony (move this elsewhere)
 #+BEGIN_SRC emacs-lisp
   (use-package irony
     :config
+    (progn
     (add-hook 'c++-mode-hook 'irony-mode)
     (add-hook 'c-mode-hook 'irony-mode)
     (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-    )
+    ))
 #+END_SRC
 ** TODO Irony-eldoc (move this elsewhere)
 #+BEGIN_SRC emacs-lisp
-
   (use-package irony-eldoc
     :config
     (add-hook 'irony-mode-hook #'irony-eldoc)
@@ -61,10 +64,11 @@ Python backend for some completion when python-mode is enabled.
 #+BEGIN_SRC emacs-lisp
   (use-package company-jedi
     :config
+    (progn
     (eval-after-load 'company
       '(add-to-list 'company-backends 'company-jedi))
     (add-hook 'python-mode-hook 'jedi-mode)
-    )
+    ))
 #+END_SRC
 ** Eval after load
 #+BEGIN_SRC emacs-lisp
