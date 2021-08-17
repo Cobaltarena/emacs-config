@@ -314,10 +314,18 @@ Magit is love, very handy and easy to learn and use when working with git.
 
 Github repository: https://github.com/magit/magit
 #+BEGIN_SRC emacs-lisp
-(use-package magit
-  :config
-  (global-set-key (kbd "C-c C-g") 'magit)
-  )
+  (use-package magit
+    :ensure t
+    :config
+    (global-set-key (kbd "C-c C-g") 'magit)
+    )
+
+  (use-package magit-todos
+    :ensure t
+    :config 
+    (global-set-key (kbd "C-x j") 'ivy-magit-todos)
+    )
+
 #+END_SRC
 *** Markdown-mode
 Major package to edit .md files
@@ -650,3 +658,11 @@ Trailing whitespaces are also enabled
 (setq-default cursor-type 'hollow)
 (setq-default cursor-type 'box)
 #+END_SRC
+*** Parenthesis Highlight
+    #+begin_src emacs-lisp
+      (show-paren-mode 1)
+      (setq show-paren-style 'expression)
+      (set-face-attribute 'show-paren-match nil
+                    :foreground "#00FFFF")
+
+    #+end_src

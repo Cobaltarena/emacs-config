@@ -69,12 +69,33 @@ Hide noisy markers for editing options such as *=*, *** or /*/.
     )
 #+END_SRC
 
-*** TODO Org-Roam
+*** Org-Roam
     #+begin_src emacs-lisp
-      (use-package org-roam
-        ;; :ensure t
-        :config
-      (setq org-roam-v2-ack t)
-      )
+           (use-package org-roam
+             :ensure t
+             :init
+             (setq org-roam-v2-ack t)
+          ;;   :hook
+          ;;   (after-init . org-roam-mode)
+            :config
+            (org-roam-db-autosync-mode)
+            (setq org-roam-completion-everywhere t
+                  org-roam-completion-system 'default
+                  org-roam-directory "~/Notes/")
+             :bind (:map org-roam-mode-map
+                        (("C-c n l"   . org-roam)
+                         ("C-c n f"   . org-roam-find-file)
+                         ("C-c n g"   . org-roam-graph))
+                        :map org-mode-map
+                        (("C-c n i" . org-roam-insert))
+                        (("C-c n I" . org-roam-insert-immediate))))
+
+          (use-package deft
+            :commands (deft)
+            :config
+            (setq deft-directory "~/Notes/Roam"
+                           deft-recursive t
+                           deft-extensions '("md" "org"))
+             )
     #+end_src
-    
+

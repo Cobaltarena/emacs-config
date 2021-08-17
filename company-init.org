@@ -11,7 +11,7 @@ Major mode for completion when programming.
     (define-key company-active-map (kbd "RET") nil)
     (define-key company-active-map (kbd "<return>") nil)
     (define-key company-active-map (kbd "<right>") #'company-complete-selection)
-    (global-set-key  (kbd "C-c M-c") 'company-complete)
+    (define-key company-active-map (kbd "C-c c") #'company-complete)
     :custom-face
     (company-tooltip (
                       (t (:background "#332211")))
@@ -67,14 +67,7 @@ Python backend for some completion when python-mode is enabled.
 #+END_SRC
 ** Eval after load
 #+BEGIN_SRC emacs-lisp
-  (defun add-hooks (hook-list)
-    "perform add-hook on every elements of the list"
-    (mapcar (lambda (hook-list)
-              (funcall 'add-hook hook-list 'company-mode) hook-list)
-            hook-list))
-
-
-  (add-hooks (list #'c++-mode-hook
+  (cb/add-hooks (list #'c++-mode-hook
                        #'c-mode-hook
                        #'lisp-mode-hook
                        #'org-mode-hook
