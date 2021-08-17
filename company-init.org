@@ -4,6 +4,7 @@
 Major mode for completion when programming.
 #+BEGIN_SRC emacs-lisp
   (use-package company
+    :ensure t
     :config
     (setq company-selection-wrap-around +1
           company-tooltip-minimum-width 60
@@ -11,13 +12,13 @@ Major mode for completion when programming.
     (define-key company-active-map (kbd "RET") nil)
     (define-key company-active-map (kbd "<return>") nil)
     (define-key company-active-map (kbd "<right>") #'company-complete-selection)
-    (define-key company-active-map (kbd "C-c c") #'company-complete)
+    (global-set-key (kbd "C-c c") 'company-complete)
     :custom-face
     (company-tooltip (
-                      (t (:background "#332211")))
+                       (t (:background "#332211")))
                      )
     )
-#+END_SRC emacs-lisp
+#+END_SRC
 ** Company-irony
 Irony backend for C and C++ completion
 #+BEGIN_SRC emacs-lisp
