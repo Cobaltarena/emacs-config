@@ -1,3 +1,7 @@
+(defun cb/eshell-new ()
+  (interactive)
+  (eshell 'N))
+
 (defun cb/reload-config ()
   (interactive)
   (load-file "~/.emacs.d/init.el")
