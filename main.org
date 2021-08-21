@@ -303,7 +303,7 @@ Github repository: https://github.com/tarsius/keycast
       (if keycast-mode
           (add-hook 'pre-command-hook 'keycast--update t)
         (remove-hook 'pre-command-hook 'keycast--update)))
-    (add-to-list 'global-mode-string '("" mode-line-keycast))
+    (add-to-list 'global-mode-string '(mode-line-keycast ""))
     )
 
 
@@ -423,14 +423,23 @@ Github repository: https://github.com/russell/python-mode
   (use-package python-mode
     :ensure t
     :hook (python-mode . lsp-deferred)
-    :custom
-    ;; NOTE: Set these if Python 3 is called "python3" on your system!
-    (setq (python-shell-interpreter "python3")
-    (dap-python-executable "python3")
-    (dap-python-debugger 'debugpy)
-    (aggressive-indent-mode nil))
     :config
+  (progn
+    (setq dap-python-executable "python3"
+          dap-python-debugger 'debugpy
+          aggressive-indent-mode nil)
     (require 'dap-python))
+  )
+
+  (use-package sphinx-doc
+    :ensure t
+    :hook (python-mode . sphinx-doc-mode)
+    :config
+    )
+
+  (use-package python-pytest
+    :custom
+    (python-pytest-confirm t))
 #+END_SRC
 *** Rust
 Simple basic rust config
@@ -566,7 +575,7 @@ Enable linum-mode and customize is a bit according to the theme
 Custom whitespace newline to make is easier to see.
 Trailing whitespaces are also enabled
 #+BEGIN_SRC emacs-lisp
-(global-whitespace-mode t)
+  (global-whitespace-mode t)
 (setq whitespace-display-mappings
       '(
         (newline-mark 10
@@ -585,9 +594,9 @@ Trailing whitespaces are also enabled
         trailing
         )
       )
-(set-face-attribute 'whitespace-newline nil :foreground "#A68064")
-(set-face-attribute 'whitespace-space nil :foreground "#A68064")
-(set-face-attribute 'whitespace-space nil :background bg)
+  (set-face-attribute 'whitespace-newline nil :foreground "#A68064")
+  (set-face-attribute 'whitespace-space nil :foreground "#A68064")
+  (set-face-attribute 'whitespace-space nil :background bg)
 #+END_SRC
 ** Utilities
 *** Backup files

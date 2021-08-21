@@ -13,4 +13,11 @@
             (funcall 'add-hook hook-list 'company-mode) hook-list)
           hook-list))
 
+(defun cb/template ()
+  "paste the template arg located in the file arg"
+  (interactive)
+  (progn
+    (insert-file-contents (read-file-name "Template file: " "~/.emacs.d/emacs-config/template/")))
+  )
+
 (provide 'cb-custom)
