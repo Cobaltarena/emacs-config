@@ -71,8 +71,15 @@ Customize them a bit more to make them easier to read
     '(add-to-list 'company-backend 'company-irony)
 )
 #+END_SRC
+** Bindings
+Custom global bindings
+#+begin_src emacs-lisp
+(setq global-bindings
+      (expand-file-name "emacs-config/global-bindings.org" user-emacs-directory))
+(org-babel-load-file global-bindings)
+#+end_src
 ** Use-package
-All the packages I'm using in my config
+All the packages I'm using in my config.
 *** Aggressive-indent
 Make aggresive indent enabled on every mode except for html
 (might configure it later) and bind 'C-x a' to toggle it or not
@@ -626,5 +633,4 @@ Trailing whitespaces are also enabled
       (setq show-paren-style 'expression)
       (set-face-attribute 'show-paren-match nil
                     :foreground "#00FFFF")
-
     #+end_src
