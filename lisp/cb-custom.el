@@ -1,6 +1,8 @@
-(defun cb/eshell-new ()
+(defun cb/pop-shell ()
   (interactive)
-  (eshell 'N))
+  (setq shell-name (read-string "Shell Name: " nil))
+  (vterm-other-window)
+  (rename-buffer shell-name))
 
 (defun cb/reload-config ()
   (interactive)

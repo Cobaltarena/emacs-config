@@ -1,6 +1,6 @@
 #+TITLE: Global bindings
 
-** COMMENT Comment Region
+** Comment Region
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-c d") 'comment-or-uncomment-region)
 #+END_SRC
@@ -12,7 +12,7 @@
 
 ** Eshell instance
     #+begin_src emacs-lisp
-(global-set-key (kbd "C-x C-h") 'cb/eshell-new)
+(global-set-key (kbd "C-x C-h") 'cb/pop-shell)
     #+end_src
 
 ** Layout keyboard rebind
