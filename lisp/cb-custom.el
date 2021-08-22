@@ -2,7 +2,7 @@
   (interactive)
   (setq shell-name (read-string "Shell Name: " nil))
   (vterm-other-window)
-  (rename-buffer shell-name))
+  (rename-buffer (concat "<SH> " shell-name)))
 
 (defun cb/reload-config ()
   (interactive)

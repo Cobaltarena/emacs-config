@@ -73,9 +73,10 @@ Python backend for some completion when python-mode is enabled.
 ** Eval after load
 #+BEGIN_SRC emacs-lisp
   (cb/add-hooks (list #'c++-mode-hook
-                       #'c-mode-hook
-                       #'lisp-mode-hook
-                       #'org-mode-hook
-                       #'python-mode-hook
-                       #'rust-mode-hook))
+                      #'c-mode-hook
+                      #'lisp-mode-hook
+                      #'emacs-lisp-mode-hook
+                      #'org-mode-hook
+                      #'python-mode-hook
+                      #'rust-mode-hook))
 #+END_SRC

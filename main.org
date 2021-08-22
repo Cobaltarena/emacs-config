@@ -24,7 +24,13 @@ Some custom functions
 #+begin_src emacs-lisp
 (load-file "~/.emacs.d/emacs-config/lisp/cb-custom.el")
 #+end_src
-
+*** Bindings
+Custom global bindings
+#+begin_src emacs-lisp
+(setq global-bindings
+      (expand-file-name "emacs-config/global-bindings.org" user-emacs-directory))
+(org-babel-load-file global-bindings)
+#+end_src
 ** Startup screen
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-screen t)
@@ -37,8 +43,8 @@ Some custom functions
 (setq debug-on-error t ; show stack trace on config error
       vc-follow-symlinks t) ; always follow symlink
 #+END_SRC
-** Hooks
-These are the hooks i need before loading all the packages
+** TODO Hooks
+Some custom hooks that i should put elsewhere
 
 *** Line-number
 
@@ -65,19 +71,6 @@ Customize them a bit more to make them easier to read
   )
 
 #+END_SRC
-** Eval after load
-#+BEGIN_SRC emacs-lisp
-(eval-after-load 'company
-    '(add-to-list 'company-backend 'company-irony)
-)
-#+END_SRC
-** Bindings
-Custom global bindings
-#+begin_src emacs-lisp
-(setq global-bindings
-      (expand-file-name "emacs-config/global-bindings.org" user-emacs-directory))
-(org-babel-load-file global-bindings)
-#+end_src
 ** Use-package
 All the packages I'm using in my config.
 *** Aggressive-indent
@@ -94,13 +87,12 @@ Github repository: [[https://github.com/Malabarba/aggressive-indent-mode]]
   )
 #+END_SRC
 *** Clang-format
-Clang-format binding on C-C C-f
+Clang-format because it's very handy
 
 Github repository: [[https://github.com/sonatard/clang-format]]
 #+BEGIN_SRC emacs-lisp
   (use-package clang-format
-    :config
-    (global-set-key (kbd "C-c C-f") 'clang-format-buffer)
+    :ensure t
     )
 #+END_SRC
 *** Company-mode
@@ -195,25 +187,25 @@ github repository: https://github.com/seagle0128/doom-modeline
       (setq doom-modeline-before-update-env-hook nil)
       (setq doom-modeline-after-update-env-hook nil)
       )
-  (use-package smart-mode-line
-    :config
-    (setq sml/no-confirm-load-theme t)
-    (sml/setup)
-    (sml/apply-theme 'respectful)  ; Respect the theme colors
-    (setq sml/mode-width 'right
-        sml/name-width 60)
-      (setq-default mode-line-format
-  `("%e"
-      mode-line-frame-identification
-      mode-line-buffer-identification
-      sml/pos-id-separator
-      (vc-mode vc-mode)
-      " "
-      ;mode-line-position
-      sml/pre-modes-separator
-      mode-line-modes
-      " "
-      mode-line-misc-info)))
+  ;; (use-package smart-mode-line
+  ;;   :config
+  ;;   (setq sml/no-confirm-load-theme t)
+  ;;   (sml/setup)
+  ;;   (sml/apply-theme 'respectful)  ; Respect the theme colors
+  ;;   (setq sml/mode-width 'right
+  ;;       sml/name-width 60)
+  ;;     (setq-default mode-line-format
+  ;; `("%e"
+  ;;     mode-line-frame-identification
+  ;;     mode-line-buffer-identification
+  ;;     sml/pos-id-separator
+  ;;     (vc-mode vc-mode)
+  ;;     " "
+  ;;     ;mode-line-position
+  ;;     sml/pre-modes-separator
+  ;;     mode-line-modes
+  ;;     " "
+  ;;     mode-line-misc-info)))
 #+END_SRC
 
 *** Eterm-256color
@@ -329,8 +321,8 @@ Github repository: https://github.com/magit/magit
 
   (use-package magit-todos
     :ensure t
-    :config 
-    (global-set-key (kbd "C-x j") 'ivy-magit-todos)
+    :config
+    (magit-todos-mode t)
     )
 
 #+END_SRC
@@ -484,7 +476,7 @@ Github repository: https://github.com/aspiers/smooth-scrolling
 #+BEGIN_SRC emacs-lisp
 (use-package smooth-scrolling
   :config
-  (smooth-scrolling-mode 1)
+  (smooth-scrolling-mode t)
   )
 #+END_SRC
 
