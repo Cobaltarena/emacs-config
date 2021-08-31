@@ -6,6 +6,7 @@ Prettier dired with marvelous icons
 Github repository: [[https://github.com/jtbm37/all-the-icons-dired]]
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons-dired
+    :ensure t
     :config
     (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
     )
@@ -17,6 +18,7 @@ or file types
 Github repository: [[https://github.com/thamer/diredful]]
 #+BEGIN_SRC emacs-lisp
   (use-package diredful
+    :ensure t
     :config
     (diredful-mode 1)
     )

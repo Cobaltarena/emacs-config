@@ -79,12 +79,13 @@ Make aggresive indent enabled on every mode except for html
 
 Github repository: [[https://github.com/Malabarba/aggressive-indent-mode]]
 #+BEGIN_SRC emacs-lisp
-(use-package aggressive-indent
-  :config
-  (global-aggressive-indent-mode 1)
-  (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
-  (global-set-key (kbd "C-x a") 'aggressive-indent-mode)
-  )
+  (use-package aggressive-indent
+    :ensure t
+    :config
+    (global-aggressive-indent-mode 1)
+    (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+    (global-set-key (kbd "C-x a") 'aggressive-indent-mode)
+    )
 #+END_SRC
 *** Clang-format
 Clang-format because it's very handy
@@ -106,19 +107,21 @@ Expand the dedicated org-file for company-mode and its dependencies
 
 Github repository: [[https://github.com/abo-abo/swiper]] (part of ivy)
 #+BEGIN_SRC emacs-lisp
-(use-package counsel
-  :config
-  (counsel-mode 1)
-  )
+  (use-package counsel
+    :ensure t
+    :config
+    (counsel-mode 1)
+    )
 #+END_SRC
 
 Github repository: https://github.com/ericdanan/counsel-projectile
 #+BEGIN_SRC emacs-lisp
-(use-package counsel-projectile
-  :config
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (counsel-projectile-mode +1)
-  )
+  (use-package counsel-projectile
+    :ensure t
+    :config
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (counsel-projectile-mode +1)
+    )
 #+END_SRC
 *** Dap-mode
 Super Handy debugging tool for many langages, uses lsp.
@@ -126,6 +129,7 @@ Super Handy debugging tool for many langages, uses lsp.
 Github repository: https://github.com/emacs-lsp/dap-mode
 #+BEGIN_SRC emacs-lisp
   (use-package dap-mode
+  :ensure t
   :custom
   (lsp-enable-dap-auto-configure nil)
   :config
