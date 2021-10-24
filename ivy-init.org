@@ -13,6 +13,8 @@
      ivy-initial-inputs-alist nil
      ivy-use-virtual-buffers t
      ivy-wrap t)
+    (global-unset-key (kbd "C-x b"))
+    (global-set-key (kbd "C-x b") 'counsel-switch-buffer)
     )
 #+END_SRC
 

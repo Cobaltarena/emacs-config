@@ -5,7 +5,7 @@ Major mode for completion when programming.
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :defer t
-    :straight (company-jedi :type git :host github :repo "company-mode/company-mode")
+    :straight (company :type git :host github :repo "company-mode/company-mode")
     :config
     (progn
     (setq company-selection-wrap-around +1

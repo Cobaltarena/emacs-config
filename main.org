@@ -31,9 +31,9 @@ Ensure straigth and use-package are installed on the current system
 (package-initialize)
 #+END_SRC
 *** Custom functions
-Some custom functions
+Load some custom functions
 #+begin_src emacs-lisp
-(load-file "~/.emacs.d/emacs-config/lisp/cb-custom.el")
+(mapc 'load-file (directory-files "~/.emacs.d/emacs-config/lisp/" t "cb-custom.el$"))
 #+end_src
 *** Bindings
 Custom global bindings
@@ -380,7 +380,10 @@ Github repository: https://github.com/damon-kwok/modern-sh
     (add-hook 'sh-mode-hook 'modern-sh-mode)
     )
 #+END_SRC
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 *** Org-mode
 Github repository: https://github.com/bzg/org-mode (mirror only)
 
