@@ -30,6 +30,11 @@
  (global-unset-key [f2])
  (global-set-key [f2] 'previous-error)
  #+END_SRC
+** Indent Region
+   #+begin_src emacs-lisp
+     (global-unset-key (kbd "C-x m"))
+     (global-set-key (kbd "C-x m") 'indent-region)
+   #+end_src
 ** Ivy Magit TODOs
    #+begin_src emacs-lisp
 (global-set-key (kbd "C-x j") 'ivy-magit-todos)

@@ -3,29 +3,30 @@
 ** Company
 Major mode for completion when programming.
 #+BEGIN_SRC emacs-lisp
-    (use-package company
-      :ensure t
-      :config
-      (progn
-      (setq company-selection-wrap-around +1
-	    company-tooltip-minimum-width 60
-	    company-tooltip-maximum-width 60)
-      (define-key company-active-map (kbd "RET") nil)
-      (define-key company-active-map (kbd "<return>") nil)
-      (define-key company-active-map (kbd "<right>") #'company-complete-selection)
-      (global-set-key (kbd "C-c c") 'company-complete)
-      )
-      :custom-face
-      (company-tooltip (
-			 (t (:background "#332211")))
-		       )
-      )
+  (use-package company
+    :defer t
+    :straight (company-jedi :type git :host github :repo "company-mode/company-mode")
+    :config
+    (progn
+    (setq company-selection-wrap-around +1
+          company-tooltip-minimum-width 60
+          company-tooltip-maximum-width 60)
+    (define-key company-active-map (kbd "RET") nil)
+    (define-key company-active-map (kbd "<return>") nil)
+    (define-key company-active-map (kbd "<right>") #'company-complete-selection)
+    (global-set-key (kbd "C-c c") 'company-complete)
+    )
+    :custom-face
+    (company-tooltip (
+                       (t (:background "#332211")))
+                     )
+    )
 #+END_SRC
 ** Company-irony
 Irony backend for C and C++ completion
 #+BEGIN_SRC emacs-lisp
   (use-package company-irony
-    :ensure t
+    :defer t
     :config
     (progn
     (eval-after-load 'company
@@ -37,7 +38,7 @@ Irony backend for C and C++ completion
 ** TODO Irony (move this elsewhere)
 #+BEGIN_SRC emacs-lisp
   (use-package irony
-    :ensure t
+    :defer t
     :config
     (progn
     (add-hook 'c++-mode-hook 'irony-mode)
@@ -48,6 +49,7 @@ Irony backend for C and C++ completion
 ** TODO Irony-eldoc (move this elsewhere)
 #+BEGIN_SRC emacs-lisp
   (use-package irony-eldoc
+    :defer t
     :config
     (add-hook 'irony-mode-hook #'irony-eldoc)
     )
@@ -65,7 +67,8 @@ Cool minor-mode to order the completion propositions by frequency of use.
 Python backend for some completion when python-mode is enabled.
 #+BEGIN_SRC emacs-lisp
   (use-package company-jedi
-    :ensure t
+    :defer t
+    :straight (company-jedi :type git :host github :repo "emacsorphanage/company-jedi")
     :config
     (progn
     (eval-after-load 'company
