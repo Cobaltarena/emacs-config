@@ -22,4 +22,18 @@
     (insert-file-contents (read-file-name "Template file: " "~/.emacs.d/emacs-config/template/")))
   )
 
+(defcustom cb/notes-directory "~/quick_notes"
+  "custom directory in which quick notes should be saved"
+  :type 'string)
+
+(defun cb/quick-notes ()
+  (interactive)
+  (unless (file-directory-p cb/note-directory)
+    (make-directory cb/note-directory))
+  (setq file-name (read-string "FileName: " nil))
+  (setq path (concat (file-name-as-directory cb/note-directory) file-name))
+  (make-empty-file path)
+  (switch-to-buffer path)
+  )
+
 (provide 'cb-custom)
