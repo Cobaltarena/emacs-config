@@ -21,16 +21,6 @@ Github repository: https://github.com/bzg/org-mode (mirror only)
     (setq org-html-validation-link nil)
 #+END_SRC
 
-*** Org-Appear
-Hide noisy markers for editing options such as *=*, *** or /*/.
-=org-hide-emphasis-markers= needs to be different from nil for this option to work
-#+BEGIN_SRC emacs-lisp
-    (use-package org-appear
-      :hook (org-mode . org-appear-mode)
-      :config
-      (setq org-hide-emphasis-markers t)
-    )
-#+END_SRC
 *** Org-Bullets
 
 Nicer bullet points
@@ -45,7 +35,6 @@ Snippet taken from https://github.com/daviwil/emacs-from-scratch/blob/master/Ema
     :custom
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+END_SRC
-<<<<<<< Updated upstream
 
 *** TODO Org-babel
 *** Org-tempo
@@ -75,12 +64,12 @@ Really cool package that lets you create templates for code blocks
 Hide noisy markers for editing options such as *=*, *** or /*/.
 =org-hide-emphasis-markers= needs to be different from nil for this option to work
 #+BEGIN_SRC emacs-lisp
-      (use-package org-appear
-      ;;  :straight (org-appear :type git :host github :repo "awth13/org-appear")
-        :hook (org-mode . org-appear-mode)
-        :config
-        (setq org-hide-emphasis-markers t)
-        )
+  (use-package org-appear
+    :straight (org-appear :type git :host github :repo "awth13/org-appear")
+    :hook (org-mode . org-appear-mode)
+    :config
+    (setq org-hide-emphasis-markers t)
+    )
 #+END_SRC
 
 *** Org-bars
@@ -88,55 +77,8 @@ Virtual indent lines to make it easier to see which block i'm currently editing
 #+begin_src emacs-lisp
   (use-package org-bars
     :straight (org-bars :type git :host github :repo "tonyaldon/org-bars")
-    :config
-    (org-bars-mode)
     )
 #+end_src
-
-=======
-*** Org-Journal
-Org package to keep a diary of my work (and maybe more ?)
-
-#+begin_src emacs-lisp
-  (use-package org-journal
-    :defer t
-    :init
-    (setq org-journal-prefix-key "C-c j")
-    :config
-    (setq org-journal-dir "~/org/journal"
-          org-journal-date-format "(%A) %d/%m/%Y"))
-#+end_src
->>>>>>> Stashed changes
-*** Org-Roam
-    #+begin_src emacs-lisp
-           (use-package org-roam
-             :ensure t
-             :init
-             (setq org-roam-v2-ack t)
-          ;;   :hook
-          ;;   (after-init . org-roam-mode)
-            :config
-            (org-roam-db-autosync-mode)
-            (setq org-roam-completion-everywhere t
-                  org-roam-completion-system 'default
-                  org-roam-directory "~/Notes/")
-             :bind (:map org-roam-mode-map
-                        (("C-c n l"   . org-roam)
-                         ("C-c n f"   . org-roam-find-file)
-                         ("C-c n g"   . org-roam-graph))
-                        :map org-mode-map
-                        (("C-c n i" . org-roam-insert))
-                        (("C-c n I" . org-roam-insert-immediate))))
-
-          (use-package deft
-            :commands (deft)
-            :config
-            (setq deft-directory "~/Notes/Roam"
-                           deft-recursive t
-                           deft-extensions '("md" "org"))
-             )
-    #+end_src
-
 
 *** Org-tempo
 
