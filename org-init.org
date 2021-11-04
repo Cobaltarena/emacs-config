@@ -30,35 +30,13 @@ Github repository: https://github.com/sabof/org-bullets
 Snippet taken from https://github.com/daviwil/emacs-from-scratch/blob/master/Emacs.org
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
-    :straight (org-bullets :type git :host github :repo "sabof/org-bullets")
-    :hook (org-mode . org-bullets-mode)
-    :custom
+   :straight (org-bullets :type git :host github :repo "sabof/org-bullets")
+   :hook (org-mode . org-bullets-mode)
+   :custom
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
 #+END_SRC
 
-*** TODO Org-babel
-*** Org-tempo
-
-Really cool package that lets you create templates for code blocks
-
-#+BEGIN_SRC emacs-lisp
-    (with-eval-after-load 'org
-      ;; This is needed as of Org 9.2
-      (require 'org-tempo)
-
-      (add-to-list 'org-structure-template-alist '("csrc" . "src c"))
-      (add-to-list 'org-structure-template-alist '("cpp" . "src cpp"))
-      (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-      (add-to-list 'org-structure-template-alist '("http" . "src http"))
-      (add-to-list 'org-structure-template-alist '("java" . "src java"))
-      (add-to-list 'org-structure-template-alist '("json" . "src json"))
-      (add-to-list 'org-structure-template-alist '("latex" . "src latex"))
-      (add-to-list 'org-structure-template-alist '("py" . "src python"))
-      (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
-      (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
-
-  )
-#+END_SRC
 *** Org-appear
 
 Hide noisy markers for editing options such as *=*, *** or /*/.
@@ -80,6 +58,7 @@ Virtual indent lines to make it easier to see which block i'm currently editing
     )
 #+end_src
 
+
 *** Org-tempo
 
 Really cool package that lets you create templates for code blocks
@@ -102,4 +81,4 @@ Really cool package that lets you create templates for code blocks
 
   )
 #+END_SRC
-    
+

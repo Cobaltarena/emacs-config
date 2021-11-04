@@ -1,35 +1,6 @@
 #+TITLE: Emacs config using org-mode
 
 ** Init
-Ensure straigth and use-package are installed on the current system
-#+BEGIN_SRC emacs-lisp
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-  (straight-use-package 'use-package)
-#+END_SRC
-*** Melpa
-#+BEGIN_SRC emacs-lisp
-(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                    (not (gnutls-available-p))))
-       (proto (if no-ssl "http" "https")))
-  (when no-ssl (warn "No ssl found"))
-  (add-to-list 'package-archives (cons "melpa"
-  (concat proto "://melpa.org/packages/")) t)
-  )
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(package-initialize)
-#+END_SRC
 *** Custom functions
 Load some custom functions
 #+begin_src emacs-lisp
@@ -380,10 +351,7 @@ Github repository: https://github.com/damon-kwok/modern-sh
     (add-hook 'sh-mode-hook 'modern-sh-mode)
     )
 #+END_SRC
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
 *** Org-mode
 Github repository: https://github.com/bzg/org-mode (mirror only)
 
