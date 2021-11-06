@@ -58,6 +58,8 @@ Irony backend for C and C++ completion
 Cool minor-mode to order the completion propositions by frequency of use. 
 #+BEGIN_SRC emacs-lisp
   (use-package company-prescient
+    :straight (presicent :type git :host github
+                   :repo "raxod502/prescient.el")
     :after company
     :config
     (setq company-prescient-mode 1)

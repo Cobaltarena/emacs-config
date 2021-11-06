@@ -12,7 +12,7 @@ Base package of org-mode
 Github repository: https://github.com/bzg/org-mode (mirror only)
 #+BEGIN_SRC emacs-lisp
   (use-package org
-    :straight (org :type git :host github :repo "bzg/org-mode")
+    :straight (org :type git :host github :repo "emacs-straight/org-mode")
     :config
     (setq org-src-tab-acts-natively t)
     (global-set-key (kbd "C-c C-c") 'org-edit-special)
@@ -59,6 +59,14 @@ Really cool package that lets you create templates for code blocks
 
   )
 #+END_SRC
+
+*** Org-bars
+Virtual indent lines to make it easier to see which block i'm currently editing
+#+begin_src emacs-lisp
+  (use-package org-bars
+    :straight (org-bars :type git :host github :repo "tonyaldon/org-bars")
+    )
+#+end_src
 *** Org-appear
 
 Hide noisy markers for editing options such as *=*, *** or /*/.
@@ -71,35 +79,3 @@ Hide noisy markers for editing options such as *=*, *** or /*/.
     (setq org-hide-emphasis-markers t)
     )
 #+END_SRC
-
-*** Org-bars
-Virtual indent lines to make it easier to see which block i'm currently editing
-#+begin_src emacs-lisp
-  (use-package org-bars
-    :straight (org-bars :type git :host github :repo "tonyaldon/org-bars")
-    )
-#+end_src
-
-*** Org-tempo
-
-Really cool package that lets you create templates for code blocks
-
-#+BEGIN_SRC emacs-lisp
-    (with-eval-after-load 'org
-      ;; This is needed as of Org 9.2
-      (require 'org-tempo)
-
-      (add-to-list 'org-structure-template-alist '("csrc" . "src c"))
-      (add-to-list 'org-structure-template-alist '("cpp" . "src cpp"))
-      (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-      (add-to-list 'org-structure-template-alist '("http" . "src http"))
-      (add-to-list 'org-structure-template-alist '("java" . "src java"))
-      (add-to-list 'org-structure-template-alist '("json" . "src json"))
-      (add-to-list 'org-structure-template-alist '("latex" . "src latex"))
-      (add-to-list 'org-structure-template-alist '("py" . "src python"))
-      (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
-      (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
-
-  )
-#+END_SRC
-    

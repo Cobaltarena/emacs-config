@@ -3,6 +3,8 @@
 ** Ivy
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
+    :straight (ivy :type git :host github
+                   :repo "abo-abo/swiper")
     :config
     (ivy-mode 1)
     ;; ??? TODO
@@ -21,6 +23,8 @@
 ** All the icons
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons-ivy
+    :straight (all-the-icons-ivy :type git :host github
+                   :repo "asok/all-the-icons-ivy")
     :init
     (add-hook 'after-init-hook 'all-the-icons-ivy-setup)
     )
@@ -29,6 +33,8 @@
 ** Ivy-rich
 #+BEGIN_SRC emacs-lisp
   (use-package ivy-rich
+    :straight (ivy-rich :type git :host github
+                   :repo "Yevgnen/ivy-rich")
     :config
     ;; fancier ivy
     (ivy-rich-mode 1)
@@ -38,7 +44,9 @@
 ** Ivy-prescient
 #+BEGIN_SRC emacs-lisp
   (use-package ivy-prescient
-    :after counsel
+    :straight (presicent :type git :host github
+                   :repo "raxod502/prescient.el")
+    :after company-prescient
     :custom
     (ivy-prescient-enable-filtering nil)
     :config
@@ -50,6 +58,7 @@
 ** Swiper
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
+    :after ivy
     :config
     (global-unset-key (kbd "C-s"))
     (global-set-key (kbd "C-s") 'swiper)

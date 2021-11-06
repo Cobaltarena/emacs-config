@@ -1,5 +1,13 @@
 #+TITLE: Dired config
 
+** Misc
+   #+begin_src emacs-lisp
+     ;; stop reusing same buffer when switching directories with 'a'
+     (put 'dired-find-alternate-file 'disabled nil)
+     ;; readable units
+     (setq-default dired-listing-switches "-alh")
+   #+end_src
+
 ** All-the-icons-dired
 Prettier dired with marvelous icons
 
@@ -26,6 +34,21 @@ Github repository: [[https://github.com/thamer/diredful]]
     (diredful-mode 1)
     )
 #+END_SRC
+** Dired-hacks
+Useful hacks on dired to make it a bit more handy to use
+#+begin_src emacs-lisp
+(straight-use-package
+        '(dired-hacks :type git :host github
+                               :repo "Fuco1/dired-hacks"))
+#+end_src
+
+*** Dired-narrow
+better filtering using '/' (see [[here]] for demo)
+#+begin_src emacs-lisp
+  (use-package dired-narrow
+    :config
+    (define-key dired-mode-map (kbd "/") 'dired-narrow-fuzzy))
+#+end_src
 ** Git integration
 dired-git is a minor mode that offers a git integration to make it more
 to work with git. It provides git information as the last commit for each file
