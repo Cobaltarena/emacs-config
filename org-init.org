@@ -30,13 +30,35 @@ Github repository: https://github.com/sabof/org-bullets
 Snippet taken from https://github.com/daviwil/emacs-from-scratch/blob/master/Emacs.org
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
-    :straight (org-bullets :type git :host github :repo "sabof/org-bullets")
-    :hook (org-mode . org-bullets-mode)
-    :custom
+   :straight (org-bullets :type git :host github :repo "sabof/org-bullets")
+   :hook (org-mode . org-bullets-mode)
+   :custom
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
 #+END_SRC
 
-*** TODO Org-babel
+*** Org-appear
+
+Hide noisy markers for editing options such as *=*, *** or /*/.
+=org-hide-emphasis-markers= needs to be different from nil for this option to work
+#+BEGIN_SRC emacs-lisp
+  (use-package org-appear
+    :straight (org-appear :type git :host github :repo "awth13/org-appear")
+    :hook (org-mode . org-appear-mode)
+    :config
+    (setq org-hide-emphasis-markers t)
+    )
+#+END_SRC
+
+*** Org-bars
+Virtual indent lines to make it easier to see which block i'm currently editing
+#+begin_src emacs-lisp
+  (use-package org-bars
+    :straight (org-bars :type git :host github :repo "tonyaldon/org-bars")
+    )
+#+end_src
+
+
 *** Org-tempo
 
 Really cool package that lets you create templates for code blocks
@@ -58,24 +80,4 @@ Really cool package that lets you create templates for code blocks
       (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
 
   )
-#+END_SRC
-
-*** Org-bars
-Virtual indent lines to make it easier to see which block i'm currently editing
-#+begin_src emacs-lisp
-  (use-package org-bars
-    :straight (org-bars :type git :host github :repo "tonyaldon/org-bars")
-    )
-#+end_src
-*** Org-appear
-
-Hide noisy markers for editing options such as *=*, *** or /*/.
-=org-hide-emphasis-markers= needs to be different from nil for this option to work
-#+BEGIN_SRC emacs-lisp
-  (use-package org-appear
-    :straight (org-appear :type git :host github :repo "awth13/org-appear")
-    :hook (org-mode . org-appear-mode)
-    :config
-    (setq org-hide-emphasis-markers t)
-    )
 #+END_SRC

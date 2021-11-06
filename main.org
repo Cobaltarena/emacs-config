@@ -351,10 +351,7 @@ Github repository: https://github.com/damon-kwok/modern-sh
     (add-hook 'sh-mode-hook 'modern-sh-mode)
     )
 #+END_SRC
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
 *** Org-mode
 Github repository: https://github.com/bzg/org-mode (mirror only)
 
