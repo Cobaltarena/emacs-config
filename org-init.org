@@ -12,7 +12,7 @@ Base package of org-mode
 Github repository: https://github.com/bzg/org-mode (mirror only)
 #+BEGIN_SRC emacs-lisp
   (use-package org
-    :straight (org :type git :host github :repo "emacs-straight/org-mode")
+    :straight (org-but-straight :type git :host github :repo "emacs-straight/org-mode")
     :config
     (setq org-src-tab-acts-natively t)
     (global-set-key (kbd "C-c C-c") 'org-edit-special)

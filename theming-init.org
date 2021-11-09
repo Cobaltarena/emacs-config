@@ -1,0 +1,136 @@
+#+TITLE: Ricing a bit your emacs
+
+*** Theme
+This is the theme i like to use at the moment
+Provide support to many packages including some like ivy, magit and company.
+
+Github repository: [[https://github.com/NicolasPetton/zerodark-theme]]
+#+BEGIN_SRC emacs-lisp
+(use-package zerodark-theme
+  :straight (zerodark-theme :type git :host github
+      		      :repo "NicolasPetton/zerodark-theme")
+  :init
+  (setq zerodark-enlarge-headings nil
+        zerodark-alternate-mode-line-and-minibuffer t)
+  :config
+  (load-theme 'zerodark t)
+  )
+#+END_SRC
+
+*** Background
+#+BEGIN_SRC emacs-lisp
+(setq bg "#222222")
+(set-background-color bg)
+#+END_SRC
+
+*** Comments
+#+BEGIN_SRC emacs-lisp
+(set-face-foreground 'font-lock-string-face '"light green")
+(set-face-foreground 'font-lock-comment-face '"green")
+(set-face-foreground 'font-lock-comment-delimiter-face '"green")
+#+END_SRC
+
+*** Font
+#+BEGIN_SRC emacs-lisp
+(set-face-attribute 'default nil
+                      :family "MesloLGS NF"
+                      :slant 'normal
+                      :weight 'normal
+                      :height 140
+                      :width 'semi-condensed
+                      )
+#+END_SRC
+
+*** Fringe
+#+BEGIN_SRC emacs-lisp
+(set-face-attribute 'fringe nil :background bg)
+(setq-default left-fringe-width 5)
+#+END_SRC
+
+*** Highlight mode
+#+BEGIN_SRC emacs-lisp
+(global-hl-line-mode t)
+(set-face-attribute 'hl-line nil
+                    :background "#580818")
+#+END_SRC
+
+*** Line number
+Enable linum-mode and customize is a bit according to the theme
+#+BEGIN_SRC emacs-lisp
+(global-linum-mode) ; show line numbers
+(set-face-attribute 'line-number nil :background bg)
+(set-face-attribute 'line-number-current-line nil :background bg)
+(set-face-attribute 'linum nil :background bg)
+#+END_SRC
+
+*** Line indicator (80 characters)
+#+BEGIN_SRC emacs-lisp
+(global-display-fill-column-indicator-mode 1)
+(setq-default fill-column 80)
+(set-face-attribute 'fill-column-indicator nil :foreground "#55342b")
+(set-face-attribute 'fill-column-indicator nil :background "#55342b")
+#+END_SRC
+
+*** Whitespace and newline
+Custom whitespace newline to make is easier to see.
+Trailing whitespaces are also enabled
+#+BEGIN_SRC emacs-lisp
+(global-whitespace-mode t)
+(setq whitespace-display-mappings
+      '(
+        (newline-mark 10
+                      [5321 10])
+        (tab-mark 9
+                  [9655 9]
+                  [92 9])
+        )
+      )
+(setq whitespace-style
+      '(
+        tabs tab-mark ; the tabulations,
+        newline-mark
+        newline
+        trailing
+        )
+      )
+(set-face-attribute 'whitespace-newline nil :foreground "#A68064")
+(set-face-attribute 'whitespace-space nil :foreground "#A68064")
+(set-face-attribute 'whitespace-space nil :background bg)
+#+END_SRC
+
+*** Tabulations
+#+BEGIN_SRC emacs-lisp
+(setq-default indent-tabs-mode nil)
+(setq indent-tabs-mode nil)
+#+END_SRC
+*** Cursor-type
+#+BEGIN_SRC emacs-lisp
+(setq-default cursor-type 'hollow)
+(setq-default cursor-type 'box)
+(set-face-attribute 'cursor nil
+                  :background "orange")
+
+#+END_SRC
+*** Parenthesis Highlight
+    #+begin_src emacs-lisp
+(show-paren-mode 1)
+(setq show-paren-style 'expression)
+(set-face-attribute 'show-paren-match nil
+                    :foreground "#00FFFF")
+    #+end_src
+
+    
+*** Line-number
+
+Customize them a bit more to make them easier to read
+#+BEGIN_SRC emacs-lisp
+(add-hook 'display-line-numbers-mode-hook
+          (lambda ()
+            (set-face-attribute 'line-number nil
+                                :weight 'normal)
+            (set-face-attribute 'line-number-current-line nil
+                                :foreground (face-attribute 'cursor :background)
+                                :weight 'bold
+                                :slant 'normal)
+            )          )
+#+END_SRC

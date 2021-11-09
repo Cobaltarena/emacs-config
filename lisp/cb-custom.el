@@ -1,3 +1,5 @@
+;; -*- lexical-binding:t -*-
+
 
 (defun cb/pop-shell ()
   (interactive)
