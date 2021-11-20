@@ -33,14 +33,13 @@ Make aggresive indent enabled on every mode except for html
 
 Github repository: [[https://github.com/Malabarba/aggressive-indent-mode]]
 #+BEGIN_SRC emacs-lisp
-    (use-package aggressive-indent
-      :straight (aggressive-indent :type git :host github
-                                   :repo "Malabarba/aggressive-indent-mode")
-      :config
-      (global-aggressive-indent-mode 1)
-      (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
-      (global-set-key (kbd "C-x a") 'aggressive-indent-mode)
-      )
+      (use-package aggressive-indent
+        :straight (aggressive-indent :type git :host github
+                                     :repo "Malabarba/aggressive-indent-mode")
+        :config
+        ;; (global-aggressive-indent-mode 1)
+        (global-set-key (kbd "C-x a") 'aggressive-indent-mode)
+        )
 #+END_SRC
 *** Clang-format
 Clang-format because it's very handy
@@ -64,22 +63,11 @@ Expand the dedicated org-file for company-mode and its dependencies
 Github repository: [[https://github.com/abo-abo/swiper]] (part of ivy)
 #+BEGIN_SRC emacs-lisp
   (use-package counsel
-    :straight (swiper :type git :host github
+    :straight (counsel :type git :host github
                                    :repo "abo-abo/swiper")
     :config
     (counsel-mode 1)
     )
-#+END_SRC
-
-Github repository: https://github.com/ericdanan/counsel-projectile
-#+BEGIN_SRC emacs-lisp
-      (use-package counsel-projectile
-        :straight (counsel-projectile :type git :host github
-                                      :repo "ericdanan/counsel-projectile")
-        :config
-        (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-        (counsel-projectile-mode +1)
-        )
 #+END_SRC
 *** Dap-mode
 Super Handy debugging tool for many langages, uses lsp.
@@ -119,11 +107,27 @@ Github repository: https://github.com/emacs-lsp/dap-mode
 *** Dashboard
 #+begin_src emacs-lisp
     (use-package dashboard
-      :ensure t
+      :straight (dashboard :type git :host github
+                           :repo "emacs-dashboard/emacs-dashboard")
       :config
+
+      (setq dashboard-banner-logo-title nil
+            dashboard-startup-banner "~/.emacs.d/emacs-config/resources/oath.png"
+            dashboard-set-heading-icons t
+            dashboard-set-file-icons t
+            dashboard-center-content t
+            dashboard-week-agenda t
+
+            dashboard-set-init-info nil
+            dashboard-set-footer nil
+            dashboard-set-navigator nil
+
+            dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name
+            initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+
+      (add-to-list 'dashboard-items '(agenda) t)
+      (hl-line-mode -1)
       (dashboard-setup-startup-hook)
-      (setq dashboard-banner-logo-title nil)
-      (setq dashboard-startup-banner "~/.emacs.d/emacs-config/resources/oath.png")
   )
 #+end_src
 *** Dired
@@ -146,21 +150,21 @@ github repository: https://github.com/seagle0128/doom-modeline
     (after-init . doom-modeline-init)
     :config
     (setq doom-modeline-height 25)
-    (setq doom-modeline-bar-width 3)
-    (setq doom-modeline-window-width-limit fill-column)
-    (setq doom-modeline-project-detection 'project)
-    (setq doom-modeline-buffer-file-name-style 'relative-from-project)
-    (setq doom-modeline-icon (display-graphic-p))
-    (setq doom-modeline-major-mode-icon t)
-    (setq doom-modeline-major-mode-color-icon t)
-    (setq doom-modeline-buffer-state-icon t)
-    (setq doom-modeline-buffer-modification-icon t)
-    (setq doom-modeline-minor-modes t)
-    ;; (setq doom-modeline-enable-word-count t)
-    (setq doom-modeline-buffer-encoding t)
-    (setq doom-modeline-lsp t)
-    (setq doom-modeline-before-update-env-hook nil)
-    (setq doom-modeline-after-update-env-hook nil)
+    doom-modeline-bar-width 3
+    doom-modeline-window-width-limit fill-column
+    doom-modeline-project-detection 'project
+    doom-modeline-buffer-file-name-style 'relative-from-project
+    doom-modeline-icon (display-graphic-p)
+    doom-modeline-major-mode-icon t
+    doom-modeline-major-mode-color-icon t
+    doom-modeline-buffer-state-icon t
+    doom-modeline-buffer-modification-icon t
+    doom-modeline-minor-modes t
+    ;; doom-modeline-enable-word-count t
+    doom-modeline-buffer-encoding t
+    doom-modeline-lsp t
+    doom-modeline-before-update-env-hook nil
+    doom-modeline-after-update-env-hook nil))
     )
 #+END_SRC
 
@@ -173,11 +177,7 @@ Github repository: [[https://github.com/dieggsy/eterm-256color]]
   (use-package eterm-256color
     :straight (eterm-256color :type git :host github
                                       :repo "dieggsy/eterm-256color")
-    :hook
-    (term-mode . eterm-256color-mode)
-    (term-mode . eterm-256color-mode)
-    (vterm-mode . eterm-256color-mode)
-    (eshell-mode . eterm-256color-mode)
+    :hook (term-mode vterm-mode eshell-mode)
     )
 #+END_SRC
 *** Fixmee
@@ -188,23 +188,32 @@ Github repository: [[https://github.com/rolandwalker/fixmee]]
   (use-package button-lock
     :defer t
     :straight (button-lock :type git :host github
-				  :repo "rolandwalker/button-lock"))
+                                  :repo "rolandwalker/button-lock"))
   (use-package fixmee
     :defer t
     :straight (fixmee :type git :host github
-				  :repo "rolandwalker/fixmee")
+                                  :repo "rolandwalker/fixmee")
 
     :config
     (global-fixmee-mode 1)
+      ;; fixmee-mode next/prev rebind and view list
+    (global-set-key [f6] 'fixmee-goto-next-by-position)
+    (global-set-key [f5] 'fixmee-goto-previous-by-position)
+    (global-set-key [f4] 'fixmee-view-listing)
     )
-
-
-  ;; fixmee-mode next/prev rebind and view list
-  (global-set-key [f6] 'fixmee-goto-next-by-position)
-  (global-set-key [f5] 'fixmee-goto-previous-by-position)
-  (global-set-key [f4] 'fixmee-view-listing)
-
 #+END_SRC
+*** Flycheck
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :diminish (flycheck-mode)
+    :straight (flycheck :type git :host github
+                        :repo "flycheck/flycheck")
+    :config
+    (setq flycheck-indication-mode nil)
+    (global-flycheck-mode)
+
+    )
+#+end_src
 *** Gnus
 A package to be able to read newsgroup using NNTP protocol
 
@@ -220,12 +229,6 @@ Github repository: [[https://github.com/espenhw/gnus]]
 #+END_SRC
 
 *** Helm
-I'm using helm-ctags to jump to the definition of function and helm-man to
-get a quick access to man pages.
-When I'll get more time, I'll try to customize my config a bit more with the
-helm environment which look super handy to use.
-
-Github repository: https://github.com/emacsorphanage/helm-gtags
 #+BEGIN_SRC emacs-lisp
   (use-package helm-gtags
     :straight (helm-gtags :type git :host github
@@ -258,31 +261,14 @@ Github repository: https://github.com/abo-abo/swiper
       (expand-file-name "emacs-config/ivy-init.org" user-emacs-directory))
 (org-babel-load-file ivy-config)
 #+END_SRC
-*** Keycast
-Fancy mode that displays the last shortcut used in emacs. Very handy
-for memory mapping of the key combination
-
-Github repository: https://github.com/tarsius/keycast
-#+BEGIN_SRC emacs-lisp
-  (use-package keycast
-    :defer t
-    :straight (keycast :type git :host github
-                       :repo "tarsius/keycast")
+*** LSP
+#+begin_src emacs-lisp
+  (use-package lsp
     :config
-    ;; found on https://github.com/tarsius/keycast/issues/7#issuecomment-627604064
-    ;; since I had the same issue with enabling keycast
-    (define-minor-mode keycast-mode
-      "Show current command and its key binding in the mode line."
-      :global t
-      (if keycast-mode
-          (add-hook 'pre-command-hook 'keycast--update t)
-        (remove-hook 'pre-command-hook 'keycast--update)))
-    (add-to-list 'global-mode-string '(mode-line-keycast ""))
+    (flymake-mode-off)
+  
     )
-
-
-#+END_SRC
-
+#+end_src
 *** Magit
 Magit is love, very handy and easy to learn and use when working with git.
 
@@ -329,10 +315,18 @@ Github repository: https://github.com/damon-kwok/modern-sh
   (use-package modern-sh
     :straight (modern-sh :type git :host github
                          :repo "damon-kwok/modern-sh")
-    :config
-    (add-hook 'sh-mode-hook 'modern-sh-mode)
+    :hook (sh-mode)
     )
 #+END_SRC
+*** Nix
+#+begin_src emacs-lisp
+    (use-package nix-mode
+      :straight (nix-mode :type git :host github
+                          :repo "nixos/nix-mode")
+      :mode "\\.nix\\'"
+      )
+#+end_src
+
 
 *** Org-mode
 Github repository: https://github.com/bzg/org-mode (mirror only)
@@ -342,6 +336,46 @@ Github repository: https://github.com/bzg/org-mode (mirror only)
       (expand-file-name "emacs-config/org-init.org" user-emacs-directory))
 (org-babel-load-file org-config)
 #+END_SRC
+*** Pdf-tools
+
+Found on http://alberto.am/2020-04-11-pdf-tools-as-default-pdf-viewer.html
+#+begin_src emacs-lisp
+    (use-package pdf-tools
+       :straight (pdf-tools :type git :host github
+                            :repo "politza/pdf-tools")
+       :config
+       (pdf-loader-install)
+       (setq-default pdf-view-display-size 'fit-width)
+       (define-key pdf-view-mode-map (kbd "C-s") 'swiper)
+       (add-hook 'pdf-view-mode-hook (lambda() (linum-mode -1)))
+       :custom
+       (pdf-annot-activate-created-annotations t "automatically annotate highlights")
+       (setq TeX-view-program-selection '((output-pdf "PDF Tools")
+                                          TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+                                          TeX-source-correlate-start-server t))
+
+       (add-hook 'TeX-after-compilation-finished-functions
+                 #'TeX-revert-document-buffer))
+#+end_sr
+*** Projectile
+Or how to manage a project
+#+begin_src emacs-lisp
+  (use-package projectile
+    :straight (projectile :type git :host github
+                          :repo "bbatsov/projectile")
+    :config
+    (projectile-mode +1)
+    (flymake-mode-off)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    )
+
+  (use-package counsel-projectile
+    :straight (counsel-projectile :type git :host github
+                                  :repo "ericdanan/counsel-projectile")
+    :config
+    (counsel-projectile-mode +1)
+    )
+#+end_srcc
 *** Python
 Simple python configuration
 
@@ -360,44 +394,16 @@ Github repository: https://github.com/russell/python-mode
     (require 'dap-python))
   )
 
-  (use-package sphinx-doc
-    :ensure t
-    :hook (python-mode . sphinx-doc-mode)
-    :config
-    )
+  ;; (use-package sphinx-doc
+  ;;   :ensure t
+  ;;   :hook (python-mode . sphinx-doc-mode)
+  ;;   :config
+  ;;   )
 
-  (use-package python-pytest
-    :custom
-    (python-pytest-confirm t))
+  ;; (use-package python-pytest
+  ;;   :custom
+  ;;   (python-pytest-confirm t))
 #+END_SRC
-*** Rust
-Simple basic rust config
-
-#+begin_src emacs-lisp
-(use-package rustic
-  :bind (:map rustic-mode-map
-              ("M-j" . lsp-ui-imenu)
-              ("M-?" . lsp-find-references)
-              ("C-c C-c l" . flycheck-list-errors)
-              ("C-c C-c a" . lsp-execute-code-action)
-              ("C-c C-c r" . lsp-rename)
-              ("C-c C-c q" . lsp-workspace-restart)
-              ("C-c C-c Q" . lsp-workspace-shutdown)
-              ("C-c C-c s" . lsp-rust-analyzer-status))
-  :config
-  ;; uncomment for less flashiness
-  ;; (setq lsp-eldoc-hook nil)
-  ;; (setq lsp-enable-symbol-highlighting nil)
-  ;; (setq lsp-signature-auto-activate nil)
-
-  ;; comment to disable rustfmt on save
-  (setq rustic-format-on-save t)
-  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
-
-(defun rk/rustic-mode-hook ()
-  ;; so that run C-c C-c C-r works without having to confirm
-  (setq-local buffer-save-without-query t))
-#+end_src
 *** Smooth-scrolling
 Make the scrolling smoother
 
@@ -412,22 +418,6 @@ Github repository: https://github.com/aspiers/smooth-scrolling
     )
 #+END_SRC
 
-*** Theme
-This is the theme i like to use at the moment
-Provide support to many packages including some like ivy, magit and company.
-
-Github repository: [[https://github.com/NicolasPetton/zerodark-theme]]
-#+BEGIN_SRC emacs-lisp
-  (use-package zerodark-theme
-    :straight (zerodark-theme :type git :host github
-                       :repo "NicolasPetton/zerodark-theme")
-    :init
-    (setq zerodark-enlarge-headings nil
-          zerodark-alternate-mode-line-and-minibuffer t)
-    :config
-    (load-theme 'zerodark t)
-    )
-#+END_SRC
 *** Treemacs
 Simple treemacs config because it is already marvelous 
 out of the box
@@ -453,120 +443,31 @@ Github repository: https://github.com/Alexander-Miller/treemacs
 
         :config
 
-        (setq which-key-idle-delay 1
-              which-key-show-prefix 'left
-              which-key-idle-secondary-delay 0.5
+        (setq which-key-show-prefix 'left
               which-key-popup-type 'side-window
-              which-key-side-window-location 'right
+              which-key-side-window-location 'bottom
               which-key-show-early-on-C-h t
               which-key-show-major-mode t)
-        (which-key-setup-side-window-bottom)
         (global-set-key (kbd "C-x w") 'which-key-show-top-level)
-        (which-key-mode)
+        (which-key-mode +1)
         )
     #+end_src
-** Faces
-*** Background
-#+BEGIN_SRC emacs-lisp
-(setq bg "#222222")
-(set-background-color bg)
-(set-face-attribute 'cursor nil :background "#DD7538")
-#+END_SRC
-*** Comments
-#+BEGIN_SRC emacs-lisp
-(set-face-foreground 'font-lock-string-face "light green")
-(set-face-foreground 'font-lock-comment-face "green")
-(set-face-foreground 'font-lock-comment-delimiter-face "green")
-#+END_SRC
-*** Font
-#+BEGIN_SRC emacs-lisp
-  (set-face-attribute 'default nil
-                      :family "MesloLGS NF"
-                      :slant 'normal
-                      :weight 'normal
-                      :height 140
-                      :width 'semi-condensed
-                      )
-#+END_SRC
-*** Fringe
-#+BEGIN_SRC emacs-lisp
-(set-face-attribute 'fringe nil :background bg)
-(setq-default left-fringe-width 5)
-#+END_SRC
-*** Highlight mode
-#+BEGIN_SRC emacs-lisp
-(global-hl-line-mode t)
-(set-face-attribute 'hl-line nil
-                    :background "#580818")
-#+END_SRC
-*** Line number
-Enable linum-mode and customize is a bit according to the theme
-#+BEGIN_SRC emacs-lisp
-(global-linum-mode) ; show line numbers
-(set-face-attribute 'line-number nil :background bg)
-(set-face-attribute 'line-number-current-line nil :background bg)
-(set-face-attribute 'linum nil :background bg)
-#+END_SRC
-*** Line indicator (80 characters)
-#+BEGIN_SRC emacs-lisp
-(global-display-fill-column-indicator-mode 1)
-(setq-default fill-column 80)
-(set-face-attribute 'fill-column-indicator nil :foreground "#55342b")
-(set-face-attribute 'fill-column-indicator nil :background "#55342b")
-#+END_SRC
-*** Whitespace and newline
-Custom whitespace newline to make is easier to see.
-Trailing whitespaces are also enabled
-#+BEGIN_SRC emacs-lisp
-  (global-whitespace-mode t)
-(setq whitespace-display-mappings
-      '(
-        (newline-mark 10
-                      [5321 10])
-        (tab-mark 9
-                  [9655 9]
-                  [92 9])
-        )
-      )
-(setq whitespace-style
-      '(
-        face ; show ...
-        tabs tab-mark ; the tabulations,
-        newline-mark
-        newline
-        trailing
-        )
-      )
-  (set-face-attribute 'whitespace-newline nil :foreground "#A68064")
-  (set-face-attribute 'whitespace-space nil :foreground "#A68064")
-  (set-face-attribute 'whitespace-space nil :background bg)
-#+END_SRC
-** Utilities
-*** Backup files
-#+BEGIN_SRC emacs-lisp
-(setq backup-directory-alist '(("." . "~/local/emacs_tf"))
-      backup-by-copying t)
-#+END_SRC
-*** EPITA C basic config
-#+BEGIN_SRC emacs-lisp
-(setq c-basic-offset 4 ; spaces of indentation
-      c-default-style "bsd" ; sort of fits the coding style
-      fill-column 80) ; 80 columns rule
-#+END_SRC
-*** Tabulations
-#+BEGIN_SRC emacs-lisp
-(setq-default indent-tabs-mode nil)
-(setq indent-tabs-mode nil)
-#+END_SRC
-*** Cursor-type
-#+BEGIN_SRC emacs-lisp
-(setq-default cursor-type 'hollow)
-(setq-default cursor-type 'box)
-#+END_SRC
-*** Parenthesis Highlight
-    #+begin_src emacs-lisp
-      (show-paren-mode 1)
-      (setq show-paren-style 'expression)
-      (set-face-attribute 'show-paren-match nil
-                    :foreground "#00FFFF")
-    #+end_src
+*** Yaml-mode
+#+begin_src emacs-lisp
+  (use-package yaml-mode
+    :straight (yaml-mode :type git :host github
+                         :repo "yoshiki/yaml-mode")
+    :mode "\\.yml\\'" 
+    )
+#+end_src
+** Theming
+#+begin_src emacs-lisp
+(setq theming-config (expand-file-name "emacs-config/theming-init.org"
+                                       user-emacs-directory))
+(if (daemonp)
+  (add-hook 'after-make-frame-functions
+      (lambda (frame)
+          (with-selected-frame frame
+              (org-babel-load-file theming-config))))
+(org-babel-load-file theming-config))
+#+end_src
