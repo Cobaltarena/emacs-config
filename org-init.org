@@ -15,11 +15,14 @@ Github repository: https://github.com/bzg/org-mode (mirror only)
     :straight (org-but-straight :type git :host github :repo "emacs-straight/org-mode")
     :config
     (setq org-src-tab-acts-natively t)
-    (global-set-key (kbd "C-c C-c") 'org-edit-special)
-
-    )
     (setq org-html-validation-link nil)
+    (org-indent-mode +1)
+    (setq org-confirm-babel-evaluate nil)
+    )
 #+END_SRC
+
+#+RESULTS:
+: t
 
 *** Org-Bullets
 
@@ -37,6 +40,9 @@ Snippet taken from https://github.com/daviwil/emacs-from-scratch/blob/master/Ema
 
 #+END_SRC
 
+#+RESULTS:
+| org-tempo-setup | org-appear-mode | org-bullets-mode | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | company-mode | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
+
 *** Org-appear
 
 Hide noisy markers for editing options such as *=*, *** or /*/.
@@ -49,16 +55,6 @@ Hide noisy markers for editing options such as *=*, *** or /*/.
     (setq org-hide-emphasis-markers t)
     )
 #+END_SRC
-
-*** Org-bars
-Virtual indent lines to make it easier to see which block i'm currently editing
-#+begin_src emacs-lisp
-  (use-package org-bars
-    :straight (org-bars :type git :host github :repo "tonyaldon/org-bars")
-    )
-#+end_src
-
-
 *** Org-tempo
 
 Really cool package that lets you create templates for code blocks

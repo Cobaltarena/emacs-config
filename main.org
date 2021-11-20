@@ -25,14 +25,7 @@ Custom global bindings
 (setq debug-on-error t ; show stack trace on config error
       vc-follow-symlinks t) ; always follow symlink
 #+END_SRC
-** TODO Hooks
-Some hooks that i should put elsewhere
 
-*** LSP
-#+BEGIN_SRC emacs-lisp
-    (add-hook 'c-mode-hook 'lsp)
-    (add-hook 'cpp-mode-hook 'lsp)
-#+END_SRC
 ** Use-package
 All the packages I'm using in my config.
 *** Aggressive-indent
@@ -41,14 +34,12 @@ Make aggresive indent enabled on every mode except for html
 
 Github repository: [[https://github.com/Malabarba/aggressive-indent-mode]]
 #+BEGIN_SRC emacs-lisp
-    (use-package aggressive-indent
-      :straight (aggressive-indent :type git :host github
-                                   :repo "Malabarba/aggressive-indent-mode")
-      :config
-      (global-aggressive-indent-mode 1)
-      (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
-      (global-set-key (kbd "C-x a") 'aggressive-indent-mode)
-      )
+  (use-package aggressive-indent
+    :straight (aggressive-indent :type git :host github
+                                 :repo "Malabarba/aggressive-indent-mode")
+    :config
+    (global-set-key (kbd "C-x a") 'aggressive-indent-mode)
+    )
 #+END_SRC
 *** Clang-format
 Clang-format because it's very handy
@@ -79,16 +70,6 @@ Github repository: [[https://github.com/abo-abo/swiper]] (part of ivy)
     )
 #+END_SRC
 
-Github repository: https://github.com/ericdanan/counsel-projectile
-#+BEGIN_SRC emacs-lisp
-      (use-package counsel-projectile
-        :straight (counsel-projectile :type git :host github
-                                      :repo "ericdanan/counsel-projectile")
-        :config
-        (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-        (counsel-projectile-mode +1)
-        )
-#+END_SRC
 *** Dap-mode
 Super Handy debugging tool for many langages, uses lsp.
 
@@ -171,11 +152,7 @@ Github repository: [[https://github.com/dieggsy/eterm-256color]]
   (use-package eterm-256color
     :straight (eterm-256color :type git :host github
                                       :repo "dieggsy/eterm-256color")
-    :hook
-    (term-mode . eterm-256color-mode)
-    (term-mode . eterm-256color-mode)
-    (vterm-mode . eterm-256color-mode)
-    (eshell-mode . eterm-256color-mode)
+    :hook (term-mode vterm-mode eshell-mode)
     )
 #+END_SRC
 *** Fixmee
@@ -186,23 +163,32 @@ Github repository: [[https://github.com/rolandwalker/fixmee]]
   (use-package button-lock
     :defer t
     :straight (button-lock :type git :host github
-				  :repo "rolandwalker/button-lock"))
+                                  :repo "rolandwalker/button-lock"))
   (use-package fixmee
     :defer t
     :straight (fixmee :type git :host github
-				  :repo "rolandwalker/fixmee")
+                                  :repo "rolandwalker/fixmee")
 
     :config
     (global-fixmee-mode 1)
+      ;; fixmee-mode next/prev rebind and view list
+    (global-set-key [f6] 'fixmee-goto-next-by-position)
+    (global-set-key [f5] 'fixmee-goto-previous-by-position)
+    (global-set-key [f4] 'fixmee-view-listing)
     )
-
-
-  ;; fixmee-mode next/prev rebind and view list
-  (global-set-key [f6] 'fixmee-goto-next-by-position)
-  (global-set-key [f5] 'fixmee-goto-previous-by-position)
-  (global-set-key [f4] 'fixmee-view-listing)
-
 #+END_SRC
+*** Flycheck
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :diminish (flycheck-mode)
+    :straight (flycheck :type git :host github
+                        :repo "flycheck/flycheck")
+    :config
+    (setq flycheck-indication-mode nil)
+    (global-flycheck-mode)
+
+    )
+#+end_src
 *** Gnus
 A package to be able to read newsgroup using NNTP protocol
 
@@ -218,10 +204,7 @@ Github repository: [[https://github.com/espenhw/gnus]]
 #+END_SRC
 
 *** Helm
-I'm using helm-ctags to jump to the definition of function and helm-man to
-get a quick access to man pages.
-When I'll get more time, I'll try to customize my config a bit more with the
-helm environment which look super handy to use.
+I'm using helm-ctags to jump to the definition.
 
 Github repository: https://github.com/emacsorphanage/helm-gtags
 #+BEGIN_SRC emacs-lisp
@@ -242,8 +225,6 @@ Github repository: https://github.com/Fanael/highlight-defined
   (use-package highlight-defined
     :straight (highlight-defined :type git :host github
                                  :repo "Fanael/highlight-defined")
-    :config
-    (add-hook 'emacs-lisp-mode-hook 'highlight-defined-mode)
     )
 #+END_SRC
 *** Ivy
@@ -256,31 +237,14 @@ Github repository: https://github.com/abo-abo/swiper
       (expand-file-name "emacs-config/ivy-init.org" user-emacs-directory))
 (org-babel-load-file ivy-config)
 #+END_SRC
-*** Keycast
-Fancy mode that displays the last shortcut used in emacs. Very handy
-for memory mapping of the key combination
-
-Github repository: https://github.com/tarsius/keycast
-#+BEGIN_SRC emacs-lisp
-  (use-package keycast
-    :defer t
-    :straight (keycast :type git :host github
-                       :repo "tarsius/keycast")
+*** LSP
+#+begin_src emacs-lisp
+  (use-package lsp
     :config
-    ;; found on https://github.com/tarsius/keycast/issues/7#issuecomment-627604064
-    ;; since I had the same issue with enabling keycast
-    (define-minor-mode keycast-mode
-      "Show current command and its key binding in the mode line."
-      :global t
-      (if keycast-mode
-          (add-hook 'pre-command-hook 'keycast--update t)
-        (remove-hook 'pre-command-hook 'keycast--update)))
-    (add-to-list 'global-mode-string '(mode-line-keycast ""))
+    (flymake-mode-off)
+  
     )
-
-
-#+END_SRC
-
+#+end_src
 *** Magit
 Magit is love, very handy and easy to learn and use when working with git.
 
@@ -327,10 +291,17 @@ Github repository: https://github.com/damon-kwok/modern-sh
   (use-package modern-sh
     :straight (modern-sh :type git :host github
                          :repo "damon-kwok/modern-sh")
-    :config
-    (add-hook 'sh-mode-hook 'modern-sh-mode)
+    :hook (sh-mode)
     )
 #+END_SRC
+*** Nix
+#+begin_src emacs-lisp
+    (use-package nix-mode
+      :straight (nix-mode :type git :host github
+                          :repo "nixos/nix-mode")
+      :mode "\\.nix\\'"
+      )
+#+end_src
 
 *** Org-mode
 Github repository: https://github.com/bzg/org-mode (mirror only)
@@ -340,6 +311,25 @@ Github repository: https://github.com/bzg/org-mode (mirror only)
       (expand-file-name "emacs-config/org-init.org" user-emacs-directory))
 (org-babel-load-file org-config)
 #+END_SRC
+*** Projectile
+Or how to manage a project
+#+begin_src emacs-lisp
+  (use-package projectile
+    :straight (projectile :type git :host github
+                          :repo "bbatsov/projectile")
+    :config
+    (projectile-mode +1)
+    (flymake-mode-off)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    )
+
+  (use-package counsel-projectile
+    :straight (counsel-projectile :type git :host github
+                                  :repo "ericdanan/counsel-projectile")
+    :config
+    (counsel-projectile-mode +1)
+    )
+#+end_src
 *** Python
 Simple python configuration
 
@@ -368,34 +358,6 @@ Github repository: https://github.com/russell/python-mode
   ;;   :custom
   ;;   (python-pytest-confirm t))
 #+END_SRC
-*** Rust
-Simple basic rust config
-
-#+begin_src emacs-lisp
-(use-package rustic
-  :bind (:map rustic-mode-map
-              ("M-j" . lsp-ui-imenu)
-              ("M-?" . lsp-find-references)
-              ("C-c C-c l" . flycheck-list-errors)
-              ("C-c C-c a" . lsp-execute-code-action)
-              ("C-c C-c r" . lsp-rename)
-              ("C-c C-c q" . lsp-workspace-restart)
-              ("C-c C-c Q" . lsp-workspace-shutdown)
-              ("C-c C-c s" . lsp-rust-analyzer-status))
-  :config
-  ;; uncomment for less flashiness
-  ;; (setq lsp-eldoc-hook nil)
-  ;; (setq lsp-enable-symbol-highlighting nil)
-  ;; (setq lsp-signature-auto-activate nil)
-
-  ;; comment to disable rustfmt on save
-  (setq rustic-format-on-save t)
-  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
-
-(defun rk/rustic-mode-hook ()
-  ;; so that run C-c C-c C-r works without having to confirm
-  (setq-local buffer-save-without-query t))
-#+end_src
 *** Smooth-scrolling
 Make the scrolling smoother
 
@@ -439,10 +401,9 @@ Github repository: https://github.com/Alexander-Miller/treemacs
               which-key-show-prefix 'left
               which-key-idle-secondary-delay 0.5
               which-key-popup-type 'side-window
-              which-key-side-window-location 'right
+              which-key-side-window-location 'bottom
               which-key-show-early-on-C-h t
               which-key-show-major-mode t)
-        (which-key-setup-side-window-bottom)
         (global-set-key (kbd "C-x w") 'which-key-show-top-level)
         (which-key-mode)
         )
