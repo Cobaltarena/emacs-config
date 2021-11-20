@@ -123,7 +123,7 @@ Github repository: https://github.com/emacs-lsp/dap-mode
       :config
       (dashboard-setup-startup-hook)
       (setq dashboard-banner-logo-title nil)
-      (setq dashboard-startup-banner "~/.emacs.d/emacs-config/shirouTest.png")
+      (setq dashboard-startup-banner "~/.emacs.d/emacs-config/resources/oath.png")
   )
 #+end_src
 *** Dired
