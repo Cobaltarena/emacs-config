@@ -2,7 +2,7 @@
 
 ** Company
 Major mode for completion when programming.
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
   (use-package company
     :defer t
     :straight (company :type git :host github :repo "company-mode/company-mode")
