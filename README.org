@@ -1,0 +1,44 @@
+* Installation
+
+First, clone this configuration using
+#+begin_src sh
+  git clone https://github.com/Cobaltarena/emacs-config.git ~/.emacs.d/emacs-config
+#+end_src
+Then open _~/.emacs.d/init.el_ and add the following
+
+#+begin_src emacs-lisp
+(setq org-config
+      (expand-file-name "emacs-config/main.org" user-emacs-directory))
+(org-babel-load-file org-config)
+#+end_src
+
+The first run should take some time since it needs to download and build all
+the packages.
+
+* Known issues
+
+** Void function org-file-name-concat
+If you encounter an issue about org-file-name-concat being a void function
+and if it is related to org-persist with the cache, it means that it is the org-mode
+builtin to emacs that is used instead of the official one.
+To fix this, add the following to your =init.el=
+
+#+begin_src emacs-lisp
+(defvar bootstrap-version)
+
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+(straight-use-package 'use-package)
+(straight-use-package 'org)
+(package-initialize)
+#+end_src
+

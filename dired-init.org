@@ -1,0 +1,87 @@
+#+TITLE: Dired config
+
+** Misc
+   #+begin_src emacs-lisp
+     ;; stop reusing same buffer when switching directories with 'a'
+     (put 'dired-find-alternate-file 'disabled nil)
+     (define-key dired-mode-map (kbd "DEL")
+       '(lambda () (interactive)
+          (set-buffer-modified-p nil)
+          (find-alternate-file (concat (expand-file-name default-directory) ".."))))
+     (add-hook 'dired-mode-hook 'hl-line-mode)
+     ;; readable units
+     (setq-default dired-listing-switches "-alh")
+   #+end_src
+
+** All-the-icons-dired
+Prettier dired with marvelous icons
+
+Github repository: [[https://github.com/jtbm37/all-the-icons-dired]]
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons-dired
+    :straight (all-the-icons-dired :type git :host github
+                                   :repo "jtbm37/all-the-icons-dired")
+    :config
+    (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+    )
+#+END_SRC
+** Diredful
+Diredful is a package that helps the customization of faces for custom extensions 
+or file types
+
+Github repository: [[https://github.com/thamer/diredful]]
+#+BEGIN_SRC emacs-lisp
+  (use-package diredful
+    :defer t
+    :straight (diredful :type git :host github
+                                   :repo "thamer/diredful")
+    :config
+    (diredful-mode 1)
+    )
+#+END_SRC
+** Dired-hacks
+Useful hacks on dired to make it a bit more handy to use
+#+begin_src emacs-lisp
+(straight-use-package
+        '(dired-hacks :type git :host github
+                               :repo "Fuco1/dired-hacks"))
+#+end_src
+
+*** Dired-narrow
+better filtering using '/' (see [[here]] for demo)
+#+begin_src emacs-lisp
+  (use-package dired-narrow
+    :config
+    (define-key dired-mode-map (kbd "/") 'dired-narrow-fuzzy))
+#+end_src
+** Git integration
+dired-git is a minor mode that offers a git integration to make it more
+to work with git. It provides git information as the last commit for each file
+or if they are tracked or not.
+
+Github repository: [[https://github.com/clemera/dired-git-info]]
+#+BEGIN_SRC emacs-lisp
+  (use-package dired-git-info
+    :defer t
+    :config
+    ;; uncomment to stop hiding details such as ownership, permissions or size
+    ;; when toggling dired-git
+    (setq dgi-auto-hide-details-p nil)
+    )
+  (with-eval-after-load 'dired
+    (define-key dired-mode-map ")" 'dired-git-info-mode)
+    )
+#+END_SRC
+** QuickSort
+Minor mode to improve searching methods when using dired-mode.
+Require Coreutils on your system to work properly
+
+Gitlab repository: [[https://gitlab.com/xuhdev/dired-quick-sort]]
+#+BEGIN_SRC emacs-lisp
+  (use-package dired-quick-sort
+    :straight (dired-quick-sort :type git :host github
+                                   :repo "xuhdev/dired-quick-sort")
+    :config
+    (dired-quick-sort-setup)
+    )
+#+END_SRC

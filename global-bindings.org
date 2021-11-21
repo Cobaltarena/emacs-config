@@ -1,0 +1,73 @@
+#+TITLE: Global bindings
+
+** Clang format
+   #+begin_src emacs-lisp
+(global-set-key (kbd "C-c C-f") 'clang-format-buffer)
+   #+end_src
+** Comment Region
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c d") 'comment-or-uncomment-region)
+#+END_SRC
+
+** Compilation using counsel
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x C-p") 'counsel-compile)
+#+END_SRC
+
+** Config reload
+    #+begin_src emacs-lisp
+(global-set-key (kbd "C-c m") 'cb/reload-config)
+    #+end_src
+** Docker mode
+   #+begin_src emacs-lisp
+(global-set-key (kbd "C-c C-d") 'docker)
+   #+end_src
+** Error navigation
+ #+BEGIN_SRC emacs-lisp
+ (global-unset-key [f3])
+ (global-set-key [f3] 'next-error)
+
+ (global-unset-key [f2])
+ (global-set-key [f2] 'previous-error)
+ #+END_SRC
+** Indent Region
+   #+begin_src emacs-lisp
+     (global-unset-key (kbd "C-x m"))
+     (global-set-key (kbd "C-x m") 'indent-region)
+   #+end_src
+** Ivy Magit TODOs
+   #+begin_src emacs-lisp
+(global-set-key (kbd "C-x j") 'ivy-magit-todos)
+   #+end_src
+** Layout keyboard rebind
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-q") 'move-beginning-of-line)
+(global-set-key (kbd "M-z") 'kill-ring-save)
+(global-set-key (kbd "C-z") 'kill-region)
+#+END_SRC
+
+** Man page quick access
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x C-m") 'helm-man-woman)
+#+END_SRC
+** Magit
+   #+begin_src emacs-lisp
+(global-set-key (kbd "C-c C-g") 'magit)
+   #+end_src
+** Melpa
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x p") 'package-install)
+#+END_SRC
+
+** WindMove
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c <C-left>") 'windmove-left)
+(global-set-key (kbd "C-c <C-right>") 'windmove-right)
+(global-set-key (kbd "C-c <C-up>") 'windmove-up)
+(global-set-key (kbd "C-c <C-down>") 'windmove-down)
+#+END_SRC
+
+** Vterm instance
+    #+begin_src emacs-lisp
+(global-set-key (kbd "C-x C-h") 'cb/pop-shell)
+    #+end_src

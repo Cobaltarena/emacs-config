@@ -1,0 +1,491 @@
+#+TITLE: Emacs config using org-mode
+
+** Init
+*** Custom functions
+Load some custom functions
+#+begin_src emacs-lisp
+(mapc 'load-file (directory-files "~/.emacs.d/emacs-config/lisp/" t "cb-custom.el"))
+#+end_src
+*** Bindings
+Custom global bindings
+#+begin_src emacs-lisp
+    (setq global-bindings
+          (expand-file-name "emacs-config/global-bindings.org" user-emacs-directory))
+#+end_src
+** Startup screen
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-screen t)
+  (if (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ; hide tool bar (GUI only)
+  (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1)) ; hide scroll bar (GUI only)
+  (if (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ; hide menu bar
+(setq fancy-splash-image "~/.emacs.d/emacs-config/shirouTest.jpg")
+#+END_SRC
+** Debug stacke trace on config error
+#+BEGIN_SRC emacs-lisp
+(setq debug-on-error t ; show stack trace on config error
+      vc-follow-symlinks t) ; always follow symlink
+#+END_SRC
+** Use-package
+All the packages I'm using in my config.
+*** Aggressive-indent
+Make aggresive indent enabled on every mode except for html
+(might configure it later) and bind 'C-x a' to toggle it or not
+
+Github repository: [[https://github.com/Malabarba/aggressive-indent-mode]]
+#+BEGIN_SRC emacs-lisp
+      (use-package aggressive-indent
+        :straight (aggressive-indent :type git :host github
+                                     :repo "Malabarba/aggressive-indent-mode")
+        :config
+        ;; (global-aggressive-indent-mode 1)
+        (global-set-key (kbd "C-x a") 'aggressive-indent-mode)
+        )
+#+END_SRC
+*** Clang-format
+Clang-format because it's very handy
+
+Github repository: [[https://github.com/sonatard/clang-format]]
+#+BEGIN_SRC emacs-lisp
+  (use-package clang-format
+      :straight (clang-format :type git :host github
+                                   :repo "sonatard/clang-format")
+    )
+#+END_SRC
+*** Company-mode
+Expand the dedicated org-file for company-mode and its dependencies
+#+BEGIN_SRC emacs-lisp
+(setq company-config
+      (expand-file-name "emacs-config/company-init.org" user-emacs-directory))
+(org-babel-load-file company-config)
+#+END_SRC
+*** Counsel
+
+Github repository: [[https://github.com/abo-abo/swiper]] (part of ivy)
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel
+    :straight (counsel :type git :host github
+                                   :repo "abo-abo/swiper")
+    :config
+    (counsel-mode 1)
+    )
+#+END_SRC
+*** Dap-mode
+Super Handy debugging tool for many langages, uses lsp.
+
+Github repository: https://github.com/emacs-lsp/dap-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package dap-mode
+        :straight (dap-mode :type git :host github
+                                      :repo "emacs-lsp/dap-mode")
+  :custom
+  (lsp-enable-dap-auto-configure nil)
+  :config
+  (dap-ui-mode 1)
+  )
+  (global-unset-key (kbd "C-d"))
+  (add-hook 'c++-mode-hook
+            (lambda()
+              (local-unset-key (kbd "C-d"))))
+  (let ((bindings '(
+                    ("C-a" . dap-ui-show-many-windows)
+                    ("C-e" . dap-ui-hide-many-windows)
+                    ("a" . dap-breakpoint-add)
+                    ("d" . dap-breakpoint-delete)
+                    ("c" . dap-breakpoint-delete-all)
+                    ("n" . dap-next)
+                    ("C-c" . dap-continue)
+                    ("s" . dap-step-in)
+                    ("r" . dap-step-out)
+                    ("e" . dap-eval)
+                    ("C-g" . dap-debug)
+                    ("C-r" . dap-debug-restart)
+                    ("g" . dap-debug-edit-template)
+                    )))
+    (dolist (binding bindings)
+      (global-set-key (kbd (concat "C-d " (car binding))) (cdr binding))))
+#+END_SRC
+*** Dashboard
+#+begin_src emacs-lisp
+      (use-package dashboard
+        :after projectile
+        :straight (dashboard :type git :host github
+                             :repo "emacs-dashboard/emacs-dashboard")
+        :config
+
+        (setq dashboard-banner-logo-title "'Unaware of beginning, Nor aware of the end...'"
+              dashboard-startup-banner "~/.emacs.d/emacs-config/resources/oath.png"
+              dashboard-set-heading-icons t
+              dashboard-set-file-icons t
+              dashboard-center-content t
+              dashboard-week-agenda t
+
+              dashboard-set-init-info nil
+              dashboard-set-footer nil
+              dashboard-set-navigator nil
+
+              dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name
+              initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+        (set-face-attribute 'dashboard-items-face nil
+                            :underline nil
+                            :foreground "#da8548")
+        (set-face-attribute 'dashboard-no-items-face nil
+                            :underline nil)
+        (set-face-attribute 'dashboard-banner-logo-title nil
+                            :italic t
+                            :foreground "cyan")
+        (add-to-list 'dashboard-items '(agenda) t)
+        (hl-line-mode -1)
+        (setq dashboard-items '(
+                                (projects . 5)
+                                (recents  . 5)
+                                (agenda . 5))
+              )
+        (setq dashboard-week-agenda t)
+        (setq dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
+        (dashboard-setup-startup-hook)
+    )
+#+end_src
+*** Dired
+Expand the dedicated org-file for dired-mode and its dependencies
+#+BEGIN_SRC emacs-lisp
+(setq dired-config
+      (expand-file-name "emacs-config/dired-init.org" user-emacs-directory))
+(org-babel-load-file dired-config)
+#+END_SRC
+*** Doom-modeline
+Better and prettier modeline. Mostly a copy paste from the README of the
+github repository: https://github.com/seagle0128/doom-modeline
+#+BEGIN_SRC emacs-lisp
+  (use-package doom-modeline
+    :straight (doom-modeline :type git :host github
+				      :repo "seagle0128/doom-modeline")
+    :init
+    (doom-modeline-mode 1)
+    :hook
+    (after-init . doom-modeline-init)
+    :config
+    (setq doom-modeline-height 25
+	  doom-modeline-bar-width 3
+	  doom-modeline-window-width-limit fill-column
+	  doom-modeline-project-detection 'project
+	  doom-modeline-buffer-file-name-style 'relative-from-project
+	  doom-modeline-icon (display-graphic-p)
+	  doom-modeline-major-mode-icon t
+	  doom-modeline-major-mode-color-icon t
+	  doom-modeline-buffer-state-icon t
+	  doom-modeline-buffer-modification-icon t
+	  doom-modeline-minor-modes t
+	  ;; doom-modeline-enable-word-count t
+	  doom-modeline-buffer-encoding t
+	  doom-modeline-lsp t
+	  doom-modeline-before-update-env-hook nil
+	  doom-modeline-after-update-env-hook nil)
+    )
+#+END_SRC
+
+*** Eterm-256color
+Package to enhance the output of terminal emulators. 
+Requires =ncurses= to be installed
+
+Github repository: [[https://github.com/dieggsy/eterm-256color]]
+#+BEGIN_SRC emacs-lisp
+  (use-package eterm-256color
+    :straight (eterm-256color :type git :host github
+                                      :repo "dieggsy/eterm-256color")
+    :hook (term-mode vterm-mode eshell-mode)
+    )
+#+END_SRC
+*** Fixmee
+A very handy TODO package
+
+Github repository: [[https://github.com/rolandwalker/fixmee]]
+#+BEGIN_SRC emacs-lisp
+  (use-package button-lock
+    :defer t
+    :straight (button-lock :type git :host github
+                                  :repo "rolandwalker/button-lock"))
+  (use-package fixmee
+    :defer t
+    :straight (fixmee :type git :host github
+                                  :repo "rolandwalker/fixmee")
+
+    :config
+    (global-fixmee-mode 1)
+      ;; fixmee-mode next/prev rebind and view list
+    (global-set-key [f6] 'fixmee-goto-next-by-position)
+    (global-set-key [f5] 'fixmee-goto-previous-by-position)
+    (global-set-key [f4] 'fixmee-view-listing)
+    )
+#+END_SRC
+*** Flycheck
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :diminish (flycheck-mode)
+    :straight (flycheck :type git :host github
+                        :repo "flycheck/flycheck")
+    :config
+    (setq flycheck-indication-mode nil)
+    (global-flycheck-mode)
+
+    )
+#+end_src
+*** Gnus
+A package to be able to read newsgroup using NNTP protocol
+
+Github repository: [[https://github.com/espenhw/gnus]]
+#+BEGIN_SRC emacs-lisp
+  (use-package gnus
+    :defer t
+    :straight (gnus :type git :host github
+                                :repo "espenhw/gnus")
+    :config
+    (setq gnus-select-method '(nntp "news.epita.fr"))
+    )
+#+END_SRC
+
+*** Helm
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-gtags
+    :straight (helm-gtags :type git :host github
+                                  :repo "emacsorphanage/helm-gtags")
+    :config
+    (helm-gtags-mode +1)
+    (global-set-key (kbd "C-c r") 'helm-gtags-find-rtag)
+    (global-set-key (kbd "C-c C-r") 'helm-gtags-find-tag-other-window)
+    )
+#+END_SRC
+*** Highlight-defined
+Package to make matching pattern with swiper highlighted
+
+Github repository: https://github.com/Fanael/highlight-defined
+#+BEGIN_SRC emacs-lisp
+  (use-package highlight-defined
+    :straight (highlight-defined :type git :host github
+                                 :repo "Fanael/highlight-defined")
+    :config
+    (add-hook 'emacs-lisp-mode-hook 'highlight-defined-mode)
+    )
+#+END_SRC
+*** Ivy
+Super cool and easy to use major mode for completion when searching commands or
+file.
+
+Github repository: https://github.com/abo-abo/swiper
+#+BEGIN_SRC emacs-lisp
+(setq ivy-config
+      (expand-file-name "emacs-config/ivy-init.org" user-emacs-directory))
+(org-babel-load-file ivy-config)
+#+END_SRC
+*** LSP
+#+begin_src emacs-lisp
+  (use-package lsp
+    :config
+    (flymake-mode-off)
+  
+    )
+#+end_src
+*** Magit
+Magit is love, very handy and easy to learn and use when working with git.
+
+Github repository: https://github.com/magit/magit
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :straight (magit :type git :host github
+                     :repo "magit/magit")
+    :config
+    (global-set-key (kbd "C-c C-g") 'magit)
+    )
+
+  (use-package magit-todos
+    :straight (magit-todos :type git :host github
+                     :repo "alphapapa/magit-todos")
+    :config
+    (magit-todos-mode t)
+    )
+
+#+END_SRC
+*** Markdown-mode
+Major package to edit .md files
+
+Github repository: https://github.com/jrblevin/markdown-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode
+    :straight (markdown-mode :type git :host github
+                     :repo "jrblevin/markdown-mode")
+
+    :commands (markdown-mode gfm-mode)
+    :mode (("README\\.md\\'" . gfm-mode)
+           ("\\.md\\'" . markdown-mode)
+           ("\\.markdown\\'" . markdown-mode))
+    :init
+    (setq markdown-command "multimarkdown")
+    )
+#+END_SRC
+*** Modern-sh
+Minor mode for shell programming. Better highlight, auto indentation when saving
+and smarter indent.
+
+Github repository: https://github.com/damon-kwok/modern-sh
+#+BEGIN_SRC emacs-lisp
+  (use-package modern-sh
+    :straight (modern-sh :type git :host github
+                         :repo "damon-kwok/modern-sh")
+    :hook (sh-mode)
+    )
+#+END_SRC
+*** Nix
+#+begin_src emacs-lisp
+    (use-package nix-mode
+      :straight (nix-mode :type git :host github
+                          :repo "nixos/nix-mode")
+      :mode "\\.nix\\'"
+      )
+#+end_src
+
+
+*** Org-mode
+Github repository: https://github.com/bzg/org-mode (mirror only)
+
+#+BEGIN_SRC emacs-lisp
+(setq org-config
+      (expand-file-name "emacs-config/org-init.org" user-emacs-directory))
+(org-babel-load-file org-config)
+#+END_SRC
+*** Pdf-tools
+
+Found on http://alberto.am/2020-04-11-pdf-tools-as-default-pdf-viewer.html
+#+begin_src emacs-lisp
+    (use-package pdf-tools
+       :straight (pdf-tools :type git :host github
+                            :repo "politza/pdf-tools")
+       :config
+       (pdf-loader-install)
+       (setq-default pdf-view-display-size 'fit-width)
+       (define-key pdf-view-mode-map (kbd "C-s") 'swiper)
+       (add-hook 'pdf-view-mode-hook (lambda() (linum-mode -1)))
+       :custom
+       (pdf-annot-activate-created-annotations t "automatically annotate highlights")
+       (setq TeX-view-program-selection '((output-pdf "PDF Tools")
+                                          TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+                                          TeX-source-correlate-start-server t))
+
+       (add-hook 'TeX-after-compilation-finished-functions
+                 #'TeX-revert-document-buffer))
+#+end_src
+*** Projectile
+Or how to manage a project
+#+begin_src emacs-lisp
+  (use-package projectile
+    :straight (projectile :type git :host github
+                          :repo "bbatsov/projectile")
+    :config
+    (projectile-mode +1)
+    (flymake-mode-off)
+    (setq projectile-switch-project-action #'projectile-dired)
+    (setq projectile-completion-system 'ivy)
+    (setq projectile-track-known-projects-automatically nil)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    )
+
+  (use-package counsel-projectile
+    :straight (counsel-projectile :type git :host github
+                                  :repo "ericdanan/counsel-projectile")
+    :config
+    (counsel-projectile-mode +1)
+    )
+#+end_src
+*** Python
+Simple python configuration
+
+Github repository: https://github.com/russell/python-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package python-mode
+  :straight (python-mode :type git :host github
+                       :repo "russell/python-mode")
+
+    :hook (python-mode . lsp-deferred)
+    :config
+  (progn
+    (setq dap-python-executable "python3"
+          dap-python-debugger 'debugpy
+          aggressive-indent-mode nil)
+    (require 'dap-python))
+  )
+
+  ;; (use-package sphinx-doc
+  ;;   :ensure t
+  ;;   :hook (python-mode . sphinx-doc-mode)
+  ;;   :config
+  ;;   )
+
+  ;; (use-package python-pytest
+  ;;   :custom
+  ;;   (python-pytest-confirm t))
+#+END_SRC
+*** Smooth-scrolling
+Make the scrolling smoother
+
+Github repository: https://github.com/aspiers/smooth-scrolling
+#+BEGIN_SRC emacs-lisp
+  (use-package smooth-scrolling
+    :straight (smooth-scrolling :type git :host github
+                                :repo "aspiers/smooth-scrolling")
+
+    :config
+    (smooth-scrolling-mode t)
+    )
+#+END_SRC
+
+*** Treemacs
+Simple treemacs config because it is already marvelous 
+out of the box
+
+Github repository: https://github.com/Alexander-Miller/treemacs
+#+BEGIN_SRC emacs-lisp
+  (use-package treemacs
+  :defer t
+  :config
+  (global-set-key [f12] 'treemacs)
+  (global-set-key (kbd "C-c i") 'treemacs-add-project-to-workspace)
+  (unbind-key "s" treemacs-mode-map)
+  (bind-key "s" #'treemacs-find-file treemacs-mode-map)
+  )
+#+END_SRC
+
+*** Which-key
+    #+begin_src emacs-lisp
+      (use-package which-key
+        :defer t
+        :straight (which-key :type git :host github
+                             :repo "justbur/emacs-which-key")
+
+        :config
+
+        (setq which-key-show-prefix 'left
+              which-key-popup-type 'side-window
+              which-key-side-window-location 'bottom
+              which-key-show-early-on-C-h t
+              which-key-show-major-mode t)
+        (global-set-key (kbd "C-x w") 'which-key-show-top-level)
+        (which-key-mode +1)
+        )
+    #+end_src
+*** Yaml-mode
+#+begin_src emacs-lisp
+  (use-package yaml-mode
+    :straight (yaml-mode :type git :host github
+                         :repo "yoshiki/yaml-mode")
+    :mode "\\.yml\\'" 
+    )
+#+end_src
+** Theming
+#+begin_src emacs-lisp
+(setq theming-config (expand-file-name "emacs-config/theming-init.org"
+                                       user-emacs-directory))
+(if (daemonp)
+  (add-hook 'after-make-frame-functions
+      (lambda (frame)
+          (with-selected-frame frame
+              (org-babel-load-file theming-config))))
+(org-babel-load-file theming-config))
+#+end_src

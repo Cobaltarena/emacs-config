@@ -1,0 +1,69 @@
+#+TITLE: Ivy and its dependencies
+
+** Ivy
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :straight (ivy :type git :host github
+                   :repo "abo-abo/swiper")
+    :config
+    (ivy-mode 1)
+    ;; ??? TODO
+    (setq
+     enable-recursive-minibuffers t
+     ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-create
+     ivy-display-style 'fancy
+     ivy-initial-inputs-alist nil
+     ivy-use-virtual-buffers t
+     ivy-wrap t)
+    (global-unset-key (kbd "C-x b"))
+    (global-set-key (kbd "C-x b") 'counsel-switch-buffer)
+    )
+#+END_SRC
+
+** All the icons
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons-ivy
+    :straight (all-the-icons-ivy :type git :host github
+                   :repo "asok/all-the-icons-ivy")
+    :init
+    (add-hook 'after-init-hook 'all-the-icons-ivy-setup)
+    )
+#+END_SRC
+
+** Ivy-rich
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy-rich
+    :straight (ivy-rich :type git :host github
+                   :repo "Yevgnen/ivy-rich")
+    :config
+    ;; fancier ivy
+    (ivy-rich-mode 1)
+    )
+#+END_SRC
+
+** Ivy-prescient
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy-prescient
+    :straight (presicent :type git :host github
+                   :repo "raxod502/prescient.el")
+    :after company-prescient
+    :custom
+    (ivy-prescient-enable-filtering nil)
+    :config
+    (prescient-persist-mode 1)
+    (ivy-prescient-mode 1)
+    )
+#+END_SRC
+
+** Swiper
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper
+    :after ivy
+    :config
+    (global-unset-key (kbd "C-s"))
+    (global-set-key (kbd "C-s") 'swiper)
+    (global-unset-key (kbd "C-r"))
+    (global-set-key (kbd "C-r") 'swiper-backward)
+    )
+#+END_SRC
+
