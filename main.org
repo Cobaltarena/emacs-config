@@ -9,8 +9,9 @@ Load some custom functions
 *** Bindings
 Custom global bindings
 #+begin_src emacs-lisp
-    (setq global-bindings
-          (expand-file-name "emacs-config/global-bindings.org" user-emacs-directory))
+  (setq global-bindings
+        (expand-file-name "emacs-config/global-bindings.org" user-emacs-directory))
+  (org-babel-load-file global-bindings)
 #+end_src
 ** Startup screen
 #+BEGIN_SRC emacs-lisp
