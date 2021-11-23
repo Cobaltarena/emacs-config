@@ -75,25 +75,29 @@ Enable linum-mode and customize is a bit according to the theme
 Custom whitespace newline to make is easier to see.
 Trailing whitespaces are also enabled
 #+BEGIN_SRC emacs-lisp
-(global-whitespace-mode t)
-(setq whitespace-display-mappings
-      '(
-        (newline-mark 10
-                      [5321 10])
-        (tab-mark 9
-                  [9655 9]
-                  [92 9])
+  (global-whitespace-mode t)
+  (setq whitespace-display-mappings
+        '(
+          (newline-mark 10
+                        [5321 10])
+          (tab-mark 9
+                    [9655 9]
+                    [92 9])
+          )
         )
-      )
-(setq whitespace-style
-      '(
-        tabs tab-mark ; the tabulations,
-        newline-mark
-        newline
-        trailing
+  (setq whitespace-style
+        '(
+          face
+          tabs tab-mark ; the tabulations,
+          newline-mark
+          newline
+          trailing
+          )
         )
-      )
-(set-face-attribute 'whitespace-newline nil :foreground "#A68064")
+  (set-face-attribute 'whitespace-newline nil :foreground "#A68064")
+  (set-face-attribute 'whitespace-space nil :foreground "#A68064")
+  (set-face-attribute 'whitespace-space nil :background bg)
+
 #+END_SRC
 
 *** Tabulations
