@@ -490,3 +490,9 @@ Github repository: https://github.com/Alexander-Miller/treemacs
               (org-babel-load-file theming-config))))
 (org-babel-load-file theming-config))
 #+end_src
+** Misc
+#+begin_src emacs-lisp
+  (setq misc-config (expand-file-name "emacs-config/misc-init.org"
+                                      user-emacs-directory))
+  (org-babel-load-file misc-config)
+#+end_src

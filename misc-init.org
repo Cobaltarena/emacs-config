@@ -1,0 +1,6 @@
+#+TITLE: Misc config that I don't know where to put
+
+#+begin_src emacs-lisp
+(setq backup-directory-alist '(("." . "~/local/emacs_tf"))
+      backup-by-copying t)
+#+end_src
