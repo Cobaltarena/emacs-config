@@ -227,7 +227,6 @@ Github repository: [[https://github.com/rolandwalker/fixmee]]
     :config
     (setq flycheck-indication-mode nil)
     (global-flycheck-mode)
-
     )
 #+end_src
 *** Gnus
@@ -320,18 +319,6 @@ Github repository: https://github.com/jrblevin/markdown-mode
            ("\\.markdown\\'" . markdown-mode))
     :init
     (setq markdown-command "multimarkdown")
-    )
-#+END_SRC
-*** Modern-sh
-Minor mode for shell programming. Better highlight, auto indentation when saving
-and smarter indent.
-
-Github repository: https://github.com/damon-kwok/modern-sh
-#+BEGIN_SRC emacs-lisp
-  (use-package modern-sh
-    :straight (modern-sh :type git :host github
-                         :repo "damon-kwok/modern-sh")
-    :hook (sh-mode)
     )
 #+END_SRC
 *** Nix
