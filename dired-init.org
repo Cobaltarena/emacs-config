@@ -85,3 +85,16 @@ Gitlab repository: [[https://gitlab.com/xuhdev/dired-quick-sort]]
     (dired-quick-sort-setup)
     )
 #+END_SRC
+** Zoxide
+Better cd
+#+begin_src emacs-lisp
+  (use-package zoxide
+    :straight (zoxide :type git :host gitlab
+                      :repo "Vonfry/zoxide.el")
+    :config
+    (global-unset-key (kbd "C-x C-z"))
+    (global-set-key (kbd "C-x C-z") 'zoxide-find-file)
+    (add-hook 'zoxide-hook 'find-file-hook)
+    (add-hook 'zoxide-hook 'projectile-after-switch-project-hook)
+    )
+#+end_src

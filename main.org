@@ -108,42 +108,48 @@ Github repository: https://github.com/emacs-lsp/dap-mode
 *** Dashboard
 #+begin_src emacs-lisp
   (use-package dashboard
-	  :after projectile
-	  :straight (dashboard :type git :host github
-			       :repo "emacs-dashboard/emacs-dashboard")
-	  :config
+    :init
+    (dashboard-setup-startup-hook)
+    :after projectile
+    :straight (dashboard :type git :host github
+                         :repo "emacs-dashboard/emacs-dashboard")
+    :config
 
-	  (setq dashboard-banner-logo-title "'Unaware of beginning, Nor aware of the end...'"
-		dashboard-startup-banner "~/.emacs.d/emacs-config/resources/oath.png"
-		dashboard-set-heading-icons t
-		dashboard-set-file-icons t
-		dashboard-center-content t
-		dashboard-week-agenda t
+    (setq dashboard-banner-logo-title "'Unaware of beginning, Nor aware of the end...'"
+          dashboard-startup-banner "~/.emacs.d/emacs-config/resources/oath.png"
+          dashboard-set-heading-icons t
+          dashboard-set-file-icons t
+          dashboard-center-content t
+          dashboard-week-agenda t
 
-		dashboard-set-init-info nil
-		dashboard-set-footer nil
-		dashboard-set-navigator nil
+          dashboard-set-init-info nil
+          dashboard-set-footer nil
+          dashboard-set-navigator nil
 
-		dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name
-		initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-	  (set-face-attribute 'dashboard-items-face nil
-			      :underline nil
-			      :foreground "#da8548")
-	  (set-face-attribute 'dashboard-no-items-face nil
-			      :underline nil)
-	  (set-face-attribute 'dashboard-banner-logo-title nil
-			      :italic t
-			      :foreground "cyan")
-	  (add-to-list 'dashboard-items '(agenda) t)
-	  (hl-line-mode -1)
-	  (setq dashboard-items '(
-				  (projects . 5)
-				  (recents  . 5)
-				  (agenda . 5))
-		)
-	  (setq dashboard-week-agenda t)
-	  (setq dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
-	  (dashboard-setup-startup-hook)
+          dashboard-week-agenda t
+          dashboard-filter-agenda-entry 'dashboard-no-filter-agenda
+
+          dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name)
+
+    (set-face-attribute 'dashboard-items-face nil
+                        :underline nil
+                        :foreground "#da8548")
+    (set-face-attribute 'dashboard-no-items-face nil
+                        :underline nil)
+    (set-face-attribute 'dashboard-banner-logo-title nil
+                        :italic t
+                        :foreground "cyan")
+    (add-to-list 'dashboard-items '(agenda) t)
+    (hl-line-mode -1)
+
+    (setq dashboard-items '(
+                            (projects . 5)
+                            (recents  . 5)
+                            (agenda . 5))
+          )
+
+    (if (daemonp)
+        initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
       )
 #+end_src
 *** Dired
