@@ -64,7 +64,7 @@ Really cool package that lets you create templates for code blocks
       ;; This is needed as of Org 9.2
       (require 'org-tempo)
 
-      (add-to-list 'org-structure-template-alist '("cl" . "src clojure"))
+      ;; (add-to-list 'org-structure-template-alist '("cl" . "src clojure"))
       (add-to-list 'org-structure-template-alist '("c" . "src c"))
       (add-to-list 'org-structure-template-alist '("cpp" . "src cpp"))
       (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
@@ -73,7 +73,7 @@ Really cool package that lets you create templates for code blocks
       (add-to-list 'org-structure-template-alist '("json" . "src json"))
       (add-to-list 'org-structure-template-alist '("latex" . "src latex"))
       (add-to-list 'org-structure-template-alist '("py" . "src python"))
-      (add-to-list 'org-structure-template-alist '("bash" . "src bash"))
+      ;; (add-to-list 'org-structure-template-alist '("bash" . "src bash"))
       (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
 
   )

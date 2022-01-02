@@ -39,4 +39,17 @@
   (switch-to-buffer path)
   )
 
+
+
+(defun cb/dashboard-zoxide (list-size)
+  "zoxide widget for dashboard"
+  (dashboard-insert-section
+   "Zoxide:"
+   (dashboard-subseq (zoxide-query-with "-l") 0 list-size)
+   list-size
+   "z"
+   `(lambda (&rest ignore) (counsel-find-file ,el)) ;; wtf why ,el
+   (format "%s" el))
+  )
+
 (provide 'cb-custom)

@@ -115,21 +115,21 @@ Github repository: https://github.com/emacs-lsp/dap-mode
                          :repo "emacs-dashboard/emacs-dashboard")
     :config
 
-    (setq dashboard-banner-logo-title "'Unaware of beginning, Nor aware of the end...'"
-          dashboard-startup-banner "~/.emacs.d/emacs-config/resources/oath.png"
-          dashboard-set-heading-icons t
-          dashboard-set-file-icons t
+    (setq dashboard-banner-logo-title "'Unaware of the beginning, Nor aware of the end...'"
           dashboard-center-content t
-          dashboard-week-agenda t
-
-          dashboard-set-init-info nil
-          dashboard-set-footer nil
-          dashboard-set-navigator nil
-
-          dashboard-week-agenda t
           dashboard-filter-agenda-entry 'dashboard-no-filter-agenda
 
-          dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name)
+          dashboard-projects-backend 'projectile
+          dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name
+
+          dashboard-set-file-icons t
+          dashboard-set-footer nil
+          dashboard-set-heading-icons t
+          dashboard-set-init-info nil
+          dashboard-set-navigator nil
+
+          dashboard-startup-banner "~/.emacs.d/emacs-config/resources/oath.png"
+          dashboard-week-agenda t)
 
     (set-face-attribute 'dashboard-items-face nil
                         :underline nil
@@ -142,14 +142,16 @@ Github repository: https://github.com/emacs-lsp/dap-mode
     (add-to-list 'dashboard-items '(agenda) t)
     (hl-line-mode -1)
 
+    (add-to-list 'dashboard-item-generators  '(zoxide . cb/dashboard-zoxide))
+    (add-to-list 'dashboard-items '(zoxide) t)
+
     (setq dashboard-items '(
-                            (projects . 5)
+                            (zoxide . 7)
                             (recents  . 5)
                             (agenda . 5))
           )
 
-    (if (daemonp)
-        initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
       )
 #+end_src
 *** Dired
