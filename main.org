@@ -142,11 +142,11 @@ Github repository: https://github.com/emacs-lsp/dap-mode
     (add-to-list 'dashboard-items '(agenda) t)
     (hl-line-mode -1)
 
-    (add-to-list 'dashboard-item-generators  '(zoxide . cb/dashboard-zoxide))
+    ;; (add-to-list 'dashboard-item-generators  '(zoxide . cb/dashboard-zoxide))
     (add-to-list 'dashboard-items '(zoxide) t)
 
     (setq dashboard-items '(
-                            (zoxide . 7)
+                            ;; (zoxide . 7)
                             (recents  . 5)
                             (agenda . 5))
           )

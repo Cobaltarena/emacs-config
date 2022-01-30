@@ -16,7 +16,7 @@
      ivy-use-virtual-buffers t
      ivy-wrap t)
     (global-unset-key (kbd "C-x b"))
-    (global-set-key (kbd "C-x b") 'counsel-switch-buffer)
+    (global-set-key (kbd "C-x b") 'switch-to-buffer)
     )
 #+END_SRC
 
