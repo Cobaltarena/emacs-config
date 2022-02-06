@@ -42,22 +42,12 @@ Github repository: [[https://github.com/Malabarba/aggressive-indent-mode]]
         (global-set-key (kbd "C-x a") 'aggressive-indent-mode)
         )
 #+END_SRC
-*** Clang-format
-Clang-format because it's very handy
-
-Github repository: [[https://github.com/sonatard/clang-format]]
-#+BEGIN_SRC emacs-lisp
-  (use-package clang-format
-      :straight (clang-format :type git :host github
-                                   :repo "sonatard/clang-format")
-    )
-#+END_SRC
-*** Company-mode
+*** Prog-mode
 Expand the dedicated org-file for company-mode and its dependencies
 #+BEGIN_SRC emacs-lisp
-(setq company-config
-      (expand-file-name "emacs-config/company-init.org" user-emacs-directory))
-(org-babel-load-file company-config)
+(setq prog-config
+      (expand-file-name "emacs-config/prog-init.org" user-emacs-directory))
+(org-babel-load-file prog-config)
 #+END_SRC
 *** Counsel
 
@@ -74,37 +64,6 @@ Github repository: [[https://github.com/abo-abo/swiper]] (part of ivy)
 Super Handy debugging tool for many langages, uses lsp.
 
 Github repository: https://github.com/emacs-lsp/dap-mode
-#+BEGIN_SRC emacs-lisp
-  (use-package dap-mode
-        :straight (dap-mode :type git :host github
-                                      :repo "emacs-lsp/dap-mode")
-  :custom
-  (lsp-enable-dap-auto-configure nil)
-  :config
-  (dap-ui-mode 1)
-  )
-  (global-unset-key (kbd "C-d"))
-  (add-hook 'c++-mode-hook
-            (lambda()
-              (local-unset-key (kbd "C-d"))))
-  (let ((bindings '(
-                    ("C-a" . dap-ui-show-many-windows)
-                    ("C-e" . dap-ui-hide-many-windows)
-                    ("a" . dap-breakpoint-add)
-                    ("d" . dap-breakpoint-delete)
-                    ("c" . dap-breakpoint-delete-all)
-                    ("n" . dap-next)
-                    ("C-c" . dap-continue)
-                    ("s" . dap-step-in)
-                    ("r" . dap-step-out)
-                    ("e" . dap-eval)
-                    ("C-g" . dap-debug)
-                    ("C-r" . dap-debug-restart)
-                    ("g" . dap-debug-edit-template)
-                    )))
-    (dolist (binding bindings)
-      (global-set-key (kbd (concat "C-d " (car binding))) (cdr binding))))
-#+END_SRC
 *** Dashboard
 #+begin_src emacs-lisp
   (use-package dashboard
@@ -284,14 +243,6 @@ Github repository: https://github.com/abo-abo/swiper
       (expand-file-name "emacs-config/ivy-init.org" user-emacs-directory))
 (org-babel-load-file ivy-config)
 #+END_SRC
-*** LSP
-#+begin_src emacs-lisp
-  (use-package lsp
-    :config
-    (flymake-mode-off)
-  
-    )
-#+end_src
 *** Magit
 Magit is love, very handy and easy to learn and use when working with git.
 
@@ -329,14 +280,6 @@ Github repository: https://github.com/jrblevin/markdown-mode
     (setq markdown-command "multimarkdown")
     )
 #+END_SRC
-*** Nix
-#+begin_src emacs-lisp
-    (use-package nix-mode
-      :straight (nix-mode :type git :host github
-                          :repo "nixos/nix-mode")
-      :mode "\\.nix\\'"
-      )
-#+end_src
 
 
 *** Org-mode
@@ -390,34 +333,6 @@ Or how to manage a project
     (counsel-projectile-mode +1)
     )
 #+end_src
-*** Python
-Simple python configuration
-
-Github repository: https://github.com/russell/python-mode
-#+BEGIN_SRC emacs-lisp
-  (use-package python-mode
-  :straight (python-mode :type git :host github
-                       :repo "russell/python-mode")
-
-    :hook (python-mode . lsp-deferred)
-    :config
-  (progn
-    (setq dap-python-executable "python3"
-          dap-python-debugger 'debugpy
-          aggressive-indent-mode nil)
-    (require 'dap-python))
-  )
-
-  ;; (use-package sphinx-doc
-  ;;   :ensure t
-  ;;   :hook (python-mode . sphinx-doc-mode)
-  ;;   :config
-  ;;   )
-
-  ;; (use-package python-pytest
-  ;;   :custom
-  ;;   (python-pytest-confirm t))
-#+END_SRC
 *** Smooth-scrolling
 Make the scrolling smoother
 

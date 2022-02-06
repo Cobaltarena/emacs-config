@@ -14,10 +14,10 @@ Github repository: https://github.com/bzg/org-mode (mirror only)
   (use-package org
     :straight (org-but-straight :type git :host github :repo "emacs-straight/org-mode")
     :config
-    (setq org-src-tab-acts-natively t)
-    (setq org-html-validation-link nil)
-    (org-indent-mode +1)
-    (setq org-confirm-babel-evaluate nil)
+    (setq org-src-tab-acts-natively t
+          org-html-validation-link nil
+          org-confirm-babel-evaluate nil
+          org-src-window-setup 'split-window-below)
     )
 #+END_SRC
 

@@ -1,6 +1,5 @@
 ;; -*- lexical-binding:t -*-
 
-
 (defun cb/pop-shell ()
   (interactive)
   (setq shell-name (read-string "Shell Name: " nil))
@@ -39,8 +38,6 @@
   (switch-to-buffer path)
   )
 
-
-
 (defun cb/dashboard-zoxide (list-size)
   "zoxide widget for dashboard"
   (dashboard-insert-section
@@ -51,5 +48,11 @@
    `(lambda (&rest ignore) (counsel-find-file ,el)) ;; wtf why ,el
    (format "%s" el))
   )
+
+(defun cb/company-yasnippet-or-completion ()
+  (interactive)
+  (let ((yas-fallback-behavior nil))
+        (unless (yas-expand)
+          (call-interactively #'company-complete-common))))
 
 (provide 'cb-custom)
