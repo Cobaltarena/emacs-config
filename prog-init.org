@@ -7,6 +7,8 @@
     :straight (lsp-mode :type git :host github
                    :repo "emacs-lsp/lsp-mode")
     :config
+    (global-unset-key (kbd "C-l"))
+    (define-key lsp-mode-map (kbd "C-l") lsp-command-map)
     (flymake-mode-off)
     :commands lsp
     )
@@ -55,13 +57,14 @@ LSP backend for c/c++
 #+begin_src emacs-lisp
   (use-package ccls
     :straight (ccls :type git :host github
-                    :repo "MaskRay/ccls")
+                    :repo "emacs-lsp/emacs-ccls")
     :hook ((c-mode c++-mode) .
            (lambda () (require 'ccls) (lsp)))
     :config
     (setq ccls-executable "ccls")
     (setq lsp-prefer-flymake nil)
     (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+    (setq ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t)))
     )
 
 #+end_src
@@ -120,7 +123,8 @@ Major mode for completion when programming.
           company-tooltip-maximum-width 60)
     (define-key company-active-map (kbd "RET") nil)
     (define-key company-active-map (kbd "<return>") nil)
-    (define-key company-active-map (kbd "<right>") #'company-complete-selection)
+    (define-key company-active-map (kbd "<tab>") #'company-complete-selection)
+    (define-key company-active-map (kbd "TAB") #'company-complete-selection)
     (global-set-key (kbd "C-c c") 'company-complete)
     )
     :custom-face
@@ -143,12 +147,12 @@ Cool minor-mode to order the completion propositions by frequency of use.
 ** Company-jedi
 Python backend for some completion when python-mode is enabled.
 #+BEGIN_SRC emacs-lisp
-  (use-package company-jedi
-    :defer t
-    :straight (company-jedi :type git :host github
-                            :repo "emacsorphanage/company-jedi")
-    :hook ((python-mode-hook) . (jedi-mode))
-    )
+  ;; (use-package company-jedi
+  ;;   :defer t
+  ;;   :straight (company-jedi :type git :host github
+  ;;                           :repo "emacsorphanage/company-jedi")
+  ;;   :hook ((python-mode-hook) . (jedi-mode))
+  ;;   )
 #+END_SRC
 ** Eval after load
 #+BEGIN_SRC emacs-lisp
@@ -166,12 +170,12 @@ Python backend for some completion when python-mode is enabled.
 ** Company-lsp
 #+begin_src emacs-lisp
       (use-package company-lsp
-        :straight (company-jedi :type git :host github
+        :straight (company-lsp :type git :host github
                                 :repo "tigersoldier/company-lsp")
         :commands company-lsp
         :config
         (push 'company-lsp company-backends)
-        (push 'company-jedi company-backends)
+        ;; (push 'company-jedi company-backends)
         )
 #+end_src
 

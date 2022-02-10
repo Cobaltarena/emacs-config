@@ -375,7 +375,6 @@ Github repository: https://github.com/Alexander-Miller/treemacs
         (setq which-key-show-prefix 'left
               which-key-popup-type 'side-window
               which-key-side-window-location 'bottom
-              which-key-show-early-on-C-h t
               which-key-show-major-mode t)
         (global-set-key (kbd "C-x w") 'which-key-show-top-level)
         (which-key-mode +1)
