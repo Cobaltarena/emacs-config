@@ -8,13 +8,13 @@
 
 (defun cb/reload-config ()
   (interactive)
-  (load-file "~/.emacs.d/init.el")
+  (load-file (expand-file-name "emacs-config/force-reload.el" user-emacs-directory))
   )
 
-(defun cb/add-hooks (hook-list)
+(defun cb/add-hooks (hook hook-list)
   "perform add-hook on every elements of the list"
   (mapcar (lambda (hook-list)
-            (funcall 'add-hook hook-list 'company-mode) hook-list)
+            (funcall 'add-hook hook-list hook) hook-list)
           hook-list))
 
 (defun cb/template ()

@@ -72,19 +72,6 @@ Github repository: [[https://github.com/clemera/dired-git-info]]
     (define-key dired-mode-map ")" 'dired-git-info-mode)
     )
 #+END_SRC
-** QuickSort
-Minor mode to improve searching methods when using dired-mode.
-Require Coreutils on your system to work properly
-
-Gitlab repository: [[https://gitlab.com/xuhdev/dired-quick-sort]]
-#+BEGIN_SRC emacs-lisp
-  (use-package dired-quick-sort
-    :straight (dired-quick-sort :type git :host github
-                                   :repo "xuhdev/dired-quick-sort")
-    :config
-    (dired-quick-sort-setup)
-    )
-#+END_SRC
 ** Zoxide
 Better cd
 #+begin_src emacs-lisp

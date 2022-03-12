@@ -52,10 +52,15 @@ Github repository: [[https://github.com/NicolasPetton/zerodark-theme]]
 *** Line number
 Enable linum-mode and customize is a bit according to the theme
 #+BEGIN_SRC emacs-lisp
-(global-linum-mode) ; show line numbers
-(set-face-attribute 'line-number nil :background "#222222")
-(set-face-attribute 'line-number-current-line nil :background "#222222")
-(set-face-attribute 'linum nil :background "#222222")
+  (use-package nlinum
+    :straight (nlinum :type git :host github
+                      :repo "emacsmirror/nlinum")
+    :config
+    (global-nlinum-mode) ; show line numbers
+    )
+  (set-face-attribute 'line-number nil :background "#222222")
+  (set-face-attribute 'line-number-current-line nil :background "#222222")
+  (set-face-attribute 'linum nil :background "#222222")
 #+END_SRC
 
 *** Line indicator (80 characters)

@@ -45,9 +45,9 @@ Github repository: [[https://github.com/Malabarba/aggressive-indent-mode]]
 *** Prog-mode
 Expand the dedicated org-file for company-mode and its dependencies
 #+BEGIN_SRC emacs-lisp
-(setq prog-config
-      (expand-file-name "emacs-config/prog-init.org" user-emacs-directory))
-(org-babel-load-file prog-config)
+  (setq prog-config
+        (expand-file-name "emacs-config/prog-init.org" user-emacs-directory))
+  (org-babel-load-file prog-config)
 #+END_SRC
 *** Counsel
 
@@ -109,16 +109,17 @@ Github repository: https://github.com/emacs-lsp/dap-mode
                             (recents  . 5)
                             (agenda . 5))
           )
-
-    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-      )
+    (if (daemonp)
+        (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
+    )
 #+end_src
 *** Dired
 Expand the dedicated org-file for dired-mode and its dependencies
 #+BEGIN_SRC emacs-lisp
-(setq dired-config
-      (expand-file-name "emacs-config/dired-init.org" user-emacs-directory))
-(org-babel-load-file dired-config)
+  (setq dired-config
+        (expand-file-name "emacs-config/dired-init.org" user-emacs-directory))
+  (org-babel-load-file dired-config)
+
 #+END_SRC
 *** Doom-modeline
 Better and prettier modeline. Mostly a copy paste from the README of the
@@ -193,7 +194,6 @@ Github repository: [[https://github.com/rolandwalker/fixmee]]
                         :repo "flycheck/flycheck")
     :config
     (setq flycheck-indication-mode nil)
-    (global-flycheck-mode)
     )
 #+end_src
 *** Gnus
@@ -210,17 +210,6 @@ Github repository: [[https://github.com/espenhw/gnus]]
     )
 #+END_SRC
 
-*** Helm
-#+BEGIN_SRC emacs-lisp
-  (use-package helm-gtags
-    :straight (helm-gtags :type git :host github
-                                  :repo "emacsorphanage/helm-gtags")
-    :config
-    (helm-gtags-mode +1)
-    (global-set-key (kbd "C-c r") 'helm-gtags-find-rtag)
-    (global-set-key (kbd "C-c C-r") 'helm-gtags-find-tag-other-window)
-    )
-#+END_SRC
 *** Highlight-defined
 Package to make matching pattern with swiper highlighted
 
@@ -290,27 +279,6 @@ Github repository: https://github.com/bzg/org-mode (mirror only)
       (expand-file-name "emacs-config/org-init.org" user-emacs-directory))
 (org-babel-load-file org-config)
 #+END_SRC
-*** Pdf-tools
-
-Found on http://alberto.am/2020-04-11-pdf-tools-as-default-pdf-viewer.html
-#+begin_src emacs-lisp
-    (use-package pdf-tools
-       :straight (pdf-tools :type git :host github
-                            :repo "politza/pdf-tools")
-       :config
-       (pdf-loader-install)
-       (setq-default pdf-view-display-size 'fit-width)
-       (define-key pdf-view-mode-map (kbd "C-s") 'swiper)
-       (add-hook 'pdf-view-mode-hook (lambda() (linum-mode -1)))
-       :custom
-       (pdf-annot-activate-created-annotations t "automatically annotate highlights")
-       (setq TeX-view-program-selection '((output-pdf "PDF Tools")
-                                          TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-                                          TeX-source-correlate-start-server t))
-
-       (add-hook 'TeX-after-compilation-finished-functions
-                 #'TeX-revert-document-buffer))
-#+end_src
 *** Projectile
 Or how to manage a project
 #+begin_src emacs-lisp
@@ -347,22 +315,6 @@ Github repository: https://github.com/aspiers/smooth-scrolling
     )
 #+END_SRC
 
-*** Treemacs
-Simple treemacs config because it is already marvelous 
-out of the box
-
-Github repository: https://github.com/Alexander-Miller/treemacs
-#+BEGIN_SRC emacs-lisp
-  (use-package treemacs
-  :defer t
-  :config
-  (global-set-key [f12] 'treemacs)
-  (global-set-key (kbd "C-c i") 'treemacs-add-project-to-workspace)
-  (unbind-key "s" treemacs-mode-map)
-  (bind-key "s" #'treemacs-find-file treemacs-mode-map)
-  )
-#+END_SRC
-
 *** Which-key
     #+begin_src emacs-lisp
       (use-package which-key
@@ -390,14 +342,9 @@ Github repository: https://github.com/Alexander-Miller/treemacs
 #+end_src
 ** Theming
 #+begin_src emacs-lisp
-(setq theming-config (expand-file-name "emacs-config/theming-init.org"
-                                       user-emacs-directory))
-(if (daemonp)
-  (add-hook 'after-make-frame-functions
-      (lambda (frame)
-          (with-selected-frame frame
-              (org-babel-load-file theming-config))))
-(org-babel-load-file theming-config))
+  (setq theming-config (expand-file-name "emacs-config/theming-init.org"
+                                         user-emacs-directory))
+  (org-babel-load-file theming-config)
 #+end_src
 ** Misc
 #+begin_src emacs-lisp

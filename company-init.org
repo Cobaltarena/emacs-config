@@ -7,6 +7,7 @@ Major mode for completion when programming.
     :defer t
     :straight (company :type git :host github :repo "company-mode/company-mode")
     :config
+    (add-to-list 'company-backends '(company-capf company-dabbrev))
     (progn
     (setq company-selection-wrap-around +1
           company-tooltip-minimum-width 60
@@ -41,10 +42,10 @@ Python backend for some completion when python-mode is enabled.
     :straight (company-jedi :type git :host github :repo "emacsorphanage/company-jedi")
     :config
     (progn
-    (eval-after-load 'company
-      '(add-to-list 'company-backends 'company-jedi))
-    (add-hook 'python-mode-hook 'jedi-mode)
-    ))
+      (eval-after-load 'company
+        '(add-to-list 'company-backends 'company-jedi ))
+      (add-hook 'python-mode-hook 'jedi-mode)
+      ))
 #+END_SRC
 ** Eval after load
 #+BEGIN_SRC emacs-lisp

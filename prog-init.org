@@ -6,76 +6,70 @@
   (use-package lsp-mode
     :straight (lsp-mode :type git :host github
                    :repo "emacs-lsp/lsp-mode")
+    :hook
+    ((python-mode . lsp))
     :config
+    ;; (lsp-register-custom-settings
+    ;;  '(;;("pyls.plugins.pyls_mypy.enabled" t t)
+    ;;    ;;("pyls.plugins.pyls_mypy.live_mode" nil t)
+    ;;    ("pyls.plugins.pyls_black.enabled" t t)
+    ;;    ("pyls.plugins.pyls_isort.enabled" t t)
+    ;;    ("pyls.plugins.flake8.enabled" t t)))
+
     (global-unset-key (kbd "C-l"))
     (define-key lsp-mode-map (kbd "C-l") lsp-command-map)
+
     (flymake-mode-off)
+    (setq lsp-enable-on-type-formatting nil
+          lsp-prefer-flymake nil)
     :commands lsp
     )
+
   (use-package lsp-ui
     :straight (lsp-ui :type git :host github
                    :repo "emacs-lsp/lsp-ui")
     :commands lsp-ui-mode
     )
 #+end_src
-** Dap
-#+BEGIN_SRC emacs-lisp
-  (use-package dap-mode
-    :straight (dap-mode :type git :host github
-                        :repo "emacs-lsp/dap-mode")
-    :custom
-    (lsp-enable-dap-auto-configure nil)
-    :hook ((c-mode c++-mode) .
-           (lambda()
-                (local-unset-key (kbd "C-d"))))
-    :config
-    (dap-ui-mode 1)
-    (let ((bindings '(
-                      ("C-a" . dap-ui-show-many-windows)
-                      ("C-e" . dap-ui-hide-many-windows)
-                      ("a" . dap-breakpoint-add)
-                      ("d" . dap-breakpoint-delete)
-                      ("c" . dap-breakpoint-delete-all)
-                      ("n" . dap-next)
-                      ("C-c" . dap-continue)
-                      ("s" . dap-step-in)
-                      ("r" . dap-step-out)
-                      ("e" . dap-eval)
-                      ("C-g" . dap-debug)
-                      ("C-r" . dap-debug-restart)
-                      ("g" . dap-debug-edit-template)
-                      )))
-      (dolist (binding bindings)
-        (local-set-key (kbd (concat "C-d " (car binding))) (cdr binding))))
-    )
-#+END_SRC
-
 * Languages
 ** C/C++
 *** ccls
 LSP backend for c/c++
 #+begin_src emacs-lisp
-  (use-package ccls
-    :straight (ccls :type git :host github
-                    :repo "emacs-lsp/emacs-ccls")
-    :hook ((c-mode c++-mode) .
-           (lambda () (require 'ccls) (lsp)))
-    :config
-    (setq ccls-executable "ccls")
-    (setq lsp-prefer-flymake nil)
-    (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-    (setq ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t)))
-    )
+    (use-package ccls
+      :straight (ccls :type git :host github
+                      :repo "emacs-lsp/emacs-ccls")
+      :hook ((c-mode c++-mode) .
+             (lambda () (require 'ccls) (lsp)))
+      :config
+      (setq ccls-executable "ccls")
+      (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+      (setq ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t)))
+      )
+
+  (defun my-c-mode-common-hook ()
+   ;; my customizations for all of c-mode, c++-mode, objc-mode, java-mode
+   (c-set-offset 'substatement-open 0)
+   ;; other customizations can go here
+
+   (setq c++-tab-always-indent t)
+   (setq c-basic-offset 4)                  ;; Default is 2
+   (setq c-indent-level 4)                  ;; Default is 2
+
+   (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
+   (setq tab-width 4)
+   )
 
 #+end_src
 
 ** Nix-mode
 #+begin_src emacs-lisp
-    (use-package nix-mode
-      :straight (nix-mode :type git :host github
-                          :repo "nixos/nix-mode")
-      :mode "\\.nix\\'"
-      )
+  (use-package nix-mode
+    :straight (nix-mode :type git :host github
+                        :repo "nixos/nix-mode")
+    :hook (nix-mode . lsp)
+    :mode "\\.nix\\'"
+    )
 #+end_src
 
 ** Python-mode
@@ -84,7 +78,7 @@ LSP backend for c/c++
   :straight (python-mode :type git :host github
                        :repo "russell/python-mode")
 
-    :hook (python-mode . lsp-deferred)
+    :hook (python-mode . lsp)
     :config
   (progn
     (setq dap-python-executable "python3"
@@ -147,24 +141,25 @@ Cool minor-mode to order the completion propositions by frequency of use.
 ** Company-jedi
 Python backend for some completion when python-mode is enabled.
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package company-jedi
-  ;;   :defer t
-  ;;   :straight (company-jedi :type git :host github
-  ;;                           :repo "emacsorphanage/company-jedi")
-  ;;   :hook ((python-mode-hook) . (jedi-mode))
-  ;;   )
+  (use-package company-jedi
+    :defer t
+    :straight (company-jedi :type git :host github
+                            :repo "emacsorphanage/company-jedi")
+    :hook ((python-mode-hook) . (jedi-mode))
+    )
 #+END_SRC
 ** Eval after load
 #+BEGIN_SRC emacs-lisp
-  (cb/add-hooks (list #'c++-mode-hook
-                      #'c-mode-hook
-                      #'cider-mode-hook
-                      #'cider-repl-mode-hook
-                      #'lisp-mode-hook
-                      #'emacs-lisp-mode-hook
-                      #'org-mode-hook
-                      #'python-mode-hook
-                      #'rust-mode-hook))
+  (cb/add-hooks 'company-mode (list #'c++-mode-hook
+                                    #'c-mode-hook
+                                    #'cider-mode-hook
+                                    #'cider-repl-mode-hook
+                                    #'emacs-lisp-mode-hook
+                                    #'lisp-mode-hook
+                                    #'nix-mode-hook
+                                    #'org-mode-hook
+                                    #'python-mode-hook
+                                    #'rust-mode-hook))
 #+END_SRC
 
 ** Company-lsp
@@ -185,22 +180,27 @@ Python backend for some completion when python-mode is enabled.
   (use-package clang-format
       :straight (clang-format :type git :host github
                               :repo "sonatard/clang-format")
-    )
+      :config
+    ;;   (add-hook 'c++-mode-hook
+    ;;       (lambda () (add-hook 'before-save-hook 'clang-format-region nil 'local)))
+    ;;   (add-hook 'c-mode-hook
+    ;;       (lambda () (add-hook 'before-save-hook 'clang-format-region nil 'local)))
+      )
 #+END_SRC
 
 ** Yasnippet
 #+begin_src emacs-lisp
-  (use-package yasnippet
-    :straight (yasnippet :type git :host github
-                              :repo "joaotavora/yasnippet")
-    :init
-    (yas-global-mode 1)
-    )
+    (use-package yasnippet
+      :straight (yasnippet :type git :host github
+                           :repo "joaotavora/yasnippet")
+      :init
+      (yas-global-mode 1)
+      )
 
-  (use-package yasnippet-snippets
-    :straight (yasnippet-snippets :type git :host github
-                         :repo "AndreaCrotti/yasnippet-snippets")
-    )
+    ;; (use-package yasnippet-snippets
+    ;;   :straight (yasnippet-snippets :type git :host github
+    ;;                        :repo "AndreaCrotti/yasnippet-snippets")
+    ;;   )
 
   (use-package auto-yasnippet
     :straight (auto-yasnippet :type git :host github
