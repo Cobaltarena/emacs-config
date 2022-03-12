@@ -16,7 +16,16 @@ The first run should take some time since it needs to download and build all
 the packages.
 
 * Known issues
-
+** Way too long to load
+Adding these lines to your =init.el= file could speed up the process by a lot
+#+begin_src emacs-lisp
+;; number of bytes required to trigger GC
+(setq gc-cons-threshold 100000000)
+;; Minimize garbage collection during startup
+(setq gc-cons-threshold most-positive-fixnum)
+;; avoid straight to check modification on startup
+(setq straight-check-for-modifications 'live)
+#+end_src
 ** Void function org-file-name-concat
 If you encounter an issue about org-file-name-concat being a void function
 and if it is related to org-persist with the cache, it means that it is the org-mode

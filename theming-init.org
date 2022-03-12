@@ -8,7 +8,7 @@ Github repository: [[https://github.com/NicolasPetton/zerodark-theme]]
 #+BEGIN_SRC emacs-lisp
 (use-package zerodark-theme
   :straight (zerodark-theme :type git :host github
-                     :repo "NicolasPetton/zerodark-theme")
+                            :repo "NicolasPetton/zerodark-theme")
   :init
   (setq zerodark-enlarge-headings nil
         zerodark-alternate-mode-line-and-minibuffer t)
@@ -27,12 +27,12 @@ Github repository: [[https://github.com/NicolasPetton/zerodark-theme]]
 *** Font
 #+BEGIN_SRC emacs-lisp
 (set-face-attribute 'default nil
-                      :family "MesloLGS NF"
-                      :slant 'normal
-                      :weight 'normal
-                      :height 140
-                      :width 'semi-condensed
-                      )
+                    :family "MesloLGS NF"
+                    :slant 'normal
+                    :weight 'normal
+                    :height 140
+                    :width 'semi-condensed
+                    )
 #+END_SRC
 
 *** Fringe
@@ -43,48 +43,48 @@ Github repository: [[https://github.com/NicolasPetton/zerodark-theme]]
 
 *** Highlight mode
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hook 'hl-line-mode)
-  (set-face-attribute 'hl-line nil
-                        :background "#580818")
-  (global-set-key (kbd "C-h C-l") 'hl-line-mode)
+(add-hook 'prog-mode-hook 'hl-line-mode)
+(set-face-attribute 'hl-line nil
+                    :background "#580818")
+(global-set-key (kbd "C-h C-l") 'hl-line-mode)
 #+END_SRC
 
 *** Line number
 Enable linum-mode and customize is a bit according to the theme
 #+BEGIN_SRC emacs-lisp
-  (use-package nlinum
-    :straight (nlinum :type git :host github
-                      :repo "emacsmirror/nlinum")
-    :config
-    (global-nlinum-mode) ; show line numbers
-    )
-  (set-face-attribute 'line-number nil :background "#222222")
-  (set-face-attribute 'line-number-current-line nil :background "#222222")
-  (set-face-attribute 'linum nil :background "#222222")
+(use-package nlinum
+  :straight (nlinum :type git :host github
+                    :repo "emacsmirror/nlinum")
+  :config
+  (global-nlinum-mode) ; show line numbers
+  )
+(set-face-attribute 'line-number nil :background "#222222")
+(set-face-attribute 'line-number-current-line nil :background "#222222")
+(set-face-attribute 'linum nil :background "#222222")
 #+END_SRC
 
 *** Line indicator (80 characters)
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
-  (setq-default fill-column 80)
-  (set-face-attribute 'fill-column-indicator nil :foreground "#55342b")
-  (set-face-attribute 'fill-column-indicator nil :background "#55342b")
-  (global-set-key (kbd "C-h C-v") 'display-fill-column-indicator-mode)
+(add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
+(setq-default fill-column 80)
+(set-face-attribute 'fill-column-indicator nil :foreground "#55342b")
+(set-face-attribute 'fill-column-indicator nil :background "#55342b")
+(global-set-key (kbd "C-h C-v") 'display-fill-column-indicator-mode)
 #+END_SRC
 
 *** Whitespace and newline
 Custom whitespace newline to make is easier to see.
 Trailing whitespaces are also enabled
 #+BEGIN_SRC emacs-lisp
-  (global-whitespace-mode t)
-  (setq whitespace-display-mappings
-        '(
-          (newline-mark 10
-                        [5321 10])
-          (tab-mark 9
-                    [9655 9]
-                    [92 9])
-          )
+(global-whitespace-mode t)
+(setq whitespace-display-mappings
+      '(
+        (newline-mark 10
+                      [5321 10])
+        (tab-mark 9
+                  [9655 9]
+                  [92 9])
+        )
       )
 (setq whitespace-style
       '(
@@ -96,9 +96,9 @@ Trailing whitespaces are also enabled
         )
       )
 
-  (set-face-attribute 'whitespace-newline nil :foreground "#A68064")
-  (set-face-attribute 'whitespace-space nil :foreground "#A68064")
-  (set-face-attribute 'whitespace-space nil :background "#222222")
+(set-face-attribute 'whitespace-newline nil :foreground "#A68064")
+(set-face-attribute 'whitespace-space nil :foreground "#A68064")
+(set-face-attribute 'whitespace-space nil :background "#222222")
 
 #+END_SRC
 
@@ -112,7 +112,7 @@ Trailing whitespaces are also enabled
 (setq-default cursor-type 'hollow)
 (setq-default cursor-type 'box)
 (set-face-attribute 'cursor nil
-                  :background "orange")
+                    :background "orange")
 
 #+END_SRC
 *** Parenthesis Highlight
