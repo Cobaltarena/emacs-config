@@ -19,10 +19,9 @@ the packages.
 ** Way too long to load
 Adding these lines to your =init.el= file could speed up the process by a lot
 #+begin_src emacs-lisp
-;; number of bytes required to trigger GC
-(setq gc-cons-threshold 100000000)
-;; Minimize garbage collection during startup
-(setq gc-cons-threshold most-positive-fixnum)
+;; better handling of gc
+(load-file (expand-file-name "emacs-config/gcmh.el" user-emacs-directory))
+(gcmh-mode 1)
 ;; avoid straight to check modification on startup
 (setq straight-check-for-modifications 'live)
 #+end_src
