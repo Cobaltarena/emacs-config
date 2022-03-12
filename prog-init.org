@@ -6,16 +6,7 @@
 (use-package lsp-mode
   :straight (lsp-mode :type git :host github
                       :repo "emacs-lsp/lsp-mode")
-  :hook
-  ((python-mode . lsp))
   :config
-  ;; (lsp-register-custom-settings
-  ;;  '(;;("pyls.plugins.pyls_mypy.enabled" t t)
-  ;;    ;;("pyls.plugins.pyls_mypy.live_mode" nil t)
-  ;;    ("pyls.plugins.pyls_black.enabled" t t)
-  ;;    ("pyls.plugins.pyls_isort.enabled" t t)
-  ;;    ("pyls.plugins.flake8.enabled" t t)))
-
   (global-unset-key (kbd "C-l"))
   (define-key lsp-mode-map (kbd "C-l") lsp-command-map)
 
@@ -69,6 +60,13 @@ LSP backend for c/c++
                       :repo "nixos/nix-mode")
   :hook (nix-mode . lsp)
   :mode "\\.nix\\'"
+  :config
+  (add-to-list 'lsp-language-id-configuration '(nix-mode . "nix"))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection '("rnix-lsp"))
+                    :major-modes '(nix-mode)
+                    :server-id 'nix))
+
   )
 #+end_src
 
@@ -80,11 +78,9 @@ LSP backend for c/c++
 
   :hook (python-mode . lsp)
   :config
-  (progn
-    (setq dap-python-executable "python3"
-          dap-python-debugger 'debugpy
-          aggressive-indent-mode nil)
-    (require 'dap-python))
+  (setq lsp-pylsp-plugins-flake8-enabled t
+        lsp-pylsp-plugins-autopep8-enabled t
+        lsp-pylsp-plugins-pydocstyle-enabled t)
   )
 
 ;; (use-package sphinx-doc
