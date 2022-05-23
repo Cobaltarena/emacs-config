@@ -38,18 +38,15 @@ LSP backend for c/c++
   (setq ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t)))
   )
 
-(defun my-c-mode-common-hook ()
-  ;; my customizations for all of c-mode, c++-mode, objc-mode, java-mode
-  (c-set-offset 'substatement-open 0)
-  ;; other customizations can go here
+(c-set-offset 'substatement-open 0)
 
-  (setq c++-tab-always-indent t)
-  (setq c-basic-offset 4)                  ;; Default is 2
-  (setq c-indent-level 4)                  ;; Default is 2
 
-  (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
-  (setq tab-width 4)
-  )
+(setq c++-tab-always-indent t)
+(setq c-basic-offset 4)
+(setq c-indent-level 4)
+
+(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
+(setq tab-width 4)
 
 #+end_src
 
@@ -69,7 +66,18 @@ LSP backend for c/c++
 
   )
 #+end_src
-
+** Vhdl
+#+begin_src emacs-lisp
+(use-package vhdl-mode
+  :defer t
+  :config
+  (setq lsp-vhdl-server 'ghdl-ls
+        lsp-vhdl-server-path (executable-find "ghdl-ls")
+        lsp-vhdl--params nil)
+  (require 'lsp-vhdl)
+  :hook (vhdl-mode . lsp)
+)
+#+end_src
 ** Python-mode
 #+BEGIN_SRC emacs-lisp
 (use-package python-mode

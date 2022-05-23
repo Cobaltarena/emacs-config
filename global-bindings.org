@@ -45,7 +45,10 @@
 (global-set-key (kbd "M-z") 'kill-ring-save)
 (global-set-key (kbd "C-z") 'kill-region)
 #+END_SRC
-
+** List buffer with ibuffer
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+#+end_src
 ** Man page quick access
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x C-m") 'helm-man-woman)

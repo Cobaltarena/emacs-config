@@ -55,4 +55,9 @@
         (unless (yas-expand)
           (call-interactively #'company-complete-common))))
 
+(defun cb/kill-other-buffers ()
+  "Kill all other buffers."
+  (interactive)
+  (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
+
 (provide 'cb-custom)
