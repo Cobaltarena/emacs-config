@@ -1,5 +1,15 @@
 #+TITLE: Programming oriented config
 
+* Direnv
+#+begin_src emacs-lisp
+(use-package direnv
+  :straight (direnv :type git :host github
+                      :repo "wbolster/emacs-direnv")
+  :init
+  (add-hook 'prog-mode-hook #'direnv-update-environment)
+  :config
+  (direnv-mode))
+#+end_src
 * LSP packages
 ** LSP
 #+begin_src emacs-lisp
@@ -9,9 +19,9 @@
   :config
   (global-unset-key (kbd "C-l"))
   (define-key lsp-mode-map (kbd "C-l") lsp-command-map)
-
   (flymake-mode-off)
   (setq lsp-enable-on-type-formatting nil
+        lsp-lens-enable t
         lsp-prefer-flymake nil)
   :commands lsp
   )
@@ -27,29 +37,37 @@
 *** ccls
 LSP backend for c/c++
 #+begin_src emacs-lisp
-(use-package ccls
-  :straight (ccls :type git :host github
-                  :repo "emacs-lsp/emacs-ccls")
-  :hook ((c-mode c++-mode) .
-         (lambda () (require 'ccls) (lsp)))
-  :config
-  (setq ccls-executable "ccls")
-  (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-  (setq ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t)))
-  )
+  (use-package ccls
+    :straight (ccls :type git :host github
+                    :repo "emacs-lsp/emacs-ccls")
+    :hook ((c-mode c++-mode) . (lambda () (require 'ccls) (lsp)))
+    :config
+    (setq ccls-executable "ccls")
+    (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+    (setq ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t)))
+    )
 
-(c-set-offset 'substatement-open 0)
+  (c-set-offset 'substatement-open 0)
 
 
-(setq c++-tab-always-indent t)
-(setq c-basic-offset 4)
-(setq c-indent-level 4)
+  (setq c++-tab-always-indent t)
+  (setq c-basic-offset 4)
+  (setq c-indent-level 4)
 
-(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
-(setq tab-width 4)
+  (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
+  (setq tab-width 4)
 
 #+end_src
-
+** Javascript
+#+begin_src emacs-lisp
+  (use-package lsp-javascript
+    :straight (lsp-javascript :type git :host github
+                              :repo "purcell/lsp-javascript")
+    :hook ((js-mode-hook typescript-mode-hook) . (lambda () (lsp)))
+    :config
+    (add-to-list 'lsp-language-id-configuration '(js-mode . "ts-js"))
+    )
+#+end_src
 ** Nix-mode
 #+begin_src emacs-lisp
 (use-package nix-mode

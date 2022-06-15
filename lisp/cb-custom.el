@@ -8,7 +8,7 @@
 
 (defun cb/reload-config ()
   (interactive)
-  (load-file (expand-file-name "emacs-config/force-reload.el" user-emacs-directory))
+  (load-file (expand-file-name "~/.emacs.d/init.el"))
   )
 
 (defun cb/add-hooks (hook hook-list)
