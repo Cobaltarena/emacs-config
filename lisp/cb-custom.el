@@ -60,4 +60,27 @@
   (interactive)
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
 
+;; ;; from https://github.com/joaotavora/eglot/discussions/967#discussion-4106601
+;; (defun cb/run-command-in-directory (dir cmd &rest args)
+;;   "Run a command in the specified directory. If the directory is nil, the directory of the file is used. The stdout result is trimmed of whitespace and returned."
+;;   (let (
+;;         (default-directory (or dir default-directory))
+;;         (stdout-buffer (generate-new-buffer "tmp-stdout" t))
+;;         (full-cmd (append '(call-process cmd nil (list stdout-buffer nil) nil) args))
+;;         )
+;;     (unwind-protect
+;;         (let ((exit-status (condition-case nil (eval full-cmd) (file-missing nil))))
+;;           (if (eq exit-status 0)
+;;               (progn
+;;                 (with-current-buffer stdout-buffer
+;;                   (string-trim (buffer-string))
+;;                   )
+;;                 )
+;;             )
+;;           )
+;;       (kill-buffer stdout-buffer)
+;;       )
+;;     )
+;;   )
+
 (provide 'cb-custom)

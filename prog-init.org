@@ -13,24 +13,43 @@
 * LSP packages
 ** LSP
 #+begin_src emacs-lisp
-(use-package lsp-mode
-  :straight (lsp-mode :type git :host github
-                      :repo "emacs-lsp/lsp-mode")
-  :config
-  (global-unset-key (kbd "C-l"))
-  (define-key lsp-mode-map (kbd "C-l") lsp-command-map)
-  (flymake-mode-off)
-  (setq lsp-enable-on-type-formatting nil
-        lsp-lens-enable t
-        lsp-prefer-flymake nil)
-  :commands lsp
-  )
+;; (use-package lsp-mode
+;;   :straight (lsp-mode :type git :host github
+;;                       :repo "emacs-lsp/lsp-mode")
+;;   :config
+;;   (global-unset-key (kbd "C-l"))
+;;   (define-key lsp-mode-map (kbd "C-l") lsp-command-map)
+;;   (flymake-mode-off)
+;;   (setq lsp-enable-on-type-formatting nil
+;;         lsp-lens-enable t
+;;         lsp-prefer-flymake nil)
+;;   :commands lsp
+;;   )
 
-(use-package lsp-ui
-  :straight (lsp-ui :type git :host github
-                    :repo "emacs-lsp/lsp-ui")
-  :commands lsp-ui-mode
-  )
+;; (use-package lsp-ui
+;;   :straight (lsp-ui :type git :host github
+;;                     :repo "emacs-lsp/lsp-ui")
+;;   :commands lsp-ui-mode
+;;   )
+#+end_src
+** Eglot
+#+begin_src emacs-lisp
+(use-package eglot
+  :straight (eglot :type git :host github
+                      :repo "joaotavora/eglot")
+  :config
+  (add-to-list 'eglot-server-programs
+             `(python-mode . ("pylsp" "-v" "--tcp" "--host"
+                              "localhost" "--port" :autoport)))
+  (setq eglot-extend-to-xref t)
+  (define-key eglot-mode-map (kbd "C-c r") 'eglot-rename)
+  (define-key eglot-mode-map (kbd "C-c o") 'eglot-code-action-organize-imports)
+  (define-key eglot-mode-map (kbd "C-c h") 'eldoc)
+  (define-key eglot-mode-map (kbd "C-c s") 'xref-find-definitions)
+  (define-key eglot-mode-map (kbd "C-c f") 'eglot-format)
+  (define-key eglot-mode-map (kbd "C-c q") 'eglot-code-action-quickfix)
+)
+
 #+end_src
 * Languages
 ** C/C++
@@ -40,7 +59,7 @@ LSP backend for c/c++
   (use-package ccls
     :straight (ccls :type git :host github
                     :repo "emacs-lsp/emacs-ccls")
-    :hook ((c-mode c++-mode) . (lambda () (require 'ccls) (lsp)))
+;;    :hook ((c-mode c++-mode) . (lambda () (require 'ccls) (lsp)))
     :config
     (setq ccls-executable "ccls")
     (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
@@ -63,9 +82,9 @@ LSP backend for c/c++
   (use-package lsp-javascript
     :straight (lsp-javascript :type git :host github
                               :repo "purcell/lsp-javascript")
-    :hook ((js-mode-hook typescript-mode-hook) . (lambda () (lsp)))
-    :config
-    (add-to-list 'lsp-language-id-configuration '(js-mode . "ts-js"))
+    ;;:hook ((js-mode-hook typescript-mode-hook) . (lambda () (lsp)))
+    ;;:config
+    ;;(add-to-list 'lsp-language-id-configuration '(js-mode . "ts-js"))
     )
 #+end_src
 ** Nix-mode
@@ -73,53 +92,58 @@ LSP backend for c/c++
 (use-package nix-mode
   :straight (nix-mode :type git :host github
                       :repo "nixos/nix-mode")
-  :hook (nix-mode . lsp)
   :mode "\\.nix\\'"
-  :config
-  (add-to-list 'lsp-language-id-configuration '(nix-mode . "nix"))
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-stdio-connection '("rnix-lsp"))
-                    :major-modes '(nix-mode)
-                    :server-id 'nix))
-
   )
-#+end_src
-** Vhdl
-#+begin_src emacs-lisp
-(use-package vhdl-mode
-  :defer t
-  :config
-  (setq lsp-vhdl-server 'ghdl-ls
-        lsp-vhdl-server-path (executable-find "ghdl-ls")
-        lsp-vhdl--params nil)
-  (require 'lsp-vhdl)
-  :hook (vhdl-mode . lsp)
-)
 #+end_src
 ** Python-mode
-#+BEGIN_SRC emacs-lisp
-(use-package python-mode
-  :straight (python-mode :type git :host github
-                         :repo "russell/python-mode")
-
-  :hook (python-mode . lsp)
-  :config
-  (setq lsp-pylsp-plugins-flake8-enabled t
-        lsp-pylsp-plugins-autopep8-enabled t
-        lsp-pylsp-plugins-pydocstyle-enabled t)
+#+begin_src emacs-lisp
+;; from https://github.com/joaotavora/eglot/discussions/967#discussion-4106601
+(defun cb/run-command-in-directory (dir cmd &rest args)
+  "Run a command in the specified directory. If the directory is nil, the directory of the file is used. The stdout result is trimmed of whitespace and returned."
+  (let (
+        (default-directory (or dir default-directory))
+        (stdout-buffer (generate-new-buffer "tmp-stdout" t))
+        (full-cmd (append '(call-process cmd nil (list stdout-buffer nil) nil) args))
+        )
+    (unwind-protect
+        (let ((exit-status (condition-case nil (eval full-cmd) (file-missing nil))))
+          (if (eq exit-status 0)
+              (progn
+                (with-current-buffer stdout-buffer
+                  (string-trim (buffer-string))
+                  )
+                )
+            )
+          )
+      (kill-buffer stdout-buffer)
+      )
+    )
   )
 
-;; (use-package sphinx-doc
-;;   :ensure t
-;;   :hook (python-mode . sphinx-doc-mode)
-;;   :config
-;;   )
+(defun locate-venv-poetry ()
+  "Find a poetry venv."
+  (cb/run-command-in-directory nil "poetry" "env" "info" "-p")
+  )
 
-;; (use-package python-pytest
-;;   :custom
-;;   (python-pytest-confirm t))
-#+END_SRC
-
+(use-package python
+  :mode ("\\.py\\'" . python-mode)
+  :straight (python-mode :type git :host github
+                         :repo "russell/python-mode")
+  :hook (
+         (python-mode . (lambda ()
+                          (when (executable-find "poetry")
+                            (let ((venv (locate-venv-poetry)))
+                              (when venv
+                                (setq-default eglot-workspace-configuration
+                                              (list (cons ':python
+                                                          (list ':venvPath venv
+                                                                ':pythonPath (concat venv "/bin/python")))))
+                                ))
+                            )
+                          (eglot-ensure)))
+         )
+  )
+#+end_src
 * Company
 ** Company-mode
 Major mode for completion when programming.
@@ -150,7 +174,7 @@ Major mode for completion when programming.
   )
 #+END_SRC
 ** Prescient
-Cool minor-mode to order the completion propositions by frequency of use. 
+Cool minor-mode to order the completion propositions by frequency of use.
 #+BEGIN_SRC emacs-lisp
 (use-package company-prescient
   :straight (presicent :type git :host github
