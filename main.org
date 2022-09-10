@@ -185,6 +185,18 @@ Github repository: [[https://github.com/rolandwalker/fixmee]]
   (global-set-key [f5] 'fixmee-goto-previous-by-position)
   (global-set-key [f4] 'fixmee-view-listing)
   )
+
+(use-package hl-todo
+  :defer t
+  :straight (hl-todo :type git :host github
+                    :repo "tarsius/hl-todo")
+  :config
+  (setq hl-todo-mode 1)
+  (setq hl-todo-keyword-faces
+        '(("TODO"   . "#FF0000")
+          ("FIXME"  . "#FF0000")
+          ("DEBUG"  . "#A020F0")
+          )))
 #+END_SRC
 *** Flycheck
 #+begin_src emacs-lisp
