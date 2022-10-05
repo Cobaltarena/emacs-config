@@ -282,7 +282,6 @@ Github repository: https://github.com/jrblevin/markdown-mode
   )
 #+END_SRC
 
-
 *** Org-mode
 Github repository: https://github.com/bzg/org-mode (mirror only)
 

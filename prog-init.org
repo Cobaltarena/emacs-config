@@ -112,6 +112,11 @@ LSP backend for c/c++
                          :repo "spotify/dockerfile-mode")
   :mode "Dockerfile\\'"
   )
+(use-package docker-compose-mode
+  :straight (docker-compose-mode :type git :host github
+                         :repo "meqif/docker-compose-mode")
+  :mode "docker-compose.yml"
+  )
 #+end_src
 ** Nix-mode
 #+begin_src emacs-lisp
