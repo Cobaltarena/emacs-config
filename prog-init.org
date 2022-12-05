@@ -37,16 +37,18 @@
 
                                         ))
 
-  (add-hook 'python-mode-hook 'eglot-ensure)
-  (add-hook 'nix-mode-hook 'eglot-ensure)
-  (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'c++-mode-hook 'eglot-ensure)
+  (add-hook 'c-mode-hook 'eglot-ensure)
+  (add-hook 'go-mode 'eglot-ensure)
+  (add-hook 'nix-mode-hook 'eglot-ensure)
+  (add-hook 'python-mode-hook 'eglot-ensure)
 
   ;; LSP backends
   (add-to-list 'eglot-server-programs '(c++-mode . ("ccls")))
   (add-to-list 'eglot-server-programs '(c-mode . ("ccls")))
   (add-to-list 'eglot-server-programs '(cuda-mode . ("ccls")))
   (add-to-list 'eglot-server-programs '(nix-mode . ("rnix-lsp")))
+  (add-to-list 'eglot-server-programs '(go-mode . ("gopls")))
   (add-to-list 'eglot-server-programs '(python-mode "pylsp" "-vvvvv" "--log-file" "/tmp/log"))
 
   (setq eglot-extend-to-xref t)
@@ -97,14 +99,6 @@ LSP backend for c/c++
   (setq tab-width 4)
 
 #+end_src
-
-#+begin_src emacs-lisp
-(use-package cuda-mode
-  :straight (cuda :type git :host github
-                         :repo "flipflapflop/cuda-mode")
-  :mode "\\cu'"
-  )
-#+end_src
 ** Docker
 #+begin_src emacs-lisp
 (use-package dockerfile-mode
@@ -118,6 +112,16 @@ LSP backend for c/c++
   :mode "docker-compose.yml"
   )
 #+end_src
+** Go-mode
+#+begin_src emacs-lisp
+(use-package go-mode
+  :straight (go-mode :type git :host github
+                      :repo "dominikh/go-mode.el")
+  :mode "\\.go\\'"
+  :config
+  (setq-default tab-width 3)
+  )
+#+end_src
 ** Nix-mode
 #+begin_src emacs-lisp
 (use-package nix-mode
@@ -129,87 +133,19 @@ LSP backend for c/c++
 ** Python-mode
 #+begin_src emacs-lisp
 (use-package python
-  :mode ("\\.py\\'" . python-mode)
   :straight (python-mode :type git :host github
                          :repo "russell/python-mode")
+  :mode ("\\.py\\'" . python-mode)
 )
 #+end_src
-* Company
-** Company-mode
-Major mode for completion when programming.
-#+BEGIN_SRC emacs-lisp
-(use-package company
-  :defer t
-  :straight (company :type git :host github :repo "company-mode/company-mode")
-  :hook ((company-mode-hook) .
-         (lambda () (substitute-key-definition
-                     'company-complete-common
-                     'cb/company-yasnippet-or-completion
-                     company-active-map)))
-  :config
-  (progn
-    (setq company-selection-wrap-around +1
-          company-tooltip-minimum-width 60
-          company-tooltip-maximum-width 60)
-    (define-key company-active-map (kbd "RET") nil)
-    (define-key company-active-map (kbd "<return>") nil)
-    (define-key company-active-map (kbd "<tab>") #'company-complete-selection)
-    (define-key company-active-map (kbd "TAB") #'company-complete-selection)
-    (global-set-key (kbd "C-c c") 'company-complete)
-    )
-  :custom-face
-  (company-tooltip (
-                    (t (:background "#332211")))
-                   )
-  )
-#+END_SRC
-** Prescient
-Cool minor-mode to order the completion propositions by frequency of use.
-#+BEGIN_SRC emacs-lisp
-(use-package company-prescient
-  :straight (presicent :type git :host github
-                       :repo "raxod502/prescient.el")
-  :after company
-  :config
-  (setq company-prescient-mode 1)
-  )
-#+END_SRC
-** Company-jedi
-Python backend for some completion when python-mode is enabled.
-#+BEGIN_SRC emacs-lisp
-(use-package company-jedi
-  :defer t
-  :straight (company-jedi :type git :host github
-                          :repo "emacsorphanage/company-jedi")
-  :hook ((python-mode-hook) . (jedi-mode))
-  )
-#+END_SRC
-** Eval after load
-#+BEGIN_SRC emacs-lisp
-(cb/add-hooks 'company-mode (list #'c++-mode-hook
-                                  #'c-mode-hook
-                                  #'cider-mode-hook
-                                  #'cider-repl-mode-hook
-                                  #'emacs-lisp-mode-hook
-                                  #'lisp-mode-hook
-                                  #'nix-mode-hook
-                                  #'org-mode-hook
-                                  #'python-mode-hook
-                                  #'rust-mode-hook))
-#+END_SRC
-
-** Company-lsp
+** Yaml-mode
 #+begin_src emacs-lisp
-(use-package company-lsp
-  :straight (company-lsp :type git :host github
-                         :repo "tigersoldier/company-lsp")
-  :commands company-lsp
-  :config
-  (push 'company-lsp company-backends)
-  ;; (push 'company-jedi company-backends)
+(use-package yaml-mode
+  :straight (yaml-mode :type git :host github
+                       :repo "yoshiki/yaml-mode")
+  :mode "\\.yml\\'"
   )
 #+end_src
-
 * Additional tools
 ** Yasnippet
 #+begin_src emacs-lisp

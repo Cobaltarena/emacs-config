@@ -1,5 +1,4 @@
 #+TITLE: Emacs config using org-mode
-
 ** Init
 *** Custom functions
 Load some custom functions
@@ -60,10 +59,7 @@ Github repository: [[https://github.com/abo-abo/swiper]] (part of ivy)
   (counsel-mode 1)
   )
 #+END_SRC
-*** Dap-mode
-Super Handy debugging tool for many langages, uses lsp.
 
-Github repository: https://github.com/emacs-lsp/dap-mode
 *** Dashboard
 #+begin_src emacs-lisp
 (use-package dashboard
@@ -130,8 +126,6 @@ github repository: https://github.com/seagle0128/doom-modeline
 			   :repo "seagle0128/doom-modeline")
   :init
   (doom-modeline-mode 1)
-  :hook
-  (after-init . doom-modeline-init)
   :config
   (setq doom-modeline-height 25
 	doom-modeline-bar-width 3
@@ -153,7 +147,7 @@ github repository: https://github.com/seagle0128/doom-modeline
 #+END_SRC
 
 *** Eterm-256color
-Package to enhance the output of terminal emulators. 
+Package to enhance the output of terminal emulators.
 Requires =ncurses= to be installed
 
 Github repository: [[https://github.com/dieggsy/eterm-256color]]
@@ -208,19 +202,6 @@ Github repository: [[https://github.com/rolandwalker/fixmee]]
   (setq flycheck-indication-mode nil)
   )
 #+end_src
-*** Gnus
-A package to be able to read newsgroup using NNTP protocol
-
-Github repository: [[https://github.com/espenhw/gnus]]
-#+BEGIN_SRC emacs-lisp
-(use-package gnus
-  :defer t
-  :straight (gnus :type git :host github
-                  :repo "espenhw/gnus")
-  :config
-  (setq gnus-select-method '(nntp "news.epita.fr"))
-  )
-#+END_SRC
 
 *** Highlight-defined
 Package to make matching pattern with swiper highlighted
@@ -343,14 +324,6 @@ Github repository: https://github.com/aspiers/smooth-scrolling
   (which-key-mode +1)
   )
 #+end_src
-*** Yaml-mode
-#+begin_src emacs-lisp
-(use-package yaml-mode
-  :straight (yaml-mode :type git :host github
-                       :repo "yoshiki/yaml-mode")
-  :mode "\\.yml\\'" 
-  )
-#+end_src
 ** Theming
 #+begin_src emacs-lisp
 (setq theming-config (expand-file-name "emacs-config/theming-init.org"
@@ -362,4 +335,10 @@ Github repository: https://github.com/aspiers/smooth-scrolling
 (setq misc-config (expand-file-name "emacs-config/misc-init.org"
                                     user-emacs-directory))
 (org-babel-load-file misc-config)
+#+end_src
+** Misc
+#+begin_src emacs-lisp
+(setq completion-config (expand-file-name "emacs-config/completion-init.org"
+                                    user-emacs-directory))
+(org-babel-load-file completion-config)
 #+end_src

@@ -12,7 +12,6 @@ Base package of org-mode
 Github repository: https://github.com/bzg/org-mode (mirror only)
 #+BEGIN_SRC emacs-lisp
 (use-package org
-  :straight (org-but-straight :type git :host github :repo "emacs-straight/org-mode")
   :config
   (setq org-src-tab-acts-natively t
         org-src-preserve-indentation t
@@ -41,9 +40,6 @@ Snippet taken from https://github.com/daviwil/emacs-from-scratch/blob/master/Ema
 
 #+END_SRC
 
-#+RESULTS:
-| org-tempo-setup | org-appear-mode | org-bullets-mode | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | company-mode | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
-
 *** Org-appear
 
 Hide noisy markers for editing options such as *=*, *** or /*/.
@@ -61,32 +57,17 @@ Hide noisy markers for editing options such as *=*, *** or /*/.
 Really cool package that lets you create templates for code blocks
 
 #+BEGIN_SRC emacs-lisp
-(with-eval-after-load 'org
-  ;; This is needed as of Org 9.2
-  (require 'org-tempo)
+  (with-eval-after-load 'org
+    ;; This is needed as of Org 9.2
+    (require 'org-tempo)
 
-  ;; (add-to-list 'org-structure-template-alist '("cl" . "src clojure"))
-  (add-to-list 'org-structure-template-alist '("sc" . "src c"))
-  (add-to-list 'org-structure-template-alist '("scpp" . "src cpp"))
-  (add-to-list 'org-structure-template-alist '("sel" . "src emacs-lisp"))
-  (add-to-list 'org-structure-template-alist '("shttp" . "src http"))
-  (add-to-list 'org-structure-template-alist '("sjava" . "src java"))
-  (add-to-list 'org-structure-template-alist '("sjson" . "src json"))
-  (add-to-list 'org-structure-template-alist '("slatex" . "src latex"))
-  (add-to-list 'org-structure-template-alist '("spy" . "src python"))
-  (add-to-list 'org-structure-template-alist '("ssh" . "src sh"))
-  (add-to-list 'org-structure-template-alist '("syaml" . "src yaml"))
-
-  )
+    (add-to-list 'org-structure-template-alist '("sc" . "src c"))
+    (add-to-list 'org-structure-template-alist '("scpp" . "src cpp"))
+    (add-to-list 'org-structure-template-alist '("sel" . "src emacs-lisp"))
+    (add-to-list 'org-structure-template-alist '("sjson" . "src json"))
+    (add-to-list 'org-structure-template-alist '("slatex" . "src latex"))
+    (add-to-list 'org-structure-template-alist '("spy" . "src python"))
+    (add-to-list 'org-structure-template-alist '("ssh" . "src sh"))
+    (add-to-list 'org-structure-template-alist '("syaml" . "src yaml"))
+    )
 #+END_SRC
-
-*** Org-babel
-#+begin_src emacs-lisp
-(org-babel-do-load-languages 'org-babel-load-languages
-                             '(
-                               (shell . t)
-                               )
-                             )
-#+end_src
-
-#+RESULTS:
