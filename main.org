@@ -27,20 +27,18 @@ Custom global bindings
 #+END_SRC
 ** Use-package
 All the packages I'm using in my config.
-*** Aggressive-indent
-Make aggresive indent enabled on every mode except for html
-(might configure it later) and bind 'C-x a' to toggle it or not
-
-Github repository: [[https://github.com/Malabarba/aggressive-indent-mode]]
-#+BEGIN_SRC emacs-lisp
-(use-package aggressive-indent
-  :straight (aggressive-indent :type git :host github
-                               :repo "Malabarba/aggressive-indent-mode")
+*** Avy
+#+begin_src emacs-lisp
+(use-package avy
+  :straight (avy :type git :host github
+                           :repo "abo-abo/avy")
   :config
-  ;; (global-aggressive-indent-mode 1)
-  (global-set-key (kbd "C-x a") 'aggressive-indent-mode)
+  (global-set-key (kbd "M-s") 'avy-goto-word-1)
+  (setq avy-background t)
+  (setq avy-all-windows nil)
+  (setq avy-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   )
-#+END_SRC
+#+end_src
 *** Prog-mode
 Expand the dedicated org-file for company-mode and its dependencies
 #+BEGIN_SRC emacs-lisp
@@ -49,7 +47,6 @@ Expand the dedicated org-file for company-mode and its dependencies
 (org-babel-load-file prog-config)
 #+END_SRC
 *** Counsel
-
 Github repository: [[https://github.com/abo-abo/swiper]] (part of ivy)
 #+BEGIN_SRC emacs-lisp
 (use-package counsel
@@ -200,6 +197,14 @@ Github repository: [[https://github.com/rolandwalker/fixmee]]
                       :repo "flycheck/flycheck")
   :config
   (setq flycheck-indication-mode nil)
+  (global-flycheck-mode +1)
+  )
+
+(use-package flycheck-aspell
+  :straight (flycheck-aspell :type git :host github
+                      :repo "leotaku/flycheck-aspell")
+  :config
+  (add-to-list 'flycheck-checkers 'markdown-aspell-dynamic)
   )
 #+end_src
 
