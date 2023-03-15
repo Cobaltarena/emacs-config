@@ -7,16 +7,14 @@
                    :repo "abo-abo/swiper")
     :config
     (ivy-mode 1)
-    ;; ??? TODO
     (setq
      enable-recursive-minibuffers t
-     ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-create
+     ivy-magic-slash-non-match-action nil
      ivy-display-style 'fancy
-     ivy-initial-inputs-alist nil
      ivy-use-virtual-buffers t
      ivy-wrap t)
     (global-unset-key (kbd "C-x b"))
-    (global-set-key (kbd "C-x b") 'switch-to-buffer)
+    (global-set-key (kbd "C-x b") 'counsel-switch-buffer)
     )
 #+END_SRC
 
@@ -32,13 +30,16 @@
 
 ** Ivy-rich
 #+BEGIN_SRC emacs-lisp
-  (use-package ivy-rich
-    :straight (ivy-rich :type git :host github
-                   :repo "Yevgnen/ivy-rich")
-    :config
-    ;; fancier ivy
-    (ivy-rich-mode 1)
-    )
+(use-package ivy-rich
+    :straight (ivy-rich :type git :host github :repo "Yevgnen/ivy-rich")
+    :ensure t
+    :after (ivy)
+    :init
+    (setq ivy-rich-path-style 'abbrev
+        ivy-virtual-abbreviate 'full)
+    :config (ivy-rich-mode 1)
+)
+
 #+END_SRC
 
 ** Ivy-prescient
@@ -46,19 +47,20 @@
   (use-package ivy-prescient
     :straight (presicent :type git :host github
                    :repo "raxod502/prescient.el")
-    :after company-prescient
+    :requires (company-prescient ivy)
     :custom
     (ivy-prescient-enable-filtering nil)
     :config
-    (prescient-persist-mode 1)
-    (ivy-prescient-mode 1)
+    (setq prescient-persist-mode 1)
+    (setq ivy-prescient-mode 1)
+    (setq corfu-prescient-mode 1)
     )
 #+END_SRC
 
 ** Swiper
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
-    :after ivy
+    :requires (ivy)
     :config
     (global-unset-key (kbd "C-s"))
     (global-set-key (kbd "C-s") 'swiper)
