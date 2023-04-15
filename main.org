@@ -25,6 +25,12 @@ Custom global bindings
 (setq debug-on-error t ; show stack trace on config error
       vc-follow-symlinks t) ; always follow symlink
 #+END_SRC
+** Auto-revert
+#+begin_src emacs-lisp
+(setq revert-without-query
+      '(".*\.pdf" . ".*\.png")
+      )
+#+end_src
 ** Use-package
 All the packages I'm using in my config.
 *** Avy
@@ -39,13 +45,6 @@ All the packages I'm using in my config.
   (setq avy-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   )
 #+end_src
-*** Prog-mode
-Expand the dedicated org-file for company-mode and its dependencies
-#+BEGIN_SRC emacs-lisp
-(setq prog-config
-      (expand-file-name "emacs-config/prog-init.org" user-emacs-directory))
-(org-babel-load-file prog-config)
-#+END_SRC
 *** Counsel
 Github repository: [[https://github.com/abo-abo/swiper]] (part of ivy)
 #+BEGIN_SRC emacs-lisp
@@ -98,7 +97,6 @@ Github repository: [[https://github.com/abo-abo/swiper]] (part of ivy)
   (add-to-list 'dashboard-items '(zoxide) t)
 
   (setq dashboard-items '(
-                          ;; (zoxide . 7)
                           (recents  . 5)
                           (agenda . 5))
         )
@@ -106,14 +104,6 @@ Github repository: [[https://github.com/abo-abo/swiper]] (part of ivy)
       (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
   )
 #+end_src
-*** Dired
-Expand the dedicated org-file for dired-mode and its dependencies
-#+BEGIN_SRC emacs-lisp
-(setq dired-config
-      (expand-file-name "emacs-config/dired-init.org" user-emacs-directory))
-(org-babel-load-file dired-config)
-
-#+END_SRC
 *** Doom-modeline
 Better and prettier modeline. Mostly a copy paste from the README of the
 github repository: https://github.com/seagle0128/doom-modeline
@@ -155,40 +145,7 @@ Github repository: [[https://github.com/dieggsy/eterm-256color]]
   :hook (term-mode vterm-mode eshell-mode)
   )
 #+END_SRC
-*** Fixmee
-A very handy TODO package
 
-Github repository: [[https://github.com/rolandwalker/fixmee]]
-#+BEGIN_SRC emacs-lisp
-(use-package button-lock
-  :defer t
-  :straight (button-lock :type git :host github
-                         :repo "rolandwalker/button-lock"))
-(use-package fixmee
-  :defer t
-  :straight (fixmee :type git :host github
-                    :repo "rolandwalker/fixmee")
-
-  :config
-  (global-fixmee-mode 1)
-  ;; fixmee-mode next/prev rebind and view list
-  (global-set-key [f6] 'fixmee-goto-next-by-position)
-  (global-set-key [f5] 'fixmee-goto-previous-by-position)
-  (global-set-key [f4] 'fixmee-view-listing)
-  )
-
-(use-package hl-todo
-  :defer t
-  :straight (hl-todo :type git :host github
-                    :repo "tarsius/hl-todo")
-  :config
-  (setq hl-todo-mode 1)
-  (setq hl-todo-keyword-faces
-        '(("TODO"   . "#FF0000")
-          ("FIXME"  . "#FF0000")
-          ("DEBUG"  . "#A020F0")
-          )))
-#+END_SRC
 *** Flycheck
 #+begin_src emacs-lisp
 (use-package flycheck
@@ -220,16 +177,6 @@ Github repository: https://github.com/Fanael/highlight-defined
   (add-hook 'emacs-lisp-mode-hook 'highlight-defined-mode)
   )
 #+END_SRC
-*** Ivy
-Super cool and easy to use major mode for completion when searching commands or
-file.
-
-Github repository: https://github.com/abo-abo/swiper
-#+BEGIN_SRC emacs-lisp
-(setq ivy-config
-      (expand-file-name "emacs-config/ivy-init.org" user-emacs-directory))
-(org-babel-load-file ivy-config)
-#+END_SRC
 *** Magit
 Magit is love, very handy and easy to learn and use when working with git.
 
@@ -240,15 +187,10 @@ Github repository: https://github.com/magit/magit
                    :repo "magit/magit")
   :config
   (global-set-key (kbd "C-c C-g") 'magit)
-  )
+  (setq magit-refresh-status-buffer nil)
+  (setq magit-refresh-verbose t)
 
-(use-package magit-todos
-  :straight (magit-todos :type git :host github
-                         :repo "alphapapa/magit-todos")
-  :config
-  (magit-todos-mode t)
   )
-
 #+END_SRC
 *** Markdown-mode
 Major package to edit .md files
@@ -268,14 +210,7 @@ Github repository: https://github.com/jrblevin/markdown-mode
   )
 #+END_SRC
 
-*** Org-mode
-Github repository: https://github.com/bzg/org-mode (mirror only)
 
-#+BEGIN_SRC emacs-lisp
-(setq org-config
-      (expand-file-name "emacs-config/org-init.org" user-emacs-directory))
-(org-babel-load-file org-config)
-#+END_SRC
 *** Projectile
 Or how to manage a project
 #+begin_src emacs-lisp
@@ -287,7 +222,7 @@ Or how to manage a project
   (flymake-mode-off)
   (setq projectile-switch-project-action #'projectile-dired)
   (setq projectile-completion-system 'ivy)
-  (setq projectile-track-known-projects-automatically nil)
+  (setq projectile-track-known-projects-automatically 'default)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   )
 
@@ -329,21 +264,31 @@ Github repository: https://github.com/aspiers/smooth-scrolling
   (which-key-mode +1)
   )
 #+end_src
+
+
+* Include config modules
 ** Theming
 #+begin_src emacs-lisp
-(setq theming-config (expand-file-name "emacs-config/theming-init.org"
-                                       user-emacs-directory))
-(org-babel-load-file theming-config)
-#+end_src
-** Misc
-#+begin_src emacs-lisp
-(setq misc-config (expand-file-name "emacs-config/misc-init.org"
-                                    user-emacs-directory))
-(org-babel-load-file misc-config)
-#+end_src
-** Misc
-#+begin_src emacs-lisp
-(setq completion-config (expand-file-name "emacs-config/completion-init.org"
-                                    user-emacs-directory))
+(setq completion-config
+      (expand-file-name "emacs-config/completion-init.org" user-emacs-directory))
+(setq dired-config
+      (expand-file-name "emacs-config/dired-init.org" user-emacs-directory))
+(setq ivy-config
+      (expand-file-name "emacs-config/ivy-init.org" user-emacs-directory))
+(setq org-config
+      (expand-file-name "emacs-config/org-init.org" user-emacs-directory))
+(setq misc-config
+      (expand-file-name "emacs-config/misc-init.org" user-emacs-directory))
+(setq prog-config
+      (expand-file-name "emacs-config/prog-init.org" user-emacs-directory))
+(setq theming-config
+      (expand-file-name "emacs-config/theming-init.org" user-emacs-directory))
+
 (org-babel-load-file completion-config)
+(org-babel-load-file dired-config)
+(org-babel-load-file ivy-config)
+(org-babel-load-file misc-config)
+(org-babel-load-file org-config)
+(org-babel-load-file prog-config)
+(org-babel-load-file theming-config)
 #+end_src

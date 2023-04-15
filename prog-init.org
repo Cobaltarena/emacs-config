@@ -72,6 +72,7 @@
   (define-key eglot-mode-map (kbd "C-c s") 'xref-find-definitions)
   (define-key eglot-mode-map (kbd "C-c f") 'eglot-format)
   (define-key eglot-mode-map (kbd "C-c q") 'eglot-code-action-quickfix)
+  (define-key eglot-mode-map (kbd "M-p") 'complete-symbol)
 
   ;; from https://github.com/joaotavora/eglot/discussions/898#discussioncomment-2609402
   ;; prioritize flymake reports on hover over eldoc ones
